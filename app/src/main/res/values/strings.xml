@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Cuentabilidad</string>
+    <string name="action_settings">Settings</string>
+    <string name="header_fecha">Fecha</string>
+    <string name="header_gasto">Descr. Gasto</string>
+    <string name="header_monto">Monto</string>
+    <string name="label_nuevo_gasto">Agregar Gasto</string>
+</resources>
