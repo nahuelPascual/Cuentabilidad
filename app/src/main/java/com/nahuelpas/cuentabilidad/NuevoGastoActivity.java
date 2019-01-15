@@ -15,6 +15,7 @@ import com.nahuelpas.cuentabilidad.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.dao.CuentaDao_Impl;
 import com.nahuelpas.cuentabilidad.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.dao.GastoDao_Impl;
+import com.nahuelpas.cuentabilidad.exception.BusinessException;
 import com.nahuelpas.cuentabilidad.model.Cuenta;
 import com.nahuelpas.cuentabilidad.model.Gasto;
 
@@ -22,6 +23,7 @@ import java.util.Date;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.util.StringUtil;
 
 public class NuevoGastoActivity extends AppCompatActivity {
 
@@ -29,7 +31,7 @@ public class NuevoGastoActivity extends AppCompatActivity {
     private GastoDao gastoDao;
     private CategoriaDao categoriaDao;
     private CuentaDao cuentaDao;
-    private EditText descGasto, saldo, categoria;
+    private EditText descGasto, saldo, categoria, cuenta;
     private Button btn_saveGasto;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,12 +41,13 @@ public class NuevoGastoActivity extends AppCompatActivity {
         /* inicializacion de DAOs */
         gastoDao = new GastoDao_Impl(Database.getAppDatabase(this));
         cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(this));
+        categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(this));
 
         /* inicializacion de elementos */
         descGasto = findViewById(R.id.et_descGasto);
         categoria = findViewById(R.id.et_codCategoria);
         saldo = findViewById(R.id.et_montoGasto);
-        categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(this));
+        cuenta = findViewById(R.id.et_codCuenta);
         btn_saveGasto = findViewById(R.id.btn_guardarGasto);
         btn_saveGasto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,17 +78,37 @@ public class NuevoGastoActivity extends AppCompatActivity {
                             ? new Long(categoria.getText().toString())
                             : 1L; //FIXME borrar cuando funcione el combo de categorias y haya una por default
             gasto.setIdCategoria(idCategoria);
+            Long idCuenta =
+                    !"".equals(cuenta.getText().toString())
+                            ? new Long(cuenta.getText().toString())
+                            : 1L; //FIXME borrar cuando funcione el combo de cuentas y haya una por default
+            gasto.setIdCuenta(idCuenta);
 
-            gastoDao.add(gasto);
-            actualizarSaldo(gasto.getMonto(), gasto.getIdCuenta());
-
-            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+            try {
+                actualizarSaldo(gasto.getMonto(), gasto.getIdCuenta());
+                gastoDao.add(gasto);
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                limpiarCampos();
+            } catch (BusinessException e) {
+                Toast.makeText(this, "¡ERROR! SALDO INSUFICIENTE", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    private void actualizarSaldo(double gasto, Long idCuenta) {
+    private void actualizarSaldo(double gasto, Long idCuenta) throws BusinessException {
         Cuenta cuenta = cuentaDao.getById(idCuenta);
-        cuenta.setSaldo(cuenta.getSaldo()-gasto);
+        double nuevoSaldo = cuenta.getSaldo()-gasto;
+
+        if(nuevoSaldo<0) throw new BusinessException();
+
+        cuenta.setSaldo(nuevoSaldo);
         cuentaDao.update(cuenta);
+    }
+
+    private void limpiarCampos() {
+        descGasto.setText("");
+        categoria.setText("");
+        saldo.setText("");
+        cuenta.setText("");
     }
 }

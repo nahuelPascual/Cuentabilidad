@@ -67,9 +67,9 @@ public class MainActivity extends AppCompatActivity {
         CuentaDao_Impl dao = new CuentaDao_Impl(Database.getAppDatabase(this));
         int cantCuentas = dao.getCantidadRegistros();
         if(cantCuentas == 0) {
-            dao.add(new Cuenta(dao.getNextId(), "Billetera", new Double(0)));
-            dao.add(new Cuenta(dao.getNextId(), "Santander Rio", new Double(0)));
-            dao.add(new Cuenta(dao.getNextId(), "Guardado CPU", new Double(0)));
+            dao.add(new Cuenta(dao.getNextId(), "Billetera", new Double(1000)));
+            dao.add(new Cuenta(dao.getNextId(), "Santander Rio", new Double(15000)));
+            dao.add(new Cuenta(dao.getNextId(), "Guardado CPU", new Double(8000)));
         }
     }
     private void initCategorias() {

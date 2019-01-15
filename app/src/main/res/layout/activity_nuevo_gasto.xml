@@ -49,6 +49,22 @@
         android:ems="10"
         android:maxHeight="200dp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Cuenta"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/et_codCuenta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number" />
+
     <Button
         android:id="@+id/btn_guardarGasto"
         android:layout_width="match_parent"
