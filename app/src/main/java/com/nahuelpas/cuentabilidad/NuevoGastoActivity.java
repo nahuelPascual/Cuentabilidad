@@ -3,6 +3,7 @@ package com.nahuelpas.cuentabilidad;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -23,16 +24,16 @@ import java.util.Date;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.util.StringUtil;
 
 public class NuevoGastoActivity extends AppCompatActivity {
 
-    private Spinner spinner;
     private GastoDao gastoDao;
     private CategoriaDao categoriaDao;
     private CuentaDao cuentaDao;
-    private EditText descGasto, saldo, categoria, cuenta;
+    private EditText descGasto, saldo;
     private Button btn_saveGasto;
+    private Spinner spinnerCategoria, spinnerCuenta;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +46,7 @@ public class NuevoGastoActivity extends AppCompatActivity {
 
         /* inicializacion de elementos */
         descGasto = findViewById(R.id.et_descGasto);
-        categoria = findViewById(R.id.et_codCategoria);
         saldo = findViewById(R.id.et_montoGasto);
-        cuenta = findViewById(R.id.et_codCuenta);
         btn_saveGasto = findViewById(R.id.btn_guardarGasto);
         btn_saveGasto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,13 +54,10 @@ public class NuevoGastoActivity extends AppCompatActivity {
                 guardarGasto();
             }
         });
+        spinnerCategoria = (Spinner) findViewById(R.id.spinnerCategoria);
+        spinnerCuenta = (Spinner) findViewById(R.id.spinnerCuenta);
 
-//        spinner = findViewById(R.id.tipoGastoSpinner);
-//        RecyclerView catSpin = findViewById(R.id.recyclerView);
-//        SimpleCursorAdapter adapter =
-//                new SimpleCursorAdapter(this, R.layout.categorias_spinner, categoriaDao.getCategoriasCursor(),
-//                new String[] {"_id"}, new int[] {0},0);
-//        spinner.setAdapter(adapter);
+        addItemsOnSpinner();
     }
 
     private void guardarGasto() {
@@ -73,24 +69,15 @@ public class NuevoGastoActivity extends AppCompatActivity {
             gasto.setFecha(new Date());
             gasto.setDescripcion(descGasto.getText().toString());
             gasto.setMonto(new Double(saldo.getText().toString()));
-            Long idCategoria =
-                    !"".equals(categoria.getText().toString())
-                            ? new Long(categoria.getText().toString())
-                            : 1L; //FIXME borrar cuando funcione el combo de categorias y haya una por default
-            gasto.setIdCategoria(idCategoria);
-            Long idCuenta =
-                    !"".equals(cuenta.getText().toString())
-                            ? new Long(cuenta.getText().toString())
-                            : 1L; //FIXME borrar cuando funcione el combo de cuentas y haya una por default
-            gasto.setIdCuenta(idCuenta);
+            gasto.setIdCategoria(categoriaDao.getCategoriaByDesc(spinnerCategoria.getSelectedItem().toString()).getCodigo());
+            gasto.setIdCuenta(cuentaDao.getCuentaByDesc(spinnerCuenta.getSelectedItem().toString()).getCodigo());
 
             try {
                 actualizarSaldo(gasto.getMonto(), gasto.getIdCuenta());
                 gastoDao.add(gasto);
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                limpiarCampos();
             } catch (BusinessException e) {
-                Toast.makeText(this, "¡ERROR! SALDO INSUFICIENTE", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Saldo insuficiente en la cuenta", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -105,10 +92,19 @@ public class NuevoGastoActivity extends AppCompatActivity {
         cuentaDao.update(cuenta);
     }
 
-    private void limpiarCampos() {
-        descGasto.setText("");
-        categoria.setText("");
-        saldo.setText("");
-        cuenta.setText("");
+    public void addItemsOnSpinner() {
+        ArrayAdapter<String> catAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, categoriaDao.getDescripciones());
+        catAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCategoria.setAdapter(catAdapter);
+
+        ArrayAdapter<String> cuentaAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, cuentaDao.getDescripciones());
+        cuentaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCuenta.setAdapter(cuentaAdapter);
+    }
+
+    public void addListenerOnSpinnerItemSelection() {
+      //  spinnerCategoria.setOnItemSelectedListener(new CustomOnItemSelectedListener());
     }
 }

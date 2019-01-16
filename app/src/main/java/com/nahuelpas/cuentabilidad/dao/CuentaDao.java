@@ -5,6 +5,8 @@ import android.database.Cursor;
 import com.google.android.material.tabs.TabLayout;
 import com.nahuelpas.cuentabilidad.model.Cuenta;
 
+import java.net.PortUnreachableException;
+import java.security.PublicKey;
 import java.util.List;
 
 import androidx.room.Dao;
@@ -26,4 +28,10 @@ public abstract class CuentaDao extends GenericDao<Cuenta> {
     @Override
     @Query("SELECT * FROM " + TABLE_NAME)
     public abstract List<Cuenta> getAll();
+
+    @Query("SELECT descripcion FROM " + TABLE_NAME)
+    public abstract List<String> getDescripciones();
+
+    @Query("SELECT * FROM " + TABLE_NAME + " WHERE descripcion = :descr")
+    public abstract Cuenta getCuentaByDesc(String descr);
 }

@@ -81,34 +81,4 @@ public class MainActivity extends AppCompatActivity {
             dao.add(new Categoria(dao.getNextId(), "Joda"));
         }
     }
-    /*void leer () {
-        long registros = new CuentaDao_Impl(Database.getAppDatabase(this)).getCantidadRegistros();
-        Cuenta cuenta = new Cuenta();
-        CuentaDao_Impl dao = new CuentaDao_Impl(Database_Impl.getAppDatabase(this));
-        if (TextUtils.isEmpty(et1.getText().toString())) {
-            StringBuilder builder = new StringBuilder();
-            for (int i = 1; i < registros; i++) {
-                cuenta = dao.getById(new Long(i));
-                if (cuenta == null) continue;
-                builder.append(cuenta.getCodigo() + cuenta.getDesc() + "_");
-            }
-            text.setText(builder.toString());
-        } else {
-            cuenta = dao.getById(Long.parseLong(et1.getText().toString()));
-            if (cuenta==null) text.setText("La cuenta no existe");
-            else text.setText(cuenta.getCodigo() + cuenta.getDesc() + cuenta.getSaldo());
-        }
-    }
-
-    void guardar() {
-        long registros = new CuentaDao_Impl(Database.getAppDatabase(this)).getCantidadRegistros();
-        Cuenta cuenta = new Cuenta();
-        cuenta.setCodigo(registros);
-        cuenta.setDesc("Cuenta");
-        cuenta.setSaldo(new Random().nextDouble());
-        CuentaDao_Impl dao = new CuentaDao_Impl(Database_Impl.getAppDatabase(this));
-        dao.add(cuenta);
-        registros+=1;
-        leer();
-    }*/
 }

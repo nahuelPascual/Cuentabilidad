@@ -11,12 +11,10 @@
         android:text="Tipo de gasto:"
         android:textSize="24sp" />
 
-    <EditText
-        android:id="@+id/et_codCategoria"
+    <Spinner
+        android:id="@+id/spinnerCategoria"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number" />
+        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="match_parent"
@@ -47,7 +45,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:maxHeight="200dp" />
+        android:inputType="textShortMessage"
+        android:lines="1"
+        android:maxHeight="200dp"
+        android:maxLength="30" />
 
     <TextView
         android:layout_width="match_parent"
@@ -58,12 +59,10 @@
         android:text="Cuenta"
         android:textSize="24sp" />
 
-    <EditText
-        android:id="@+id/et_codCuenta"
+    <Spinner
+        android:id="@+id/spinnerCuenta"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number" />
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btn_guardarGasto"

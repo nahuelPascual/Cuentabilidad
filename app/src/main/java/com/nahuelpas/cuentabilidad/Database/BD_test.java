@@ -13,6 +13,7 @@ import com.nahuelpas.cuentabilidad.model.Categoria;
 import com.nahuelpas.cuentabilidad.model.Cuenta;
 import com.nahuelpas.cuentabilidad.model.Gasto;
 
+import java.text.DateFormat;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -83,10 +84,12 @@ public class BD_test extends AppCompatActivity {
         List<Gasto> gastos = gastoDao.getAll();
         if (gastos!=null) {
             for (Gasto gasto : gastos) {
+                text.append("[" + DateFormat.getDateInstance(DateFormat.SHORT).format(gasto.getFecha()) + "] ");
                 text.append(gasto.getCodigo() + " - ");
                 text.append(gasto.getDescripcion() + " - $");
-                text.append(gasto.getMonto() + " - ");
-                text.append(new CategoriaDao_Impl(Database.getAppDatabase(this)).getById(gasto.getIdCategoria()).getDescripcion() + "\n");
+                text.append(String.format("%.2f",gasto.getMonto()) + " - ");
+                text.append(new CategoriaDao_Impl(Database.getAppDatabase(this)).getById(gasto.getIdCategoria()).getDescripcion() + " - ");
+                text.append(new CuentaDao_Impl(Database.getAppDatabase(this)).getById(gasto.getIdCuenta()).getDescripcion() + "\n");
             }
             tv_query.setText(text.toString());
         }

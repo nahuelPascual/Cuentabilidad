@@ -27,8 +27,8 @@ public abstract class CategoriaDao extends GenericDao<Categoria> {
     public abstract List<Categoria> getAll();
 
     @Query("SELECT descripcion FROM " + TABLE_NAME)
-    public abstract List<String> getCategoriasForDropdown();
+    public abstract List<String> getDescripciones();
 
-    @Query("SELECT descripcion AS _id FROM " + TABLE_NAME)
-    public abstract Cursor getCategoriasCursor();
+    @Query("SELECT * FROM " + TABLE_NAME + " WHERE descripcion = :descr")
+    public abstract Categoria getCategoriaByDesc(String descr);
 }
