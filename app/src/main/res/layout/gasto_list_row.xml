@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/gastoRowLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/text_margin"
+    android:paddingTop="@dimen/row_padding_vertical"
+    android:paddingRight="@dimen/text_margin"
+    android:paddingBottom="@dimen/row_padding_vertical">
+
+    <TextView
+        android:id="@+id/fechaRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/design_default_color_on_secondary"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/descripcionRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/design_default_color_on_secondary" />
+
+    <TextView
+        android:id="@+id/valorRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/design_default_color_on_secondary" />
+
+</RelativeLayout>

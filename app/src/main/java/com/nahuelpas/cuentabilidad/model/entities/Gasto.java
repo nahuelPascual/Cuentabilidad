@@ -1,4 +1,4 @@
-package com.nahuelpas.cuentabilidad.model;
+package com.nahuelpas.cuentabilidad.model.entities;
 
 import com.nahuelpas.cuentabilidad.Database.Converters;
 

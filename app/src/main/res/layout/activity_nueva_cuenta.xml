@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/fab_margin">
+
+    <TextView
+        android:id="@+id/tv_nombreCuenta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nombre de la cuenta:"
+        android:textSize="24sp"
+        android:layout_marginTop="150dp"/>
+
+    <EditText
+        android:id="@+id/et_nombreCuentaNueva"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:maxLength="15" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin"
+        android:text="Saldo:"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/et_saldoCuentaNueva"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="$"
+        android:inputType="numberDecimal" />
+
+    <Button
+        android:id="@+id/btn_guardarCuenta"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="@dimen/text_margin"
+        android:text="Guardar" />
+</LinearLayout>

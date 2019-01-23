@@ -1,29 +1,19 @@
-package com.nahuelpas.cuentabilidad.model;
+package com.nahuelpas.cuentabilidad.model.entities;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Cuenta {
+public class Categoria {
 
-    public Cuenta(Long codigo, String descripcion, double saldo) {
+    public Categoria(Long codigo, String descripcion) {
         this.codigo = codigo;
         this.descripcion = descripcion;
-        this.saldo = saldo;
     }
 
     @PrimaryKey
     private Long codigo;
     private String descripcion;
-    private double saldo;
-
-    public double getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
-    }
 
     public Long getCodigo() {
         return codigo;
@@ -37,7 +27,7 @@ public class Cuenta {
         return descripcion;
     }
 
-    public void setDescripcion(String desc) {
-        this.descripcion = desc;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 }

@@ -10,15 +10,17 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.nahuelpas.cuentabilidad.Database.Database;
-import com.nahuelpas.cuentabilidad.dao.CategoriaDao;
-import com.nahuelpas.cuentabilidad.dao.CategoriaDao_Impl;
-import com.nahuelpas.cuentabilidad.dao.CuentaDao;
-import com.nahuelpas.cuentabilidad.dao.CuentaDao_Impl;
-import com.nahuelpas.cuentabilidad.dao.GastoDao;
-import com.nahuelpas.cuentabilidad.dao.GastoDao_Impl;
+import com.nahuelpas.cuentabilidad.MainActivity;
+import com.nahuelpas.cuentabilidad.R;
+import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
+import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
+import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.exception.BusinessException;
-import com.nahuelpas.cuentabilidad.model.Cuenta;
-import com.nahuelpas.cuentabilidad.model.Gasto;
+import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
+import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
+import com.nahuelpas.cuentabilidad.model.entities.Gasto;
 
 import java.util.Date;
 

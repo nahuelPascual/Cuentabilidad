@@ -2,15 +2,16 @@ package com.nahuelpas.cuentabilidad.Database;
 
 import android.content.Context;
 
-import com.nahuelpas.cuentabilidad.dao.CategoriaDao;
-import com.nahuelpas.cuentabilidad.dao.CuentaDao;
-import com.nahuelpas.cuentabilidad.dao.GastoDao;
-import com.nahuelpas.cuentabilidad.model.*;
+import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
+import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
+import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
+import com.nahuelpas.cuentabilidad.model.entities.Categoria;
+import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
+import com.nahuelpas.cuentabilidad.model.entities.Gasto;
 
 import androidx.annotation.NonNull;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 

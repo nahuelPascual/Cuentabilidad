@@ -1,8 +1,6 @@
-package com.nahuelpas.cuentabilidad.dao;
+package com.nahuelpas.cuentabilidad.model.dao;
 
-import android.database.Cursor;
-
-import com.nahuelpas.cuentabilidad.model.Categoria;
+import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 
 import java.util.List;
 
@@ -10,25 +8,25 @@ import androidx.room.Dao;
 import androidx.room.Query;
 
 @Dao
-public abstract class CategoriaDao extends GenericDao<Categoria> {
+public abstract class CuentaDao extends GenericDao<Cuenta> {
 
-    private static final String TABLE_NAME = "Categoria";
+    private final String TABLE_NAME = "Cuenta";
 
     @Override
     @Query("SELECT * FROM " + TABLE_NAME + " WHERE codigo = :id")
-    public abstract Categoria getById(Long id);
+    public abstract Cuenta getById(Long id);
 
     @Override
     @Query("SELECT Count(codigo) FROM " + TABLE_NAME)
     public abstract int getCantidadRegistros();
 
     @Override
-    @Query("SELECT * FROM " + TABLE_NAME + " ORDER BY descripcion")
-    public abstract List<Categoria> getAll();
+    @Query("SELECT * FROM " + TABLE_NAME)
+    public abstract List<Cuenta> getAll();
 
     @Query("SELECT descripcion FROM " + TABLE_NAME)
     public abstract List<String> getDescripciones();
 
     @Query("SELECT * FROM " + TABLE_NAME + " WHERE descripcion = :descr")
-    public abstract Categoria getCategoriaByDesc(String descr);
+    public abstract Cuenta getCuentaByDesc(String descr);
 }

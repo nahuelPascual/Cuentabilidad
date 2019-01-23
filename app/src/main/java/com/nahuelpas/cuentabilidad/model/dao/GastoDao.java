@@ -1,9 +1,6 @@
-package com.nahuelpas.cuentabilidad.dao;
+package com.nahuelpas.cuentabilidad.model.dao;
 
-import android.database.Cursor;
-
-import com.nahuelpas.cuentabilidad.model.Categoria;
-import com.nahuelpas.cuentabilidad.model.Gasto;
+import com.nahuelpas.cuentabilidad.model.entities.Gasto;
 
 import java.util.List;
 

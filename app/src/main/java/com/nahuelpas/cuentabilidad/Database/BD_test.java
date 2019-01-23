@@ -6,12 +6,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.nahuelpas.cuentabilidad.R;
-import com.nahuelpas.cuentabilidad.dao.CategoriaDao_Impl;
-import com.nahuelpas.cuentabilidad.dao.CuentaDao_Impl;
-import com.nahuelpas.cuentabilidad.dao.GastoDao_Impl;
-import com.nahuelpas.cuentabilidad.model.Categoria;
-import com.nahuelpas.cuentabilidad.model.Cuenta;
-import com.nahuelpas.cuentabilidad.model.Gasto;
+import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
+import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
+import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
+import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
+import com.nahuelpas.cuentabilidad.model.entities.Categoria;
+import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
+import com.nahuelpas.cuentabilidad.model.entities.Gasto;
 
 import java.text.DateFormat;
 import java.util.List;
@@ -23,9 +26,9 @@ public class BD_test extends AppCompatActivity {
 
     TextView tv_cantGastos, tv_cantCuentas, tv_cantCateg, tv_query;
     Button btn_cuentas, btn_categorias, btn_gastos;
-    GastoDao_Impl gastoDao;
-    CategoriaDao_Impl categoriaDao;
-    CuentaDao_Impl cuentaDao;
+    GastoDao gastoDao;
+    CategoriaDao categoriaDao;
+    CuentaDao cuentaDao;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

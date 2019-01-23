@@ -1,4 +1,4 @@
-package com.nahuelpas.cuentabilidad.dao;
+package com.nahuelpas.cuentabilidad.model.dao;
 
 import android.database.Cursor;
 
