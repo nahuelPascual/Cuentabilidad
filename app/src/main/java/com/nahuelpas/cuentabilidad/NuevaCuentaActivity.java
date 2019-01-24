@@ -1,5 +1,6 @@
 package com.nahuelpas.cuentabilidad;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.room.util.StringUtil;
 
 public class NuevaCuentaActivity extends AppCompatActivity {
 
@@ -33,10 +35,16 @@ public class NuevaCuentaActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO validar campos vacíos
-                cuentaDao.add(new Cuenta(cuentaDao.getNextId(),
-                        nombreCuenta.getText().toString(), Double.parseDouble(saldoCuenta.getText().toString())));
-                Toast.makeText(getApplicationContext(), "Cuenta guardada exitosamente.", Toast.LENGTH_SHORT).show();
+                String nombre = nombreCuenta.getText().toString();
+                String saldo = saldoCuenta.getText().toString();
+                if (nombre!=null && !nombre.isEmpty() && saldo!=null && !saldo.isEmpty()) {
+                    cuentaDao.add(new Cuenta(cuentaDao.getNextId(),
+                            nombre, Double.parseDouble(saldo)));
+                    Toast.makeText(getApplicationContext(), "Cuenta guardada exitosamente.", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                } else {
+                    Toast.makeText(getApplicationContext(), "Revise los datos ingresados.", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
