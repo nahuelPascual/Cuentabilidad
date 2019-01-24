@@ -1,0 +1,9 @@
+
+Listo:
+- Settings: add categoría y cuenta.
+
+Pendientes:
+- Probar migración BD
+- Cuenta en descubierto?
+- Estadísticas mensuales por tipo (comparativa mes a mes?)
+- Filtros (categoría, mes, cuenta, etc)

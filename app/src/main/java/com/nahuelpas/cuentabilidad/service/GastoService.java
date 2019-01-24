@@ -14,11 +14,7 @@ public class GastoService {
         //gastoDto.setFecha(DateFormat.getDateInstance(DateFormat.SHORT).format(gasto.getFecha()).toString());
         gastoDto.setDescripcion(gasto.getDescripcion());
        // gastoDto.setValor(String.format("%.2f",gasto.getMonto()));
-        return gastoDto; /* TODO
-                            No usar un Dto, sino directamente la entity;
-                            necesito el ID y la categoría para el detalle
-                            y aplicar filtros.
-                         */
+        return gastoDto; // TODO no usar un Dto, sino directamente la entity necesito el ID y la categoría para el detalle y aplicar filtros
     }
 
     public List<GastoDto> map (List<Gasto> gastos){
