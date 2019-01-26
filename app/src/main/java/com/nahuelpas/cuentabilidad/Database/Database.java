@@ -15,16 +15,10 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@androidx.room.Database(version = 1, entities = {Cuenta.class, Gasto.class, Categoria.class}, exportSchema = false)
+@androidx.room.Database(version = 2, entities = {Cuenta.class, Gasto.class, Categoria.class}, exportSchema = false)
 public abstract class Database extends RoomDatabase {
 
     private static volatile Database INSTANCE;
-    static final Migration MIGRATION_1_2 = new Migration(1, 2) {
-        @Override
-        public void migrate(@NonNull SupportSQLiteDatabase database) {
-//            database.execSQL("ALTER TABLE Gasto ADD cuenta NUMBER");
-        }
-    };
 
     abstract public CuentaDao CuentaDao();
     abstract public CategoriaDao CategoriaDao();
@@ -37,7 +31,31 @@ public abstract class Database extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(), Database.class, "user-database")
                                     .allowMainThreadQueries()
                                     .fallbackToDestructiveMigration()
-//                                    .addMigrations(MIGRATION_1_2)
+//                                    .addMigrations(new Migration[]{ MIGRATION_1_2
+//                                                                    })
+/*                                    .addCallback(new Callback() {
+                                        @Override
+                                        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                                            super.onCreate(db);
+                                            Executors.newSingleThreadScheduledExecutor().execute(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Database db = getAppDatabase(context);
+
+                                                    db.CuentaDao().add(new Cuenta(db.CuentaDao().getNextId(), "Billetera", new Double(11500), false));
+                                                    db.CuentaDao().add(new Cuenta(db.CuentaDao().getNextId(), "Santander Rio", new Double(15000), false));
+                                                    db.CuentaDao().add(new Cuenta(db.CuentaDao().getNextId(), "Guardado CPU", new Double(11500), false));
+
+                                                    db.CategoriaDao().add(new Categoria(db.CategoriaDao().getNextId(), "Combustible"));
+                                                    db.CategoriaDao().add(new Categoria(db.CategoriaDao().getNextId(), "Facultad"));
+                                                    db.CategoriaDao().add(new Categoria(db.CategoriaDao().getNextId(), "Libreria"));
+                                                    db.CategoriaDao().add(new Categoria(db.CategoriaDao().getNextId(), "Joda"));
+                                                    db.CategoriaDao().add(new Categoria(db.CategoriaDao().getNextId(), "Farmacia"));
+                                                }
+                                            });
+                                        }
+                                    })
+*/
                                     .build();
                 }
             }
@@ -48,4 +66,11 @@ public abstract class Database extends RoomDatabase {
     public static void destroyInstance() {
         INSTANCE = null;
     }
+
+    private static final Migration MIGRATION_1_2 = new Migration(1, 2) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE Cuenta ADD COLUMN descubierto INTEGER NOT NULL default 'false'");
+        }
+    };
 }

@@ -17,8 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:maxLength="15" />
+        android:inputType="textCapWords"
+        android:lines="1"
+        android:maxHeight="200dp"
+        android:maxLength="20" />
 
     <TextView
         android:layout_width="match_parent"

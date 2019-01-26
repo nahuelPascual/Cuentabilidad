@@ -11,6 +11,7 @@ import androidx.room.Query;
 public abstract class GastoDao extends GenericDao<Gasto> {
 
     private static final String TABLE_NAME = "Gasto";
+    private static final String ORDER_BY_DESC = " ORDER BY codigo DESC";
 
     @Override
     @Query("SELECT * FROM " + TABLE_NAME + " WHERE codigo = :id")
@@ -21,10 +22,10 @@ public abstract class GastoDao extends GenericDao<Gasto> {
     public abstract int getCantidadRegistros();
 
     @Override
-    @Query("SELECT * FROM " + TABLE_NAME)
+    @Query("SELECT * FROM " + TABLE_NAME + ORDER_BY_DESC)
     public abstract List<Gasto> getAll();
 
-    @Query("SELECT * FROM " + TABLE_NAME + " WHERE idCategoria = :categoria")
+    @Query("SELECT * FROM " + TABLE_NAME + " WHERE idCategoria = :categoria" + ORDER_BY_DESC)
     public abstract List<Gasto> getByCategoria(Long categoria);
 
 }

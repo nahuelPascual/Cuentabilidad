@@ -13,7 +13,7 @@
     android:paddingBottom="@dimen/row_padding_vertical">
 
     <TextView
-        android:id="@+id/fechaRow"
+        android:id="@+id/cuentaRow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -21,37 +21,10 @@
         android:textSize="16dp" />
 
     <TextView
-        android:id="@+id/descripcionRow"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_toStartOf="@+id/valorRow"
-        android:layout_toEndOf="@+id/fechaRow"
-        android:singleLine="true"
-        android:textAlignment="center"
-        android:textColor="@color/design_default_color_on_secondary" />
-
-    <TextView
-        android:id="@+id/valorRow"
+        android:id="@+id/saldoRow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:textColor="@color/design_default_color_on_secondary" />
-
-    <!--TextView
-        android:id="@+id/cuentaRow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/valorRow"
-        android:layout_alignParentRight="true"
-        android:textColor="@color/design_default_color_on_secondary" />
-
-    <TextView
-        android:id="@+id/categoriaRow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fechaRow"
-        android:layout_alignParentLeft="true" /-->
 
 </RelativeLayout>

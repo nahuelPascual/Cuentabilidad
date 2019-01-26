@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
-        android:text="Nombre de la cuenta:"
+        android:text="Nombre de la categoria:"
         android:textSize="24sp" />
 
     <EditText
@@ -17,8 +17,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:maxLength="15" />
+        android:inputType="textCapWords"
+        android:lines="1"
+        android:maxHeight="200dp"
+        android:maxLength="20" />
 
     <Button
         android:id="@+id/btn_guardarCategoriaNueva"

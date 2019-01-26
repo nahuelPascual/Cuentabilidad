@@ -1,6 +1,7 @@
 package com.nahuelpas.cuentabilidad.Database;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -54,6 +55,8 @@ public class BD_test extends AppCompatActivity {
         btn_cuentas = findViewById(R.id.btn_cuentas);
         btn_gastos = findViewById(R.id.btn_gastos);
 
+        tv_query.setMovementMethod(new ScrollingMovementMethod());
+
         int cant = gastoDao.getCantidadRegistros();
         tv_cantGastos.setText(String.valueOf(cant));
         cant = categoriaDao.getCantidadRegistros();
@@ -104,6 +107,7 @@ public class BD_test extends AppCompatActivity {
             for (Cuenta cuenta : cuentas) {
                 text.append(cuenta.getCodigo() + " - ");
                 text.append(cuenta.getDescripcion() + " - ");
+                text.append(cuenta.isDescubierto() + " - ");
                 text.append(cuenta.getSaldo() + " \n");
             }
             tv_query.setText(text.toString());

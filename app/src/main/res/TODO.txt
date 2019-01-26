@@ -1,9 +1,23 @@
 
 Listo:
 - Settings: add categoría y cuenta.
+- Probar migración BD (ok, la info se puede preservar entre versiones)
+- Cuenta en descubierto.
 
 Pendientes:
-- Probar migración BD
-- Cuenta en descubierto?
-- Estadísticas mensuales por tipo (comparativa mes a mes?)
+- Estados de cuenta
+    - Ingresar dinero en cuentas
+    - Prestamos
+        Camila: $4972.62 (me pagó 2500)
+        Papa: $11500 de CPU
+- Si no hay descripcion debería mostrarse el tipo de gasto (también útil para filtrar)
 - Filtros (categoría, mes, cuenta, etc)
+    - Estadísticas mensuales por tipo (comparativa mes a mes?)
+- Sacar acceso a la base en el main thread (ver logCat al iniciar)
+    No se puede acceder a la base desde el adaptar (no hereda de Context)
+- Agregar subcategorias (categoría se convertiría en sub, para que el gasto tenga una subcategoria)
+- Ver detalle del gasto (cuenta, categoria, descripcion completa y opciones de edicion?)
+    - Eliminar (y editar?) gastos
+- Botón atrás no debería volver a agregar gasto/cuenta/categoría (ya se persistió en la base)
+- Agregar HORA a la fecha del gasto (o mejor en el detalle?)
+- Moneda ($, USD, BTC) en cuenta

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/text_margin"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tituloCuentaRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/text_margin"
+        android:fontFamily="sans-serif-black"
+        android:layout_alignParentLeft="true"
+        android:text="Cuenta"
+        android:textColor="@color/design_default_color_on_secondary"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/tituloSaldoCuentaRow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/text_margin"
+        android:layout_alignParentRight="true"
+        android:fontFamily="sans-serif-black"
+        android:text="Saldo"
+        android:textColor="@color/design_default_color_on_secondary"
+        android:textSize="25sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerCuentas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tituloCuentaRow"
+        android:scrollbars="vertical" />
+</RelativeLayout>

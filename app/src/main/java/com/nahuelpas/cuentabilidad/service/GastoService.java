@@ -1,5 +1,17 @@
 package com.nahuelpas.cuentabilidad.service;
 
+import android.app.Service;
+import android.content.Context;
+import android.content.Intent;
+import android.os.IBinder;
+
+import com.nahuelpas.cuentabilidad.Database.Database;
+import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
+import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
+import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
+import com.nahuelpas.cuentabilidad.model.entities.Categoria;
+import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.model.entities.Gasto;
 import com.nahuelpas.cuentabilidad.model.dto.GastoDto;
 
@@ -7,7 +19,11 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GastoService {
+import androidx.annotation.Nullable;
+
+public class GastoService /*extends Service*/ {
+
+//    CategoriaDao categoriaDao ;
 
     public GastoDto map (Gasto gasto){
         GastoDto gastoDto = new GastoDto();
@@ -24,4 +40,20 @@ public class GastoService {
         }
         return gastosDto;
     }
+
+    public boolean tieneDecimales (double montoGasto) {
+        return montoGasto != (int) montoGasto;
+    }
+/*
+    public Categoria getCategoria (Gasto gasto) {
+        categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(getApplicationContext()));
+        return categoriaDao.getById(gasto.getIdCategoria());
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+*/
 }

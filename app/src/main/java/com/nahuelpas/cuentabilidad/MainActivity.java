@@ -5,14 +5,8 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nahuelpas.cuentabilidad.Database.BD_test;
 import com.nahuelpas.cuentabilidad.Database.Database;
-import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
-import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
-import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
-import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
-import com.nahuelpas.cuentabilidad.model.entities.Categoria;
-import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.service.GastoService;
 import com.nahuelpas.cuentabilidad.views.GastosAdapter;
 
@@ -26,7 +20,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -50,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        initCuentas();
-        initCategorias();
-        gastoDao  = new GastoDao_Impl(Database.getAppDatabase(this));
+       // initCuentas();
+       // initCategorias();
+        gastoDao = new GastoDao_Impl(Database.getAppDatabase(getApplicationContext()));
         gastoService = new GastoService();
       /*  gastosRow = findViewById(R.id.descripcionRow);
         gastosRow.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +55,51 @@ public class MainActivity extends AppCompatActivity {
             }
         });*/
 
+        initRecyclerView();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                break;
+            case R.id.testBD_item:
+                startActivity(new Intent(getApplicationContext(), BD_test.class));
+                break;
+            case R.id.cuentas_menu_item:
+                startActivity(new Intent(getApplicationContext(), CuentasActivity.class));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+/*    private void initCuentas() {
+        CuentaDao dao = new CuentaDao_Impl(Database.getAppDatabase(this));
+        int cantCuentas = dao.getCantidadRegistros();
+        if(cantCuentas == 0) {
+            dao.add(new Cuenta(dao.getNextId(), "Billetera", new Double(1000), false));
+            dao.add(new Cuenta(dao.getNextId(), "Santander Rio", new Double(15000), false));
+            dao.add(new Cuenta(dao.getNextId(), "Guardado CPU", new Double(8000), false));
+        }
+    }
+    private void initCategorias() {
+        CategoriaDao dao = new CategoriaDao_Impl(Database.getAppDatabase(this));
+        int cant = dao.getCantidadRegistros();
+        if(cant == 0) {
+            dao.add(new Categoria(dao.getNextId(), "Combustible"));
+            dao.add(new Categoria(dao.getNextId(), "Facultad"));
+            dao.add(new Categoria(dao.getNextId(), "Joda"));
+        }
+    }*/
+    private void initRecyclerView(){
         RecyclerView recyclerView;
         RecyclerView.Adapter mAdapter;
 
@@ -104,44 +142,5 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        //prepareMovieData();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                break;
-            case R.id.testBD_item:
-                startActivity(new Intent(getApplicationContext(), BD_test.class));
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void initCuentas() {
-        CuentaDao dao = new CuentaDao_Impl(Database.getAppDatabase(this));
-        int cantCuentas = dao.getCantidadRegistros();
-        if(cantCuentas == 0) {
-            dao.add(new Cuenta(dao.getNextId(), "Billetera", new Double(1000)));
-            dao.add(new Cuenta(dao.getNextId(), "Santander Rio", new Double(15000)));
-            dao.add(new Cuenta(dao.getNextId(), "Guardado CPU", new Double(8000)));
-        }
-    }
-    private void initCategorias() {
-        CategoriaDao dao = new CategoriaDao_Impl(Database.getAppDatabase(this));
-        int cant = dao.getCantidadRegistros();
-        if(cant == 0) {
-            dao.add(new Categoria(dao.getNextId(), "Combustible"));
-            dao.add(new Categoria(dao.getNextId(), "Facultad"));
-            dao.add(new Categoria(dao.getNextId(), "Joda"));
-        }
     }
 }
