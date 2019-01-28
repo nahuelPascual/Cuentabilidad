@@ -9,13 +9,15 @@ import com.nahuelpas.cuentabilidad.model.entities.Categoria;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.model.entities.Gasto;
 
+import java.util.concurrent.Executors;
+
 import androidx.annotation.NonNull;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@androidx.room.Database(version = 2, entities = {Cuenta.class, Gasto.class, Categoria.class}, exportSchema = false)
+@androidx.room.Database(version = 1, entities = {Cuenta.class, Gasto.class, Categoria.class}, exportSchema = false)
 public abstract class Database extends RoomDatabase {
 
     private static volatile Database INSTANCE;
@@ -42,9 +44,11 @@ public abstract class Database extends RoomDatabase {
                                                 public void run() {
                                                     Database db = getAppDatabase(context);
 
-                                                    db.CuentaDao().add(new Cuenta(db.CuentaDao().getNextId(), "Billetera", new Double(11500), false));
-                                                    db.CuentaDao().add(new Cuenta(db.CuentaDao().getNextId(), "Santander Rio", new Double(15000), false));
-                                                    db.CuentaDao().add(new Cuenta(db.CuentaDao().getNextId(), "Guardado CPU", new Double(11500), false));
+                                                    db.CuentaDao().add(new Cuenta(db.CuentaDao().getNextId(), "Billetera", new Double(2275), false, false));
+                                                    db.CuentaDao().add(new Cuenta(db.CuentaDao().getNextId(), "Santander Rio", new Double(14295.97), false, false));
+                                                    db.CuentaDao().add(new Cuenta(db.CuentaDao().getNextId(), "Guardado CPU", new Double(0), false, false));
+                                                    db.CuentaDao().add(new Cuenta(db.CuentaDao().getNextId(), "Prestamo Camila", new Double(2500), false, true));
+                                                    db.CuentaDao().add(new Cuenta(db.CuentaDao().getNextId(), "Prestamo Juanca", new Double(11500), false, true));
 
                                                     db.CategoriaDao().add(new Categoria(db.CategoriaDao().getNextId(), "Combustible"));
                                                     db.CategoriaDao().add(new Categoria(db.CategoriaDao().getNextId(), "Facultad"));

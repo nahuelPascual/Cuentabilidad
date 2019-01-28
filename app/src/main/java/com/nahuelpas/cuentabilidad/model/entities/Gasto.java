@@ -22,6 +22,29 @@ public class Gasto {
     @ForeignKey(entity = Cuenta.class, parentColumns = {"codigo"}, childColumns = {"idCuenta"})
     private Long idCuenta;
     private double monto;
+    private Tipo tipo;
+
+    public enum Tipo {
+        GASTO(0),
+        INGRESO(1),
+        PRESTAMO(2),
+        PAGO(3);
+
+        Tipo(int n){
+            value = n;
+        }
+        private int value;
+        public int getValue(){
+            return value;
+        }
+    }
+
+    public Tipo getTipo() {
+        return tipo;
+    }
+    public void setTipo(Tipo tipo) {
+        this.tipo = tipo;
+    }
 
     public Date getFecha() {
         return fecha;

@@ -95,6 +95,7 @@ public class BD_test extends AppCompatActivity {
                 text.append(gasto.getDescripcion() + " - $");
                 text.append(String.format("%.2f",gasto.getMonto()) + " - ");
                 text.append(new CategoriaDao_Impl(Database.getAppDatabase(this)).getById(gasto.getIdCategoria()).getDescripcion() + " - ");
+                text.append(gasto.getTipo() + " - ");
                 text.append(new CuentaDao_Impl(Database.getAppDatabase(this)).getById(gasto.getIdCuenta()).getDescripcion() + "\n");
             }
             tv_query.setText(text.toString());
@@ -108,6 +109,7 @@ public class BD_test extends AppCompatActivity {
                 text.append(cuenta.getCodigo() + " - ");
                 text.append(cuenta.getDescripcion() + " - ");
                 text.append(cuenta.isDescubierto() + " - ");
+                text.append(cuenta.isPrestamo() + " - ");
                 text.append(cuenta.getSaldo() + " \n");
             }
             tv_query.setText(text.toString());

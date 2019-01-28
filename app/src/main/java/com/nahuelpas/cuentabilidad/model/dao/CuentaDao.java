@@ -17,6 +17,10 @@ public abstract class CuentaDao extends GenericDao<Cuenta> {
     public abstract Cuenta getById(Long id);
 
     @Override
+    @Query("SELECT codigo FROM " + TABLE_NAME + ORDER_BY_DESC + " LIMIT 1")
+    public abstract int getUltimoId();
+
+    @Override
     @Query("SELECT Count(codigo) FROM " + TABLE_NAME)
     public abstract int getCantidadRegistros();
 
@@ -24,7 +28,7 @@ public abstract class CuentaDao extends GenericDao<Cuenta> {
     @Query("SELECT * FROM " + TABLE_NAME)
     public abstract List<Cuenta> getAll();
 
-    @Query("SELECT descripcion FROM " + TABLE_NAME)
+    @Query("SELECT descripcion FROM " + TABLE_NAME + " WHERE prestamo = " + FALSE)
     public abstract List<String> getDescripciones();
 
     @Query("SELECT * FROM " + TABLE_NAME + " WHERE descripcion = :descr")

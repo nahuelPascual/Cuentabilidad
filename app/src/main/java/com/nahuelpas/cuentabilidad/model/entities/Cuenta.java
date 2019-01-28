@@ -7,17 +7,27 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Cuenta {
 
-    public Cuenta(Long codigo, String descripcion, double saldo, boolean descubierto) {
+    public Cuenta(Long codigo, String descripcion, double saldo, boolean descubierto, boolean prestamo) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.saldo = saldo;
         this.descubierto = descubierto;
+        this.prestamo = prestamo;
     }
 
     @PrimaryKey private Long codigo;
     private String descripcion;
     private double saldo;
-    @NonNull private boolean descubierto ;
+    @NonNull private boolean descubierto;
+    @NonNull private boolean prestamo;
+
+    public boolean isPrestamo() {
+        return prestamo;
+    }
+
+    public void setPrestamo(boolean prestamo) {
+        this.prestamo = prestamo;
+    }
 
     public boolean isDescubierto() {
         return descubierto;

@@ -71,6 +71,7 @@ public class NuevoGastoActivity extends AppCompatActivity {
             gasto.setMonto(new Double(saldo.getText().toString()));
             gasto.setIdCategoria(categoriaDao.getCategoriaByDesc(spinnerCategoria.getSelectedItem().toString()).getCodigo());
             gasto.setIdCuenta(cuentaDao.getCuentaByDesc(spinnerCuenta.getSelectedItem().toString()).getCodigo());
+            gasto.setTipo(Gasto.Tipo.GASTO);
 
             try {
                 actualizarSaldo(gasto.getMonto(), gasto.getIdCuenta());

@@ -5,8 +5,14 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nahuelpas.cuentabilidad.Database.BD_test;
 import com.nahuelpas.cuentabilidad.Database.Database;
+import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
+import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
+import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
+import com.nahuelpas.cuentabilidad.model.entities.Categoria;
+import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.service.GastoService;
 import com.nahuelpas.cuentabilidad.views.GastosAdapter;
 
@@ -43,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-       // initCuentas();
-       // initCategorias();
+        initCuentas();
+        initCategorias();
         gastoDao = new GastoDao_Impl(Database.getAppDatabase(getApplicationContext()));
         gastoService = new GastoService();
       /*  gastosRow = findViewById(R.id.descripcionRow);
@@ -81,13 +87,15 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-/*    private void initCuentas() {
+    private void initCuentas() {
         CuentaDao dao = new CuentaDao_Impl(Database.getAppDatabase(this));
         int cantCuentas = dao.getCantidadRegistros();
         if(cantCuentas == 0) {
-            dao.add(new Cuenta(dao.getNextId(), "Billetera", new Double(1000), false));
-            dao.add(new Cuenta(dao.getNextId(), "Santander Rio", new Double(15000), false));
-            dao.add(new Cuenta(dao.getNextId(), "Guardado CPU", new Double(8000), false));
+            dao.add(new Cuenta(dao.getNextId(), "Billetera", new Double(2275), false, false));
+            dao.add(new Cuenta(dao.getNextId(), "Santander Rio", new Double(14295.97), false, false));
+            dao.add(new Cuenta(dao.getNextId(), "Guardado CPU", new Double(0), false, false));
+            dao.add(new Cuenta(dao.getNextId(), "Prestamo Camila", new Double(2500), false, true));
+            dao.add(new Cuenta(dao.getNextId(), "Prestamo Juanca", new Double(11500), false, true));
         }
     }
     private void initCategorias() {
@@ -96,9 +104,12 @@ public class MainActivity extends AppCompatActivity {
         if(cant == 0) {
             dao.add(new Categoria(dao.getNextId(), "Combustible"));
             dao.add(new Categoria(dao.getNextId(), "Facultad"));
+            dao.add(new Categoria(dao.getNextId(), "Libreria"));
             dao.add(new Categoria(dao.getNextId(), "Joda"));
+            dao.add(new Categoria(dao.getNextId(), "Farmacia"));
+
         }
-    }*/
+    }
     private void initRecyclerView(){
         RecyclerView recyclerView;
         RecyclerView.Adapter mAdapter;

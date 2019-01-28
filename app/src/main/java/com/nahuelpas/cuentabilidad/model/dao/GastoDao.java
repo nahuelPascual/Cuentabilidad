@@ -11,11 +11,14 @@ import androidx.room.Query;
 public abstract class GastoDao extends GenericDao<Gasto> {
 
     private static final String TABLE_NAME = "Gasto";
-    private static final String ORDER_BY_DESC = " ORDER BY codigo DESC";
 
     @Override
     @Query("SELECT * FROM " + TABLE_NAME + " WHERE codigo = :id")
     public abstract Gasto getById(Long id);
+
+    @Override
+    @Query("SELECT codigo FROM " + TABLE_NAME + ORDER_BY_DESC + " LIMIT 1")
+    public abstract int getUltimoId();
 
     @Override
     @Query("SELECT Count(codigo) FROM " + TABLE_NAME)

@@ -1,5 +1,6 @@
 package com.nahuelpas.cuentabilidad.views;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,12 +57,33 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHold
         holder.descripcion.setText(gasto.getDescripcion());
         holder.valor.setText("$ " + (!gastoService.tieneDecimales(gasto.getMonto()) ?
                                         String.format("%.0f",gasto.getMonto()) : String.format("%.2f",gasto.getMonto())) );
-      //  holder.cuenta.setText(gasto.getIdCuenta());
-      //  holder.categoria.setText(gasto.getIdCategoria());
+        setColores(gasto, holder);
     }
 
     @Override
     public int getItemCount() {
         return gastos.size();
+    }
+
+    private void setColores(Gasto gasto, MyViewHolder holder) {
+        switch (gasto.getTipo()){
+            case INGRESO:
+                holder.fecha.setTextColor(Color.rgb(0,0,255));
+                holder.descripcion.setTextColor(Color.rgb(0,0,255));
+                holder.valor.setTextColor(Color.rgb(0,0,255));
+                break;
+            case PRESTAMO:
+                holder.fecha.setTextColor(Color.rgb(255,0,0));
+                holder.descripcion.setTextColor(Color.rgb(255,0,0));
+                holder.valor.setTextColor(Color.rgb(255,0,0));
+                break;
+            case PAGO:
+                holder.fecha.setTextColor(Color.rgb(0,255,0));
+                holder.descripcion.setTextColor(Color.rgb(0,255,0));
+                holder.valor.setTextColor(Color.rgb(0,255,0));
+            case GASTO:
+            default:
+                break;
+        }
     }
 }
