@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/text_margin"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/detGasto_fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin"
+        android:text="Fecha"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/detGasto_tipo"
+        android:layout_below="@id/detGasto_fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin"
+        android:text="Tipo"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/detGasto_subtipo"
+        android:layout_alignBottom="@id/detGasto_tipo"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/field_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin"
+        android:text="Subtipo"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/detGasto_cuenta"
+        android:layout_below="@id/detGasto_tipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin"
+        android:text="Cuenta"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/detGasto_monto"
+        android:layout_alignBottom="@id/detGasto_cuenta"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/field_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/field_margin"
+        android:text="Monto"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/detGasto_descr"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detGasto_cuenta"
+        android:layout_marginTop="@dimen/field_margin"
+        android:ems="10"
+        android:text="Descr"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/btn_detGasto_editar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detGasto_descr"
+        android:layout_marginTop="@dimen/btn_margin"
+        android:text="Editar" />
+
+    <Button
+        android:id="@+id/btn_detGasto_eliminar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_detGasto_editar"
+        android:layout_marginTop="@dimen/text_margin"
+        android:text="Eliminar" />
+
+</RelativeLayout>

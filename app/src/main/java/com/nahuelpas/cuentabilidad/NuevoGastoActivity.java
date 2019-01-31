@@ -1,6 +1,7 @@
 package com.nahuelpas.cuentabilidad;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -27,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class NuevoGastoActivity extends AppCompatActivity {
 
+    private Gasto gasto = new Gasto();
     private GastoDao gastoDao;
     private CategoriaDao categoriaDao;
     private CuentaDao cuentaDao;
@@ -57,6 +59,19 @@ public class NuevoGastoActivity extends AppCompatActivity {
         spinnerCategoria = (Spinner) findViewById(R.id.spinnerCategoria);
         spinnerCuenta = (Spinner) findViewById(R.id.spinnerCuenta);
 
+        try {
+            gasto = gastoDao.getById(getIntent().getExtras().getLong("idGasto"));
+            if(gasto!=null) {
+                spinnerCategoria.setSelection(gasto.getIdCategoria().intValue()); //TODO va a setear cualquiera
+                spinnerCuenta.setSelection(gasto.getIdCuenta().intValue()); //TODO va a setear cualquiera
+                descGasto.setText(gasto.getDescripcion());
+                saldo.setText(String.valueOf(gasto.getMonto()));
+                getIntent().putExtra("montoAnterior", gasto.getMonto());
+            }
+        } catch (Exception e){
+            gasto = new Gasto();
+        }
+
         addItemsOnSpinner();
     }
 
@@ -64,9 +79,12 @@ public class NuevoGastoActivity extends AppCompatActivity {
         if ("".equals(saldo.getText().toString())) {
             Toast.makeText(this, "El gasto no puede tener monto vacío.", Toast.LENGTH_SHORT).show();
         } else {
-            Gasto gasto = new Gasto();
-            gasto.setCodigo(gastoDao.getNextId());
-            gasto.setFecha(new Date());
+            boolean nuevoGasto = false;
+            if (gasto.getFecha() == null) {
+                gasto.setFecha(new Date());
+                gasto.setCodigo(gastoDao.getNextId());
+                nuevoGasto = true;
+            }
             gasto.setDescripcion(descGasto.getText().toString());
             gasto.setMonto(new Double(saldo.getText().toString()));
             gasto.setIdCategoria(categoriaDao.getCategoriaByDesc(spinnerCategoria.getSelectedItem().toString()).getCodigo());
@@ -74,9 +92,15 @@ public class NuevoGastoActivity extends AppCompatActivity {
             gasto.setTipo(Gasto.Tipo.GASTO);
 
             try {
-                actualizarSaldo(gasto.getMonto(), gasto.getIdCuenta());
-                gastoDao.add(gasto);
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                if (nuevoGasto){
+                    actualizarSaldo(gasto.getMonto(), gasto.getIdCuenta());
+                    gastoDao.add(gasto);
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                } else {
+                    actualizarSaldo(gasto.getMonto()-getIntent().getExtras().getDouble("montoAnterior"), gasto.getIdCuenta());
+                    gastoDao.update(gasto);
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                }
             } catch (BusinessException e) {
                 Toast.makeText(this, "Saldo insuficiente en la cuenta", Toast.LENGTH_SHORT).show();
             }
@@ -87,7 +111,7 @@ public class NuevoGastoActivity extends AppCompatActivity {
         Cuenta cuenta = cuentaDao.getById(idCuenta);
         double nuevoSaldo = cuenta.getSaldo()-gasto;
 
-        if(nuevoSaldo<0) throw new BusinessException();
+        if(nuevoSaldo<=0) throw new BusinessException();
 
         cuenta.setSaldo(nuevoSaldo);
         cuentaDao.update(cuenta);

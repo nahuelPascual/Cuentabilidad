@@ -1,13 +1,19 @@
 package com.nahuelpas.cuentabilidad.views;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nahuelpas.cuentabilidad.Database.Database;
+import com.nahuelpas.cuentabilidad.DetalleGastoActivity;
 import com.nahuelpas.cuentabilidad.MainActivity;
+import com.nahuelpas.cuentabilidad.NuevoGastoActivity;
 import com.nahuelpas.cuentabilidad.R;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
@@ -22,8 +28,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHolder> {
 
-    List<Gasto> gastos ;
-    GastoService gastoService = new GastoService();
+    private Context context;
+    private List<Gasto> gastos ;
+    private GastoService gastoService = new GastoService();
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -34,7 +41,7 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHold
             fecha = (TextView) view.findViewById(R.id.fechaRow);
             descripcion = (TextView) view.findViewById(R.id.descripcionRow);
             valor = (TextView) view.findViewById(R.id.valorRow);
-       //     categoria = (TextView) view.findViewById(R.id.categoriaRow);
+         //   categoria = (TextView) view.findViewById(R.id.categoriaRow);
          //   cuenta = (TextView) view.findViewById(R.id.cuentaRow);
         }
     }
@@ -46,6 +53,16 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHold
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.gasto_list_row, parent, false);
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), DetalleGastoActivity.class);
+                int position = 0; // TODO ver cómo obtener la posición del viewHolder clickeado
+                long cod =  gastos.get(position).getCodigo();
+                i.putExtra("idGasto", cod);
+                view.getContext().startActivity(i);
+            }
+        });
 
         return new MyViewHolder(itemView);
     }
