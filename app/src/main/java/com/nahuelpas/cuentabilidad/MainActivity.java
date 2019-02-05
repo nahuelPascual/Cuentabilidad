@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -93,9 +92,8 @@ public class MainActivity extends AppCompatActivity {
         if(cantCuentas == 0) {
             dao.add(new Cuenta(dao.getNextId(), "Billetera", new Double(2275), false, false));
             dao.add(new Cuenta(dao.getNextId(), "Santander Rio", new Double(14295.97), false, false));
-            dao.add(new Cuenta(dao.getNextId(), "Guardado CPU", new Double(0), false, false));
+            dao.add(new Cuenta(dao.getNextId(), "Guardado CPU", new Double(11500), false, false));
             dao.add(new Cuenta(dao.getNextId(), "Prestamo Camila", new Double(2500), false, true));
-            dao.add(new Cuenta(dao.getNextId(), "Prestamo Juanca", new Double(11500), false, true));
         }
     }
     private void initCategorias() {
@@ -111,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void initRecyclerView(){
-        RecyclerView recyclerView;
+        final RecyclerView recyclerView;
         RecyclerView.Adapter mAdapter;
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerGastos);
@@ -121,37 +119,5 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean b) {
-
-            }
-
-            @Override
-            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-                /*
-                try {
-                    View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-
-                    if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
-
-                        int position = recyclerView.getChildAdapterPosition(child);
-
-                        Toast.makeText(MyActivity.this,"The Item Clicked is: "+ position ,Toast.LENGTH_SHORT).show();
-
-                        return true;
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-*/
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-
-            }
-        });
     }
 }

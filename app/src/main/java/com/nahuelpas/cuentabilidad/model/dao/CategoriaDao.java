@@ -17,8 +17,8 @@ public abstract class CategoriaDao extends GenericDao<Categoria> {
     public abstract Categoria getById(Long id);
 
     @Override
-    @Query("SELECT codigo FROM " + TABLE_NAME + ORDER_BY_DESC + " LIMIT 1")
-    public abstract int getUltimoId();
+    @Query("SELECT codigo FROM " + TABLE_NAME + ORDER_BY_CODIGO_DESC + " LIMIT 1")
+    protected abstract int getUltimoId();
 
     @Override
     @Query("SELECT Count(codigo) FROM " + TABLE_NAME)

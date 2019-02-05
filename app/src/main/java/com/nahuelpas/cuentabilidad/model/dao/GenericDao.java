@@ -13,7 +13,7 @@ import androidx.room.Update;
 @Dao
 public abstract class GenericDao<T> {
 
-    protected final String ORDER_BY_DESC = " ORDER BY codigo DESC";
+    protected final String ORDER_BY_CODIGO_DESC = " ORDER BY codigo DESC";
     protected final int FALSE = 0;
     protected final int TRUE = 1;
 
@@ -32,7 +32,7 @@ public abstract class GenericDao<T> {
 
     public abstract T getById(Long id);
 
-    public abstract int getUltimoId();
+    protected abstract int getUltimoId();
 
     public abstract int getCantidadRegistros();
 

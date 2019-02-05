@@ -24,12 +24,13 @@
         <activity android:name=".SettingsActivity"
             android:label="Settings"/>
         <activity android:name=".NuevaCategoriaActivity"
-            android:label="Agregar Categoria">
+            android:label="Agregar Categoria"/>
+        <activity android:name=".EditarGastoActivity"/>
+        <activity android:name=".DetalleCuentaActivity"/>
             <!--intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter-->
-        </activity>
         <activity android:name=".NuevaCuentaActivity"
             android:label="Agregar Cuenta"/>
         <activity android:name=".CuentasActivity"

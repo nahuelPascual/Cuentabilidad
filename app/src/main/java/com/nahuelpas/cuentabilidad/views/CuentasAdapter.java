@@ -1,13 +1,18 @@
 package com.nahuelpas.cuentabilidad.views;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.nahuelpas.cuentabilidad.DetalleCuentaActivity;
+import com.nahuelpas.cuentabilidad.DetalleGastoActivity;
 import com.nahuelpas.cuentabilidad.R;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.model.entities.Gasto;
+import com.nahuelpas.cuentabilidad.service.CuentaService;
 import com.nahuelpas.cuentabilidad.service.GastoService;
 
 import java.text.DateFormat;
@@ -37,9 +42,16 @@ public class CuentasAdapter extends RecyclerView.Adapter<CuentasAdapter.MyViewHo
 
     @Override
     public CuentasAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
+        final View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.cuenta_list_row, parent, false);
-
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), DetalleCuentaActivity.class);
+                i.putExtra(CuentaService.PARAM_ID_CUENTA, new Long(itemView.getId()));
+                view.getContext().startActivity(i);
+            }
+        });
         return new CuentasAdapter.MyViewHolder(itemView);
     }
 
@@ -47,12 +59,20 @@ public class CuentasAdapter extends RecyclerView.Adapter<CuentasAdapter.MyViewHo
     public void onBindViewHolder(CuentasAdapter.MyViewHolder holder, int position) {
         Cuenta cuenta = cuentas.get(position);
         holder.descripcion.setText(cuenta.getDescripcion());
-        holder.saldo.setText("$ " + (gastoService.tieneDecimales(cuenta.getSaldo()) ?
-                                        String.format("%.2f",cuenta.getSaldo()) : (int) cuenta.getSaldo()));
+        holder.saldo.setText("$ " + (gastoService.formatearGasto(cuenta.getSaldo())));
+        holder.itemView.setId(new Integer(cuenta.getCodigo().toString()));
+        setColores(cuenta, holder);
     }
 
     @Override
     public int getItemCount() {
         return cuentas.size();
+    }
+
+    private void setColores(Cuenta cuenta, MyViewHolder holder) {
+        if (cuenta.isPrestamo()) {
+            holder.descripcion.setTextColor(Color.rgb(255,0,0));
+            holder.saldo.setTextColor(Color.rgb(255,0,0));
+        }
     }
 }

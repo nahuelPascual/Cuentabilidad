@@ -5,10 +5,10 @@ Listo:
 - Cuenta en descubierto.
 - Se cambió definición de getNextId() para que no rompa al eliminar registros.
 - Se agrega el boolean "prestamo" en la entity Cuenta, para que existan "Cuentas prestamo".
+- Detalle gasto
 
 Pendientes:
-- ESTUDIAR CÓMO SETEAR ONCLICKLISTENER AL ITEM DEL RECYCLERVIEW PARA VER DETALLES Y PODER EDITAR/ELIMINAR GASTOS,
-Y SOBRETODO PODER VER MOVIMIENTOS DE CUENTAS Y AGREGAR PRESTAMOS/PAGOS.
+- Detalle cuenta
 - Estados de cuenta
     - Ingresar dinero en cuentas
     - Prestamos
@@ -25,3 +25,4 @@ Y SOBRETODO PODER VER MOVIMIENTOS DE CUENTAS Y AGREGAR PRESTAMOS/PAGOS.
 - Botón atrás no debería volver a agregar gasto/cuenta/categoría (ya se persistió en la base)
 - Agregar HORA a la fecha del gasto (o mejor en el detalle?)
 - Moneda ($, USD, BTC) en cuenta
+- Cuando se salda un prestamo, debería eliminarse la cuenta? (se volvería a crear la próxima vez) ¿y el registro?

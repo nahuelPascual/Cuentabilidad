@@ -17,18 +17,18 @@ public abstract class GastoDao extends GenericDao<Gasto> {
     public abstract Gasto getById(Long id);
 
     @Override
-    @Query("SELECT codigo FROM " + TABLE_NAME + ORDER_BY_DESC + " LIMIT 1")
-    public abstract int getUltimoId();
+    @Query("SELECT codigo FROM " + TABLE_NAME + ORDER_BY_CODIGO_DESC + " LIMIT 1")
+    protected abstract int getUltimoId();
 
     @Override
     @Query("SELECT Count(codigo) FROM " + TABLE_NAME)
     public abstract int getCantidadRegistros();
 
     @Override
-    @Query("SELECT * FROM " + TABLE_NAME + ORDER_BY_DESC)
+    @Query("SELECT * FROM " + TABLE_NAME + ORDER_BY_CODIGO_DESC)
     public abstract List<Gasto> getAll();
 
-    @Query("SELECT * FROM " + TABLE_NAME + " WHERE idCategoria = :categoria" + ORDER_BY_DESC)
+    @Query("SELECT * FROM " + TABLE_NAME + " WHERE idCategoria = :categoria" + ORDER_BY_CODIGO_DESC)
     public abstract List<Gasto> getByCategoria(Long categoria);
 
 }
