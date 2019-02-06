@@ -8,7 +8,10 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.RawQuery;
 import androidx.room.Update;
+import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteQuery;
 
 @Dao
 public abstract class GenericDao<T> {
@@ -20,6 +23,9 @@ public abstract class GenericDao<T> {
     public Long getNextId(){
         return new Long(getUltimoId()+1);
     }
+
+    @RawQuery
+    public abstract int ejecutarQuery(SupportSQLiteQuery query);
 
     @Insert
     public abstract void add(T entity);

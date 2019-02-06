@@ -71,14 +71,21 @@
         android:layout_marginTop="125dp"
         android:scrollbars="vertical" />
 
+    <EditText
+        android:id="@+id/et_hardcodearQuery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_query"
+        android:ems="10"
+        android:inputType="text"
+        android:text="Ejecutar query..." />
+
     <Button
-        android:id="@+id/button5"
+        android:id="@+id/btn_ejecutarQuery"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="147dp"
-        android:text="Button" />
+        android:layout_below="@id/et_hardcodearQuery"
+        android:text="Ejecutar" />
 
     <Button
         android:id="@+id/btn_categorias"

@@ -5,6 +5,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nahuelpas.cuentabilidad.R;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
@@ -13,6 +14,7 @@ import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.GenericDao;
 import com.nahuelpas.cuentabilidad.model.entities.Categoria;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.model.entities.Gasto;
@@ -22,11 +24,13 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.sqlite.db.SimpleSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 public class BD_test extends AppCompatActivity {
 
     TextView tv_cantGastos, tv_cantCuentas, tv_cantCateg, tv_query;
-    Button btn_cuentas, btn_categorias, btn_gastos;
+    Button btn_cuentas, btn_categorias, btn_gastos, btn_ejecutarQuery;
     GastoDao gastoDao;
     CategoriaDao categoriaDao;
     CuentaDao cuentaDao;
@@ -54,6 +58,7 @@ public class BD_test extends AppCompatActivity {
         btn_categorias = findViewById(R.id.btn_categorias);
         btn_cuentas = findViewById(R.id.btn_cuentas);
         btn_gastos = findViewById(R.id.btn_gastos);
+        btn_ejecutarQuery = findViewById(R.id.btn_ejecutarQuery);
 
         tv_query.setMovementMethod(new ScrollingMovementMethod());
 
@@ -81,6 +86,20 @@ public class BD_test extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 imprimirGastos();
+            }
+        });
+        btn_ejecutarQuery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String query = btn_ejecutarQuery.getText().toString();
+                if (!query.isEmpty()) {
+                    try {
+                        gastoDao.ejecutarQuery(new SimpleSQLiteQuery(query));
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Se rompió la query, papu.", Toast.LENGTH_LONG).show();
+                    }
+                }
+
             }
         });
     }
