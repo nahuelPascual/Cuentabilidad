@@ -5,4 +5,7 @@
     <color name="colorAccent">#D81B60</color>
     <color name="valorGasto">#999999</color>
     <color name="fechaGasto">#222222</color>
+    <color name="Tipo_Ingreso">#2D8114</color>
+    <color name="Tipo_Prestamo">#D10D0D</color>
+    <color name="Tipo_Pago">#093A75</color>
 </resources>

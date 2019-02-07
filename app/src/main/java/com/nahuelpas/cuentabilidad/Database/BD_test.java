@@ -1,5 +1,6 @@
 package com.nahuelpas.cuentabilidad.Database;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nahuelpas.cuentabilidad.MainActivity;
 import com.nahuelpas.cuentabilidad.R;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
@@ -20,6 +22,9 @@ import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.model.entities.Gasto;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -91,15 +96,16 @@ public class BD_test extends AppCompatActivity {
         btn_ejecutarQuery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String query = btn_ejecutarQuery.getText().toString();
-                if (!query.isEmpty()) {
-                    try {
-                        gastoDao.ejecutarQuery(new SimpleSQLiteQuery(query));
-                    } catch (Exception e) {
-                        Toast.makeText(getApplicationContext(), "Se rompió la query, papu.", Toast.LENGTH_LONG).show();
-                    }
+               // String query = btn_ejecutarQuery.getText().toString();
+                try {
+                    gastoDao.ejecutarQuery(new SimpleSQLiteQuery("UPDATE GASTO SET descripcion = 'Sueldo Enero' " +
+                            "where codigo = 1"));
+                    gastoDao.ejecutarQuery(new SimpleSQLiteQuery("UPDATE GASTO SET idcuenta = 6 " +
+                            "where codigo = 1"));
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Se rompió la query, papu.", Toast.LENGTH_LONG).show();
                 }
-
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
     }
@@ -109,13 +115,20 @@ public class BD_test extends AppCompatActivity {
         List<Gasto> gastos = gastoDao.getAll();
         if (gastos!=null) {
             for (Gasto gasto : gastos) {
-                text.append("[" + DateFormat.getDateInstance(DateFormat.SHORT).format(gasto.getFecha()) + "] ");
-                text.append(gasto.getCodigo() + " - ");
-                text.append(gasto.getDescripcion() + " - $");
-                text.append(String.format("%.2f",gasto.getMonto()) + " - ");
-                text.append(new CategoriaDao_Impl(Database.getAppDatabase(this)).getById(gasto.getIdCategoria()).getDescripcion() + " - ");
-                text.append(gasto.getTipo() + " - ");
-                text.append(new CuentaDao_Impl(Database.getAppDatabase(this)).getById(gasto.getIdCuenta()).getDescripcion() + "\n");
+                if(gasto.getTipo().getValue()== Gasto.Tipo.GASTO.getValue()){
+                    text.append("[" + DateFormat.getDateInstance(DateFormat.SHORT).format(gasto.getFecha()) + "] ");
+                    text.append(gasto.getCodigo() + " - ");
+                    text.append(gasto.getDescripcion() + " - $");
+                    text.append(String.format("%.2f",gasto.getMonto()) + " - ");
+                    text.append(new CategoriaDao_Impl(Database.getAppDatabase(this)).getById(gasto.getIdCategoria()).getDescripcion() + " - ");
+                    text.append(gasto.getTipo() + " - ");
+                    text.append(new CuentaDao_Impl(Database.getAppDatabase(this)).getById(gasto.getIdCuenta()).getDescripcion() + "\n");
+                } else {
+                    text.append("[" + DateFormat.getDateInstance(DateFormat.SHORT).format(gasto.getFecha()) + "] ");
+                    text.append(gasto.getCodigo() + " - ");
+                    text.append(gasto.getDescripcion() + " - $");
+                    text.append(String.format("%.2f",gasto.getMonto()) + " \n");
+                }
             }
             tv_query.setText(text.toString());
         }

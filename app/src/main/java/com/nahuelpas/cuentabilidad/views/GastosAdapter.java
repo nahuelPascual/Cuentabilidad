@@ -15,6 +15,8 @@ import com.nahuelpas.cuentabilidad.service.GastoService;
 import java.text.DateFormat;
 import java.util.List;
 
+import androidx.annotation.ColorRes;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHolder> {
@@ -71,19 +73,19 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHold
     private void setColores(Gasto gasto, MyViewHolder holder) {
         switch (gasto.getTipo()){
             case INGRESO:
-                holder.fecha.setTextColor(Color.rgb(0,255,0));
-                holder.descripcion.setTextColor(Color.rgb(0,255,0));
-                holder.valor.setTextColor(Color.rgb(0,255,0));
+                holder.fecha.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Ingreso));
+                holder.descripcion.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Ingreso));
+                holder.valor.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Ingreso));
                 break;
             case PRESTAMO:
-                holder.fecha.setTextColor(Color.rgb(255,0,0));
-                holder.descripcion.setTextColor(Color.rgb(255,0,0));
-                holder.valor.setTextColor(Color.rgb(255,0,0));
+                holder.fecha.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Prestamo));
+                holder.descripcion.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Prestamo));
+                holder.valor.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Prestamo));
                 break;
             case PAGO:
-                holder.fecha.setTextColor(Color.rgb(0,0,255));
-                holder.descripcion.setTextColor(Color.rgb(0,0,255));
-                holder.valor.setTextColor(Color.rgb(0,0,255));
+                holder.fecha.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Pago));
+                holder.descripcion.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Pago));
+                holder.valor.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Pago));
             case GASTO:
             default:
                 break;

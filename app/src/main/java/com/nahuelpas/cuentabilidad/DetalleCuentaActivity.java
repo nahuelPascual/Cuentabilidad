@@ -19,14 +19,16 @@ import com.nahuelpas.cuentabilidad.model.entities.Gasto;
 import com.nahuelpas.cuentabilidad.service.CuentaService;
 
 import java.text.DateFormat;
+import java.util.Date;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.sqlite.db.SimpleSQLiteQuery;
 
 public class DetalleCuentaActivity extends AppCompatActivity {
 
     TextView monto, descripcion, tipo, subtipo, fecha;
-    Button editar, eliminar;
+    Button eliminar, nuevoIngreso;
     Cuenta cuenta;
     GastoDao gastoDao;
     CuentaDao cuentaDao;
@@ -42,7 +44,20 @@ public class DetalleCuentaActivity extends AppCompatActivity {
 
         cuenta = cuentaDao.getById(getIntent().getExtras().getLong(CuentaService.PARAM_ID_CUENTA));
         setTitle("Detalle " + cuenta.getDescripcion());
-
+        nuevoIngreso = findViewById(R.id.btn_detCuenta_ingresarDinero);
+        nuevoIngreso.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gastoDao.ejecutarQuery(new SimpleSQLiteQuery("DELETE FROM GASTO WHERE CODIGO = 5"));
+                Gasto gasto = new Gasto();
+                gasto.setFecha(new Date());
+                gasto.setCodigo(5L);
+                gasto.setDescripcion("Sueldo Enero");
+                gasto.setTipo(Gasto.Tipo.INGRESO);
+                gasto.setMonto(25235);
+                gastoDao.add(gasto);
+            }
+        });
         /*
         monto = findViewById(R.id.detGasto_monto);
         fecha = findViewById(R.id.detGasto_fecha);

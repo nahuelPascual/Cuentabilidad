@@ -4,6 +4,7 @@ import com.nahuelpas.cuentabilidad.Database.Converters;
 
 import java.util.Date;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
