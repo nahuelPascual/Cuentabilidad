@@ -31,6 +31,9 @@ public abstract class CuentaDao extends GenericDao<Cuenta> {
     @Query("SELECT descripcion FROM " + TABLE_NAME + " WHERE prestamo = " + FALSE)
     public abstract List<String> getDescripciones();
 
+    @Query("SELECT descripcion FROM " + TABLE_NAME + " WHERE prestamo = " + TRUE)
+    public abstract List<String> getDescripcionesPrestamo();
+
     @Query("SELECT * FROM " + TABLE_NAME + " WHERE descripcion = :descr")
     public abstract Cuenta getCuentaByDesc(String descr);
 }

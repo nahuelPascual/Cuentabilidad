@@ -1,5 +1,7 @@
 package com.nahuelpas.cuentabilidad;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -13,21 +15,32 @@ import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Categoria;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
+import com.nahuelpas.cuentabilidad.model.entities.Gasto;
 import com.nahuelpas.cuentabilidad.service.GastoService;
 import com.nahuelpas.cuentabilidad.views.GastosAdapter;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static Context APP_CONTEXT;
 
     private GastoDao gastoDao;
     private GastoService gastoService;
@@ -39,12 +52,38 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        APP_CONTEXT = getApplicationContext();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), NuevoGastoActivity.class));
+                AlertDialog.Builder builderSingle = new AlertDialog.Builder(MainActivity.this);
+                builderSingle.setTitle("Agregar nuevo");
+
+                final ArrayAdapter<Gasto.Tipo> arrayAdapter = new ArrayAdapter<Gasto.Tipo>(MainActivity.this, android.R.layout.simple_selectable_list_item);
+                arrayAdapter.add(Gasto.Tipo.GASTO);
+                arrayAdapter.add(Gasto.Tipo.INGRESO);
+                arrayAdapter.add(Gasto.Tipo.PRESTAMO);
+                arrayAdapter.add(Gasto.Tipo.PAGO);
+
+                builderSingle.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(MainActivity.this, NuevoGastoActivity.class);
+                        i.putExtra(GastoService.PARAM_TIPO_GASTO, arrayAdapter.getItem(which));
+                        startActivity(i);
+                    }
+                });
+                builderSingle.show();
+                //startActivity(new Intent(getApplicationContext(), NuevoGastoActivity.class));
             }
         });
 
@@ -52,13 +91,6 @@ public class MainActivity extends AppCompatActivity {
         initCategorias();
         gastoDao = new GastoDao_Impl(Database.getAppDatabase(getApplicationContext()));
         gastoService = new GastoService();
-      /*  gastosRow = findViewById(R.id.descripcionRow);
-        gastosRow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //
-            }
-        });*/
 
         initRecyclerView();
     }
@@ -108,6 +140,29 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.cuentas_menu_item:
+                Toast.makeText(this, "Cuentas", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
     private void initRecyclerView(){
         final RecyclerView recyclerView;
         RecyclerView.Adapter mAdapter;
@@ -119,5 +174,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
+
+        registerForContextMenu(recyclerView);
     }
+
 }

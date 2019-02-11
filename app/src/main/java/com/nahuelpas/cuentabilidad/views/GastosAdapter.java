@@ -1,7 +1,6 @@
 package com.nahuelpas.cuentabilidad.views;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import com.nahuelpas.cuentabilidad.service.GastoService;
 import java.text.DateFormat;
 import java.util.List;
 
-import androidx.annotation.ColorRes;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,6 +50,7 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHold
                 view.getContext().startActivity(i);
             }
         });
+
         return new MyViewHolder(itemView);
     }
 

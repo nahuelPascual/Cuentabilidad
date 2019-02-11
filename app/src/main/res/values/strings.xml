@@ -5,4 +5,5 @@
     <string name="header_gasto">Descr. Gasto</string>
     <string name="header_monto">Monto</string>
     <string name="label_nuevo_gasto">Agregar Gasto</string>
+    <string name="elimilar_gasto"></string>
 </resources>

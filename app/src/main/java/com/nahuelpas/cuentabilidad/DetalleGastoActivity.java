@@ -1,5 +1,6 @@
 package com.nahuelpas.cuentabilidad;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,12 +17,13 @@ import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.model.entities.Gasto;
+import com.nahuelpas.cuentabilidad.service.CuentaService;
 import com.nahuelpas.cuentabilidad.service.GastoService;
 
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class DetalleGastoActivity extends AppCompatActivity {
@@ -32,6 +34,8 @@ public class DetalleGastoActivity extends AppCompatActivity {
     GastoDao gastoDao;
     CuentaDao cuentaDao;
     CategoriaDao categoriaDao;
+    CuentaService cuentaService = new CuentaService();
+    GastoService gastoService = new GastoService();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,11 +50,10 @@ public class DetalleGastoActivity extends AppCompatActivity {
         String movimiento = gasto.getTipo().toString().substring(0,1) + gasto.getTipo().toString().substring(1).toLowerCase();
         setTitle("Detalle " + movimiento);
 
-        //TODO
+        //TODO detalle de otros movimientos
         if (Gasto.Tipo.GASTO.getValue() != gasto.getTipo().getValue()) {
             startActivity(new Intent(this, MainActivity.class));
         } else {
-
             monto = findViewById(R.id.detGasto_monto);
             fecha = findViewById(R.id.detGasto_fecha);
             descripcion = findViewById(R.id.detGasto_descr);
@@ -71,12 +74,25 @@ public class DetalleGastoActivity extends AppCompatActivity {
             eliminar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    try { // TODO pedir confirmación
-                        Cuenta cuenta = cuentaDao.getById(gasto.getIdCuenta());
-                        cuenta.setSaldo(cuenta.getSaldo() + gasto.getMonto());
-                        cuentaDao.update(cuenta);
-                        gastoDao.delete(gasto);
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    try {
+                        AlertDialog.Builder builderSingle = new AlertDialog.Builder(DetalleGastoActivity.this);
+                        builderSingle.setTitle("Eliminar");
+                        builderSingle.setMessage("¿Eliminar el gasto " + gasto.getDescripcion() + " ?");
+                        builderSingle.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        builderSingle.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                gastoService.eliminarGasto(gasto);
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            }
+                        });
+                        builderSingle.show();
+
                     } catch (Exception e) {
                         Toast.makeText(view.getContext(), "Algo falló...", Toast.LENGTH_SHORT).show();
                     }

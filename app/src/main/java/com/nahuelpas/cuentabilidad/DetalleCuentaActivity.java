@@ -1,6 +1,5 @@
 package com.nahuelpas.cuentabilidad;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,15 +14,10 @@ import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
-import com.nahuelpas.cuentabilidad.model.entities.Gasto;
 import com.nahuelpas.cuentabilidad.service.CuentaService;
-
-import java.text.DateFormat;
-import java.util.Date;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.sqlite.db.SimpleSQLiteQuery;
 
 public class DetalleCuentaActivity extends AppCompatActivity {
 
@@ -47,15 +41,7 @@ public class DetalleCuentaActivity extends AppCompatActivity {
         nuevoIngreso = findViewById(R.id.btn_detCuenta_ingresarDinero);
         nuevoIngreso.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                gastoDao.ejecutarQuery(new SimpleSQLiteQuery("DELETE FROM GASTO WHERE CODIGO = 5"));
-                Gasto gasto = new Gasto();
-                gasto.setFecha(new Date());
-                gasto.setCodigo(5L);
-                gasto.setDescripcion("Sueldo Enero");
-                gasto.setTipo(Gasto.Tipo.INGRESO);
-                gasto.setMonto(25235);
-                gastoDao.add(gasto);
+            public void onClick(View view) { //TODO eliminar este boton
             }
         });
         /*

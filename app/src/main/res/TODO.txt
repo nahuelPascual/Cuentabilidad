@@ -7,6 +7,8 @@ Listo:
 - Se agrega el boolean "prestamo" en la entity Cuenta, para que existan "Cuentas prestamo".
 - Detalle gasto
 
+IMPORTANTE: NO SE PUEDEN ELIMNAR MOVIMIENTOS QUE NO PUEDEN ACCEDER AL DETALLE.
+
 Pendientes:
 - Detalle cuenta
 - Estados de cuenta

@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.nahuelpas.cuentabilidad.Database.Database;
 import com.nahuelpas.cuentabilidad.exception.BusinessException;
+import com.nahuelpas.cuentabilidad.exception.ValidationException;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
@@ -20,6 +21,7 @@ import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.model.entities.Gasto;
+import com.nahuelpas.cuentabilidad.service.CuentaService;
 import com.nahuelpas.cuentabilidad.service.GastoService;
 
 import java.util.Date;
@@ -39,6 +41,7 @@ public class EditarGastoActivity extends AppCompatActivity {
     private EditText descGasto, saldo;
     private Button btn_saveGasto;
     private Spinner spinnerCategoria, spinnerCuenta;
+    private CuentaService cuentaService = new CuentaService();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,7 +88,7 @@ public class EditarGastoActivity extends AppCompatActivity {
         } else {
             gasto.setFecha(gastoAnterior.getFecha());
             gasto.setCodigo(gastoAnterior.getCodigo());
-            gasto.setTipo(Gasto.Tipo.GASTO);
+            gasto.setTipo(gastoAnterior.getTipo());
 
             /* actualizo información del gasto */
             gasto.setDescripcion(descGasto.getText().toString());
@@ -94,12 +97,12 @@ public class EditarGastoActivity extends AppCompatActivity {
             gasto.setIdCuenta(cuentaDao.getCuentaByDesc(spinnerCuenta.getSelectedItem().toString()).getCodigo());
 
             try {
-                gastoService.actualizarSaldo(gasto.getMonto(), cuentaDao.getById(gasto.getIdCuenta()), cuentaDao);
-                gastoService.actualizarSaldo(gastoAnterior.getMonto()*(-1), cuentaDao.getById(gastoAnterior.getIdCuenta()), cuentaDao);
+                cuentaService.actualizarSaldo(gasto.getMonto(), cuentaDao.getById(gasto.getIdCuenta()));
+                cuentaService.actualizarSaldoIngreso(gastoAnterior.getMonto(), cuentaDao.getById(gastoAnterior.getIdCuenta()));
                 gastoDao.update(gasto);
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
-            } catch (BusinessException e) {
-                Toast.makeText(this, "Saldo insuficiente en la cuenta", Toast.LENGTH_SHORT).show();
+            } catch (ValidationException e) {
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
     }

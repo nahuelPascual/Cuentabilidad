@@ -39,7 +39,7 @@ public class NuevaCuentaActivity extends AppCompatActivity {
                 String saldo = saldoCuenta.getText().toString();
                 if (nombre!=null && !nombre.isEmpty() && saldo!=null && !saldo.isEmpty()) {
                     cuentaDao.add(new Cuenta(cuentaDao.getNextId(),
-                            nombre, Double.parseDouble(saldo), false, false/*TODO*/));
+                            nombre, Double.parseDouble(saldo), false, false/*TODO agregar prestamos nuevos pero no acá*/));
                     Toast.makeText(getApplicationContext(), "Cuenta guardada exitosamente.", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 } else {

@@ -1,14 +1,11 @@
 package com.nahuelpas.cuentabilidad.Database;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.nahuelpas.cuentabilidad.MainActivity;
 import com.nahuelpas.cuentabilidad.R;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
@@ -16,26 +13,20 @@ import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
-import com.nahuelpas.cuentabilidad.model.dao.GenericDao;
 import com.nahuelpas.cuentabilidad.model.entities.Categoria;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.model.entities.Gasto;
 
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.sqlite.db.SimpleSQLiteQuery;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 public class BD_test extends AppCompatActivity {
 
     TextView tv_cantGastos, tv_cantCuentas, tv_cantCateg, tv_query;
-    Button btn_cuentas, btn_categorias, btn_gastos, btn_ejecutarQuery;
+    Button btn_cuentas, btn_categorias, btn_gastos, btn_pruebas;
     GastoDao gastoDao;
     CategoriaDao categoriaDao;
     CuentaDao cuentaDao;
@@ -63,7 +54,17 @@ public class BD_test extends AppCompatActivity {
         btn_categorias = findViewById(R.id.btn_categorias);
         btn_cuentas = findViewById(R.id.btn_cuentas);
         btn_gastos = findViewById(R.id.btn_gastos);
-        btn_ejecutarQuery = findViewById(R.id.btn_ejecutarQuery);
+        btn_pruebas = findViewById(R.id.btn_ejecutarQuery);
+        btn_pruebas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Gasto gasto = new Gasto();
+                gasto.setCodigo(70L);
+                gasto.setDescripcion("prueba");
+                gasto.setTipo(Gasto.Tipo.GASTO);
+                gastoDao.add(gasto);
+            }
+        });
 
         tv_query.setMovementMethod(new ScrollingMovementMethod());
 
@@ -91,21 +92,6 @@ public class BD_test extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 imprimirGastos();
-            }
-        });
-        btn_ejecutarQuery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               // String query = btn_ejecutarQuery.getText().toString();
-                try {
-                    gastoDao.ejecutarQuery(new SimpleSQLiteQuery("UPDATE GASTO SET descripcion = 'Sueldo Enero' " +
-                            "where codigo = 1"));
-                    gastoDao.ejecutarQuery(new SimpleSQLiteQuery("UPDATE GASTO SET idcuenta = 6 " +
-                            "where codigo = 1"));
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "Se rompió la query, papu.", Toast.LENGTH_LONG).show();
-                }
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
             }
         });
     }
