@@ -12,7 +12,7 @@ public class GastoValidator {
     }
 
     public void validarSaldoCuenta(double nuevoSaldo) throws ValidationException{
-        if(nuevoSaldo<=0) throw new ValidationException("Saldo insuficiente en la cuenta.");
+        if(nuevoSaldo<0) throw new ValidationException("Saldo insuficiente en la cuenta.");
 
     }
 }

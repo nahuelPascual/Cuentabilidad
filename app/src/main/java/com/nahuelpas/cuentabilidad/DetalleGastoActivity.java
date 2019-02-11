@@ -50,10 +50,10 @@ public class DetalleGastoActivity extends AppCompatActivity {
         String movimiento = gasto.getTipo().toString().substring(0,1) + gasto.getTipo().toString().substring(1).toLowerCase();
         setTitle("Detalle " + movimiento);
 
-        //TODO detalle de otros movimientos
+        /*//TODO borrar si anda bien
         if (Gasto.Tipo.GASTO.getValue() != gasto.getTipo().getValue()) {
             startActivity(new Intent(this, MainActivity.class));
-        } else {
+        } else {*/
             monto = findViewById(R.id.detGasto_monto);
             fecha = findViewById(R.id.detGasto_fecha);
             descripcion = findViewById(R.id.detGasto_descr);
@@ -104,9 +104,9 @@ public class DetalleGastoActivity extends AppCompatActivity {
             monto.setText(String.valueOf(gasto.getMonto()));
             fecha.setText(DateFormat.getDateInstance(DateFormat.ERA_FIELD).format(gasto.getFecha()));
             descripcion.setText(gasto.getDescripcion());
-            cuenta.setText(cuentaDao.getById(gasto.getIdCuenta()).getDescripcion());
+            cuenta.setText(gasto.getIdCuenta()!=null? cuentaDao.getById(gasto.getIdCuenta()).getDescripcion() : null);
             tipo.setText("Tipo");
-            subtipo.setText(categoriaDao.getById(gasto.getIdCategoria()).getDescripcion());
-        }
+            subtipo.setText(gasto.getIdCategoria()!=null? categoriaDao.getById(gasto.getIdCategoria()).getDescripcion() : null);
+        //TODO borrar}
     }
 }
