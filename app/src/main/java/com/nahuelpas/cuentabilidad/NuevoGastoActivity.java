@@ -37,10 +37,9 @@ public class NuevoGastoActivity extends AppCompatActivity {
     private GastoDao gastoDao;
     private CategoriaDao categoriaDao;
     private CuentaDao cuentaDao;
-    private EditText descGasto, monto;
+    private EditText descGasto, monto, monto2;
     private Button btn_saveGasto;
-    private Spinner spinnerCategoria, spinnerCuenta, spinnerPrestamo;
-    //private MovimientoService movimientoService = MovimientoService.getInstance(tipoMovimiento); //TODO
+    private Spinner spinnerCategoria, spinnerCuenta, spinnerCuenta2, spinnerPrestamo;
     private CuentaService cuentaService = new CuentaService();
     private GastoValidator gastoValidator = new GastoValidator();
 
@@ -68,6 +67,17 @@ public class NuevoGastoActivity extends AppCompatActivity {
                 setContentView(R.layout.activity_nuevo_prestamo);
                 initSpinnerPrestamo();
                 break;
+            case TRANSFERENCIA:
+                setContentView(R.layout.activity_nuevo_transferencia);
+                initSpinnerCuenta2();
+                monto2 = findViewById(R.id.et_montoDestino);
+                monto2.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                    @Override
+                    public void onFocusChange(View view, boolean b) {
+                        monto2.setText(monto.getText());
+                    }
+                });
+                break;
         }
 
         /* inicializacion de elementos comunes */
@@ -83,6 +93,17 @@ public class NuevoGastoActivity extends AppCompatActivity {
                     cargarMovimiento();
                     actualizarsSaldo();
                     gastoDao.add(gasto);
+                    if(tipoMovimiento.equals(Gasto.Tipo.TRANSFERENCIA)) {
+                        //TODO acomodar esto
+                        Gasto ggasto = new Gasto();
+                        ggasto.setCodigo(gastoDao.getNextId());
+                        ggasto.setTipo(tipoMovimiento);
+                        ggasto.setFecha(gasto.getFecha());
+                        ggasto.setDescripcion(gasto.getDescripcion());
+                        ggasto.setMonto(Double.valueOf(monto2.getText().toString()));
+                        ggasto.setIdCuenta(cuentaDao.getCuentaByDesc((String)spinnerCuenta2.getSelectedItem()).getCodigo());
+                        gastoDao.add(ggasto);
+                    }
                     startActivity(new Intent(NuevoGastoActivity.this, MainActivity.class));
                 } catch (ValidationException e) {
                     Toast.makeText(NuevoGastoActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -105,18 +126,25 @@ public class NuevoGastoActivity extends AppCompatActivity {
         cuentaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCuenta.setAdapter(cuentaAdapter);
     }
+    private void initSpinnerCuenta2() {
+        spinnerCuenta2 = findViewById(R.id.spinnerCuenta2);
+        ArrayAdapter<String> cuentaAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, cuentaDao.getDescripciones());
+        cuentaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerCuenta2.setAdapter(cuentaAdapter);
+    }
     private void initSpinnerPrestamo() {
         spinnerPrestamo = findViewById(R.id.spinnerPrestamo);
         ArrayAdapter<String> prestamoAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, cuentaDao.getDescripcionesPrestamo());
         prestamoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCuenta.setAdapter(prestamoAdapter);
+        spinnerPrestamo.setAdapter(prestamoAdapter);
     }
 
     private void cargarMovimiento() {
         gasto.setFecha(new Date());
         gasto.setCodigo(gastoDao.getNextId());
-        gasto.setDescripcion(descGasto.getText().toString());
+        gasto.setDescripcion(descGasto!=null? descGasto.getText().toString() : null);
         gasto.setMonto(Double.valueOf(monto.getText().toString()));
         gasto.setIdCategoria(spinnerCategoria!=null? categoriaDao.getCategoriaByDesc(spinnerCategoria.getSelectedItem().toString()).getCodigo() :null);
         gasto.setIdCuenta(cuentaDao.getCuentaByDesc(spinnerCuenta.getSelectedItem().toString()).getCodigo());
@@ -124,6 +152,7 @@ public class NuevoGastoActivity extends AppCompatActivity {
     }
 
     private void actualizarsSaldo() throws ValidationException {
+        //TODO mejorar esto
         Cuenta cuenta = cuentaDao.getById(gasto.getIdCuenta());
         switch(tipoMovimiento){
             case GASTO:
@@ -137,6 +166,10 @@ public class NuevoGastoActivity extends AppCompatActivity {
                 break;
             case PAGO:
                 cuentaService.actualizarSaldoIngreso(gasto.getMonto(), cuenta, cuentaDao.getCuentaByDesc((String)spinnerPrestamo.getSelectedItem()));
+            case TRANSFERENCIA:
+                Cuenta destino = cuentaDao.getCuentaByDesc((String)spinnerCuenta2.getSelectedItem());
+                gastoValidator.validarOrigenDestino(cuenta, destino);
+                cuentaService.actualizarSaldoTransferencia(gasto.getMonto(), Double.valueOf(monto2.getText().toString()), cuenta, destino);
         }
     }
 }

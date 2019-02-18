@@ -17,6 +17,7 @@ import androidx.sqlite.db.SupportSQLiteQuery;
 public abstract class GenericDao<T> {
 
     protected final String ORDER_BY_CODIGO_DESC = " ORDER BY codigo DESC";
+    protected final String ORDER_BY_DESCRIPCION = " ORDER BY descripcion";
     protected final int FALSE = 0;
     protected final int TRUE = 1;
 

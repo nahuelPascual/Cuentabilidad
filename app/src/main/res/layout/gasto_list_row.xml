@@ -7,28 +7,26 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/text_margin"
-    android:paddingTop="@dimen/row_padding_vertical"
-    android:paddingRight="@dimen/text_margin"
-    android:paddingBottom="@dimen/row_padding_vertical">
+    android:paddingTop="@dimen/row_padding_vertical">
 
     <TextView
         android:id="@+id/fechaRow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:textAlignment="center"
         android:textColor="@color/design_default_color_on_secondary"
+        android:width="@dimen/col_fecha"
         android:textSize="16dp" />
 
     <TextView
         android:id="@+id/descripcionRow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
         android:layout_toStartOf="@+id/valorRow"
         android:layout_toEndOf="@+id/fechaRow"
         android:singleLine="true"
+        android:width="@dimen/col_descripcion"
         android:textAlignment="center"
         android:textColor="@color/design_default_color_on_secondary" />
 
@@ -37,6 +35,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:textAlignment="center"
+        android:width="@dimen/col_saldo"
         android:textColor="@color/design_default_color_on_secondary" />
 
     <!--TextView

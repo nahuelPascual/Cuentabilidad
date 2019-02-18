@@ -11,6 +11,12 @@ import androidx.room.Query;
 public abstract class GastoDao extends GenericDao<Gasto> {
 
     private static final String TABLE_NAME = "Gasto";
+    /* constantes del enum */
+    private static final int TIPO_GASTO = 0;
+    private static final int TIPO_INGRESO = 1;
+    private static final int TIPO_PRESTAMO = 2;
+    private static final int TIPO_PAGO = 3;
+    private static final int TIPO_TRANSFERENCIA = 4;
 
     @Override
     @Query("SELECT * FROM " + TABLE_NAME + " WHERE codigo = :id")
@@ -25,7 +31,7 @@ public abstract class GastoDao extends GenericDao<Gasto> {
     public abstract int getCantidadRegistros();
 
     @Override
-    @Query("SELECT * FROM " + TABLE_NAME + ORDER_BY_CODIGO_DESC)
+    @Query("SELECT * FROM " + TABLE_NAME + " WHERE tipo <> " + TIPO_TRANSFERENCIA + ORDER_BY_CODIGO_DESC)
     public abstract List<Gasto> getAll();
 
     @Query("SELECT * FROM " + TABLE_NAME + " WHERE idCategoria = :categoria" + ORDER_BY_CODIGO_DESC)

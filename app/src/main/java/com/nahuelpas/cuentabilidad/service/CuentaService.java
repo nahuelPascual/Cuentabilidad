@@ -45,4 +45,9 @@ public class CuentaService {
         dao.update(cuenta);
         dao.update(prestamo);
     }
+
+    public void actualizarSaldoTransferencia(double montoOrigen, double montoDestino, Cuenta origen, Cuenta destino) throws ValidationException {
+        actualizarSaldo(montoOrigen, origen);
+        actualizarSaldoIngreso(montoDestino, destino);
+    }
 }

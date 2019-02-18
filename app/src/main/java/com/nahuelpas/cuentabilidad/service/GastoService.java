@@ -23,6 +23,9 @@ import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.model.entities.Gasto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GastoService extends MovimientoService {
 
     private CuentaService cuentaService = new CuentaService();
@@ -56,20 +59,21 @@ public class GastoService extends MovimientoService {
         return montoGasto != (int) montoGasto;
     }
 
-    public void guardarGasto(Gasto gasto) {
-        //TODO no se usa
-       /* try {
-            cuentaService.actualizarSaldo(gasto.getMonto(), cuentaDao.getById(gasto.getIdCuenta()));
-            gastoDao.add(gasto);
-        } catch (ValidationException e) {
-            Toast.makeText(MainActivity.APP_CONTEXT, e.getMessage(), Toast.LENGTH_LONG).show();
-        }*/
+    public void eliminarGasto(Gasto gasto) throws ValidationException{
+        int modificador = getMultiplicadorGasto(gasto); //TODO sacar a clase particular overrideando metodos guardar, eliminar, etc
+
+        Cuenta cuenta = cuentaDao.getById(gasto.getIdCuenta());
+        cuentaService.actualizarSaldo(gasto.getMonto()*modificador, cuentaDao.getById(gasto.getIdCuenta()));
+        gastoDao.delete(gasto);
     }
 
-    public void eliminarGasto(Gasto gasto){
-        Cuenta cuenta = cuentaDao.getById(gasto.getIdCuenta());
-        cuentaService.actualizarSaldoIngreso(gasto.getMonto(), cuentaDao.getById(gasto.getIdCuenta()));
-        gastoDao.delete(gasto);
+    public int getMultiplicadorGasto(Gasto gasto) {
+        /* tipos de movimiento positivos deben restar al eliminarse */
+        List<Integer> ingresos = new ArrayList<>();
+        ingresos.add(Gasto.Tipo.INGRESO.getValue());
+        ingresos.add(Gasto.Tipo.PAGO.getValue());
+
+        return ingresos.contains(gasto.getTipo().getValue()) ? (1) : (-1) ;
     }
 /*
     public Categoria getCategoria (Gasto gasto) {

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     private GastoDao gastoDao;
     private GastoService gastoService;
-    private TextView gastosRow;
+    private TextView totalGastos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 arrayAdapter.add(Gasto.Tipo.INGRESO);
                 arrayAdapter.add(Gasto.Tipo.PRESTAMO);
                 arrayAdapter.add(Gasto.Tipo.PAGO);
+                arrayAdapter.add(Gasto.Tipo.TRANSFERENCIA);
 
                 builderSingle.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                     @Override
@@ -93,6 +94,9 @@ public class MainActivity extends AppCompatActivity {
         gastoService = new GastoService();
 
         initRecyclerView();
+
+        totalGastos = findViewById(R.id.tv_totalGastos);
+        totalGastos.setText(totalGastos.getText().toString() + calcularTotal());
     }
 
     @Override
@@ -176,6 +180,15 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
         registerForContextMenu(recyclerView);
+    }
+
+    private int calcularTotal(){
+        int total = 0 ;
+        for (Gasto gasto : gastoDao.getAll()) {
+            int modificador = gastoService.getMultiplicadorGasto(gasto);
+            total += gasto.getMonto() * modificador;
+        }
+        return total;
     }
 
 }

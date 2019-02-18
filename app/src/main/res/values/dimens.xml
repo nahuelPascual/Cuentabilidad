@@ -1,7 +1,10 @@
 <resources>
     <dimen name="field_margin">30dp</dimen>
     <dimen name="text_margin">16dp</dimen>
-    <dimen name="row_padding_vertical">10dp</dimen>
+    <dimen name="row_padding_vertical">8dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="btn_margin">50dp</dimen>
+    <dimen name="col_descripcion">200dp</dimen>
+    <dimen name="col_fecha">75dp</dimen>
+    <dimen name="col_saldo">75dp</dimen>
 </resources>

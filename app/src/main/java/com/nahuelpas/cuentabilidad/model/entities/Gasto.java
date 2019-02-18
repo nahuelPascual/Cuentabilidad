@@ -29,7 +29,8 @@ public class Gasto {
         GASTO(0),
         INGRESO(1),
         PRESTAMO(2),
-        PAGO(3);
+        PAGO(3),
+        TRANSFERENCIA(4);
 
         Tipo(int n){
             value = n;

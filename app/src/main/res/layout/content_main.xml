@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:padding="@dimen/text_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainActivity"
     tools:showIn="@layout/activity_main">
@@ -13,34 +14,31 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="@dimen/text_margin"
-        android:layout_marginTop="@dimen/text_margin"
         android:fontFamily="sans-serif-black"
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="25sp"
+        android:width="@dimen/col_fecha"
         android:text="Fecha" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
         android:layout_alignTop="@id/tituloFechaRow"
-        android:layout_toStartOf="@+id/tituloGastoRowValor"
-        android:layout_toEndOf="@+id/tituloFechaRow"
         android:fontFamily="sans-serif-black"
+        android:layout_centerInParent="true"
         android:textColor="@color/design_default_color_on_secondary"
         android:textSize="25sp"
+        android:width="@dimen/col_descripcion"
         android:text="Descripcion" />
 
     <TextView
         android:id="@+id/tituloGastoRowValor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignTop="@id/tituloFechaRow"
-        android:layout_marginEnd="@dimen/text_margin"
+        android:layout_alignParentRight="true"
+        android:width="@dimen/col_saldo"
         android:fontFamily="sans-serif-black"
         android:text="Monto"
         android:textColor="@color/design_default_color_on_secondary"
@@ -51,5 +49,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tituloFechaRow"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:layout_marginBottom="50sp">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tv_totalGastos"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:text="Total: $" />
 </RelativeLayout>

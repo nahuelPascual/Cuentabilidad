@@ -1,5 +1,7 @@
 package com.nahuelpas.cuentabilidad;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +19,7 @@ import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.service.CuentaService;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class DetalleCuentaActivity extends AppCompatActivity {
@@ -39,11 +42,6 @@ public class DetalleCuentaActivity extends AppCompatActivity {
         cuenta = cuentaDao.getById(getIntent().getExtras().getLong(CuentaService.PARAM_ID_CUENTA));
         setTitle("Detalle " + cuenta.getDescripcion());
         nuevoIngreso = findViewById(R.id.btn_detCuenta_ingresarDinero);
-        nuevoIngreso.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) { //TODO eliminar este boton
-            }
-        });
         /*
         monto = findViewById(R.id.detGasto_monto);
         fecha = findViewById(R.id.detGasto_fecha);
@@ -56,8 +54,26 @@ public class DetalleCuentaActivity extends AppCompatActivity {
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try { // TODO pedir confirmación
-                    cuentaDao.delete(cuenta);
+                try {
+                    AlertDialog.Builder builderSingle = new AlertDialog.Builder(DetalleCuentaActivity.this);
+                    builderSingle.setTitle("Eliminar");
+                    builderSingle.setMessage("¿Eliminar la cuenta " + cuenta.getDescripcion() + " ?");
+                    builderSingle.setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builderSingle.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            cuentaDao.delete(cuenta);
+                            //startActivity(new Intent(DetalleCuentaActivity.this, CuentasActivity.class)); TODO permite volver atras
+                            startActivity(new Intent(DetalleCuentaActivity.this, MainActivity.class));
+                        }
+                    });
+                    builderSingle.show();
+
                 } catch (Exception e) {
                     Toast.makeText(view.getContext(), "Algo falló...", Toast.LENGTH_SHORT).show();
                 }

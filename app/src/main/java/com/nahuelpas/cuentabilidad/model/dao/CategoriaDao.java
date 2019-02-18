@@ -25,10 +25,10 @@ public abstract class CategoriaDao extends GenericDao<Categoria> {
     public abstract int getCantidadRegistros();
 
     @Override
-    @Query("SELECT * FROM " + TABLE_NAME + " ORDER BY descripcion")
+    @Query("SELECT * FROM " + TABLE_NAME)
     public abstract List<Categoria> getAll();
 
-    @Query("SELECT descripcion FROM " + TABLE_NAME)
+    @Query("SELECT descripcion FROM " + TABLE_NAME + ORDER_BY_DESCRIPCION)
     public abstract List<String> getDescripciones();
 
     @Query("SELECT * FROM " + TABLE_NAME + " WHERE descripcion = :descr")

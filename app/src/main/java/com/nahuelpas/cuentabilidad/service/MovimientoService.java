@@ -28,7 +28,4 @@ public abstract class MovimientoService {
         }
     }
 
-    public abstract void guardarGasto(Gasto gasto);
-
-
 }
