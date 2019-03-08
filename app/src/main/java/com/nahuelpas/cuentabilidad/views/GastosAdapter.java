@@ -1,6 +1,7 @@
 package com.nahuelpas.cuentabilidad.views;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +9,8 @@ import android.widget.TextView;
 
 import com.nahuelpas.cuentabilidad.DetalleGastoActivity;
 import com.nahuelpas.cuentabilidad.R;
-import com.nahuelpas.cuentabilidad.model.entities.Gasto;
+import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
+import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
 import com.nahuelpas.cuentabilidad.service.GastoService;
 
 import java.text.DateFormat;
@@ -19,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHolder> {
 
-    private List<Gasto> gastos ;
+    private List<Movimiento> gastos ;
     private GastoService gastoService = new GastoService();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -34,7 +36,7 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHold
          //   cuenta = (TextView) view.findViewById(R.id.cuentaRow);
         }
     }
-    public GastosAdapter(List<Gasto> gastos) {
+    public GastosAdapter(List<Movimiento> gastos) {
         this.gastos = gastos;
     }
 
@@ -56,7 +58,7 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Gasto gasto = gastos.get(position);
+        Movimiento gasto = gastos.get(position);
         holder.fecha.setText(DateFormat.getDateInstance(DateFormat.SHORT).format(gasto.getFecha()));
         holder.descripcion.setText(gasto.getDescripcion());
         holder.valor.setText("$ " + gastoService.formatearGasto(gasto.getMonto()));
@@ -69,7 +71,7 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHold
         return gastos.size();
     }
 
-    private void setColores(Gasto gasto, MyViewHolder holder) {
+    private void setColores(Movimiento gasto, MyViewHolder holder) {
         switch (gasto.getTipo()){
             case INGRESO:
                 holder.fecha.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Ingreso));
@@ -81,12 +83,17 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHold
                 holder.descripcion.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Prestamo));
                 holder.valor.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Prestamo));
                 break;
-            case PAGO:
+            case COBRANZA:
                 holder.fecha.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Pago));
                 holder.descripcion.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Pago));
                 holder.valor.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.Tipo_Pago));
+                break;
             case GASTO:
+            case TRANSFERENCIA:
             default:
+                holder.fecha.setTextColor(Color.BLACK);
+                holder.descripcion.setTextColor(Color.BLACK);
+                holder.valor.setTextColor(Color.BLACK);
                 break;
         }
     }

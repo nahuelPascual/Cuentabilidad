@@ -1,7 +1,10 @@
 package com.nahuelpas.cuentabilidad.model.entities;
 
+import java.util.List;
+
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.Relation;
 
 @Entity
 public class Categoria {
@@ -30,4 +33,6 @@ public class Categoria {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+
 }

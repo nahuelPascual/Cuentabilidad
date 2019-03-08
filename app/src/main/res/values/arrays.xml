@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="categorias">
-        <item>Seleccionar...</item>
-        <item>Combustible</item>
-        <item>Mecánico</item>
-        <item>Facultad</item>
-        <item>Comida</item>
-        <item>Farmacia</item>
-        <item>Joda</item>
-        <item>Varios</item>
+    <string-array name="calculos_gastos">
+        <item>Gastos</item>
+        <item>Neto</item>
     </string-array>
 </resources>

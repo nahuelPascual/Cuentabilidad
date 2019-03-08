@@ -5,11 +5,14 @@ import android.widget.EditText;
 import com.nahuelpas.cuentabilidad.exception.ValidationException;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 
-public class GastoValidator {
+public class Validator {
 
     public void validarMonto(EditText monto) throws ValidationException {
         if (monto.getText().toString().isEmpty())
             throw new ValidationException("Especifique el monto.");
+        if(Integer.valueOf(monto.getText().toString()) <= 0 ) {
+            throw new ValidationException("El monto debe ser mayor a cero.");
+        }
     }
 
     public void validarSaldoCuenta(double nuevoSaldo) throws ValidationException{

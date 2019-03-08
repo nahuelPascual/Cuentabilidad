@@ -97,7 +97,12 @@ public class EditarGastoActivity extends AppCompatActivity {
             gasto.setIdCuenta(cuentaDao.getCuentaByDesc(spinnerCuenta.getSelectedItem().toString()).getCodigo());
 
             try {
-                cuentaService.actualizarSaldo(gasto.getMonto(), cuentaDao.getById(gasto.getIdCuenta()));
+                if(gasto.getIdCuenta() == gastoAnterior.getIdCuenta()){
+                    cuentaService.actualizarSaldo(gasto.getMonto()-gastoAnterior.getMonto(),
+                            cuentaDao.getById(gasto.getIdCuenta()));
+                } else {
+                    cuentaService.actualizarSaldo(gasto.getMonto(), cuentaDao.getById(gasto.getIdCuenta()));
+                }
                 cuentaService.actualizarSaldoIngreso(gastoAnterior.getMonto(), cuentaDao.getById(gastoAnterior.getIdCuenta()));
                 gastoDao.update(gasto);
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));

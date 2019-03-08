@@ -36,6 +36,8 @@
         <activity android:name=".CuentasActivity"
             android:label="Cuentas"/>
         <activity android:name=".DetalleGastoActivity"/>
+        <activity android:name=".EstadisticasActivity"
+            android:label="Estadísticas"/>
 
 
     </application>

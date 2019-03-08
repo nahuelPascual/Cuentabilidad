@@ -6,7 +6,7 @@ import com.nahuelpas.cuentabilidad.exception.ValidationException;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
-import com.nahuelpas.cuentabilidad.validator.GastoValidator;
+import com.nahuelpas.cuentabilidad.validator.Validator;
 
 public class CuentaService {
 
@@ -14,22 +14,22 @@ public class CuentaService {
 
     public static final String PARAM_ID_CUENTA = "idCuenta";
 
-    GastoValidator gastoValidator = new GastoValidator();
+    Validator validator = new Validator();
 
     public void actualizarSaldo(double monto, Cuenta cuenta) throws ValidationException {
         double nuevoSaldo = cuenta.getSaldo() - monto;
-        gastoValidator.validarSaldoCuenta(nuevoSaldo);
+        validator.validarSaldoCuenta(nuevoSaldo);
         cuenta.setSaldo(nuevoSaldo);
-        dao.update(cuenta); // TODO ver cómo generar un dao acá
+        dao.update(cuenta);
     }
     public void actualizarSaldo(double monto, Cuenta cuenta, Cuenta prestamo) throws ValidationException {
         double nuevoSaldo = cuenta.getSaldo() - monto;
         double saldoPrestamo = prestamo.getSaldo() + monto;
-        gastoValidator.validarSaldoCuenta(nuevoSaldo);
+        validator.validarSaldoCuenta(nuevoSaldo);
         cuenta.setSaldo(nuevoSaldo);
         prestamo.setSaldo(saldoPrestamo);
-        dao.update(cuenta); // TODO ver cómo generar un dao acá
-        dao.update(prestamo); // TODO ver cómo generar un dao acá
+        dao.update(cuenta);
+        dao.update(prestamo);
     }
 
     public void actualizarSaldoIngreso(double monto, Cuenta cuenta) {

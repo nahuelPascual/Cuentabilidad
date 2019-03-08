@@ -15,9 +15,11 @@ import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Categoria;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
-import com.nahuelpas.cuentabilidad.model.entities.Gasto;
+import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
+import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -61,7 +63,6 @@ public class BD_test extends AppCompatActivity {
                 Gasto gasto = new Gasto();
                 gasto.setCodigo(70L);
                 gasto.setDescripcion("prueba");
-                gasto.setTipo(Gasto.Tipo.GASTO);
                 gastoDao.add(gasto);
             }
         });
@@ -69,7 +70,13 @@ public class BD_test extends AppCompatActivity {
         tv_query.setMovementMethod(new ScrollingMovementMethod());
 
         int cant = gastoDao.getCantidadRegistros();
-        tv_cantGastos.setText(String.valueOf(cant));
+        tv_cantGastos.setText(String.valueOf(cant)
+                + " (G" + contar(gastoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.GASTO.getValue()), null, null))
+                + " I" + contar(gastoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.INGRESO.getValue()), null, null))
+                + " P" + contar(gastoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.PRESTAMO.getValue()), null, null))
+                + " P" + contar(gastoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.COBRANZA.getValue()), null, null))
+                + " T" + contar(gastoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.TRANSFERENCIA.getValue()), null, null))
+                + ")");
         cant = categoriaDao.getCantidadRegistros();
         tv_cantCateg.setText(String.valueOf(cant));
         cant = cuentaDao.getCantidadRegistros();
@@ -94,6 +101,14 @@ public class BD_test extends AppCompatActivity {
                 imprimirGastos();
             }
         });
+    }
+
+    private int contar(List<Gasto> gastos) {
+        int cant = 0;
+        for (Gasto gasto : gastos) {
+            cant++;
+        }
+        return cant;
     }
 
     private void imprimirGastos() {

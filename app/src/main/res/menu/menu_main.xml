@@ -3,6 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.nahuelpas.cuentabilidad.MainActivity">
     <item
+        android:id="@+id/estadisticas_menu_item"
+        android:title="Stats"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/cuentas_menu_item"
         android:title="Cuentas" />
     <item
