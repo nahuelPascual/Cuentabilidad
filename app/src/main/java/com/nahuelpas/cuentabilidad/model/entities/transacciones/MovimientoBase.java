@@ -1,11 +1,19 @@
 package com.nahuelpas.cuentabilidad.model.entities.transacciones;
 
+import com.nahuelpas.cuentabilidad.mapper.MovimientoMapper;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 
 import java.util.Date;
 
 
 public abstract class MovimientoBase {
+
+    MovimientoMapper movimientoMapper;
+
+    public MovimientoBase () {
+        fecha = new Date();
+        anio_mes = movimientoMapper.toAnioMes(fecha);
+    }
 
     protected Long codigo;
     protected Date fecha;

@@ -9,7 +9,7 @@ import androidx.room.Dao;
 import androidx.room.Query;
 
 @Dao
-public abstract class GastoDao extends GenericDao<Movimiento> {
+public abstract class MovimientoDao extends GenericDao<Movimiento> {
 
     private static final String TABLE_NAME = "Movimiento";
     private final String ORDER_BY_ANIO_MES_DESC = " ORDER BY anio_mes DESC";

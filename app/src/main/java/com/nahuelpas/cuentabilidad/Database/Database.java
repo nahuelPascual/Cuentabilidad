@@ -1,18 +1,13 @@
 package com.nahuelpas.cuentabilidad.Database;
 
 import android.content.Context;
-import android.database.Cursor;
 
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
-import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
+import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
 import com.nahuelpas.cuentabilidad.model.entities.Categoria;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
-import com.nahuelpas.cuentabilidad.model.entities.Gasto;
-
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Executors;
+import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 
 import androidx.annotation.NonNull;
 import androidx.room.Room;
@@ -20,14 +15,14 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@androidx.room.Database(version = 2, entities = {Cuenta.class, Gasto.class, Categoria.class}, exportSchema = false)
+@androidx.room.Database(version = 2, entities = {Cuenta.class, Movimiento.class, Categoria.class}, exportSchema = false)
 public abstract class Database extends RoomDatabase {
 
     private static volatile Database INSTANCE;
 
     abstract public CuentaDao CuentaDao();
     abstract public CategoriaDao CategoriaDao();
-    abstract public GastoDao GastoDao();
+    abstract public MovimientoDao GastoDao();
 
     public static Database getAppDatabase(final Context context) {
         if (INSTANCE == null) {

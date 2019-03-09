@@ -14,7 +14,6 @@ import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.util.StringUtil;
 
 public class NuevaCuentaActivity extends AppCompatActivity {
 
@@ -39,7 +38,7 @@ public class NuevaCuentaActivity extends AppCompatActivity {
                 String saldo = saldoCuenta.getText().toString();
                 if (nombre!=null && !nombre.isEmpty() && saldo!=null && !saldo.isEmpty()) {
                     cuentaDao.add(new Cuenta(cuentaDao.getNextId(),
-                            nombre, Double.parseDouble(saldo), false, false));
+                            nombre, Double.parseDouble(saldo), false, Cuenta.Moneda.PESOS)); //TODO dar opciones
                     Toast.makeText(getApplicationContext(), "Cuenta guardada exitosamente.", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 } else {

@@ -5,6 +5,7 @@ import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 public class Gasto extends MovimientoBase {
 
     public Gasto () {
+        super();
         tipo = Movimiento.Tipo.GASTO;
     }
 

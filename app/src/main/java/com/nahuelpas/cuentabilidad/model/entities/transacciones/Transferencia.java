@@ -5,6 +5,7 @@ import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 public class Transferencia extends MovimientoBase {
 
     public Transferencia () {
+        super();
         tipo = Movimiento.Tipo.TRANSFERENCIA;
     }
 

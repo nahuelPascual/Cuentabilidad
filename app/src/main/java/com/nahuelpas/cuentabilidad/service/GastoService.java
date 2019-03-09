@@ -5,9 +5,11 @@ import android.widget.Spinner;
 import com.nahuelpas.cuentabilidad.exception.ValidationException;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
+import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GastoService extends MovimientoService {
 
@@ -26,9 +28,23 @@ public class GastoService extends MovimientoService {
         return -1;
     }
 
+    @Override
+    public Movimiento cargarMovimiento(Map<String, Object> elementos) {
+        Spinner spinnerCategoria = (Spinner) elementos.get(SPINNER_CATEG);
+        Gasto gasto = new Gasto();
+        cargarMovimiento(elementos, gasto);
+        gasto.setIdCategoria(spinnerCategoria!=null? categoriaDao.getCategoriaByDesc(spinnerCategoria.getSelectedItem().toString()).getCodigo() :null);
+        return new Movimiento(gasto);
+    }
+
     public String formatearGasto(double gasto) {
         return !tieneDecimales(gasto) ?
                 String.format("%.0f",gasto) : String.format("%.2f",gasto);
+    }
+
+    @Override
+    public void guardarMovimiento(Movimiento movimiento) {
+
     }
 
     private boolean tieneDecimales (double montoGasto) {
@@ -40,7 +56,7 @@ public class GastoService extends MovimientoService {
 
         Cuenta cuenta = cuentaDao.getById(gasto.getIdCuenta());
         cuentaService.actualizarSaldo(gasto.getMonto()*modificador, cuentaDao.getById(gasto.getIdCuenta()));
-        gastoDao.delete(gasto);
+        movimientoDao.delete(gasto);
     }
 
     public int getMultiplicadorGasto(Movimiento gasto) {

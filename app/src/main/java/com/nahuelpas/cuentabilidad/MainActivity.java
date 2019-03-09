@@ -8,10 +8,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nahuelpas.cuentabilidad.Database.BD_test;
 import com.nahuelpas.cuentabilidad.Database.Database;
 import com.nahuelpas.cuentabilidad.mapper.MovimientoMapper;
-import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
-import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
-import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
 import com.nahuelpas.cuentabilidad.service.GastoService;
 import com.nahuelpas.cuentabilidad.views.GastosAdapter;
 
@@ -40,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static Context APP_CONTEXT;
 
-    private GastoDao gastoDao;
+    private MovimientoDao movimientoDao;
     private GastoService gastoService;
     private TextView totalGastos;
     private Spinner calculoGastos;
@@ -87,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        gastoDao = new GastoDao_Impl(Database.getAppDatabase(getApplicationContext()));
+        movimientoDao = new GastoDao_Impl(Database.getAppDatabase(getApplicationContext()));
         gastoMapper = new MovimientoMapper();
         gastoService = new GastoService();
         calculoGastos = findViewById(R.id.spinner_total_gastos);
@@ -181,8 +179,8 @@ public class MainActivity extends AppCompatActivity {
             case "Neto":
                 break;
         }
-        List<Movimiento> gastos = gastoDao.getAll();
-                //gastoDao.getByFiltros(tiposBuscados, gastoMapper.toAnioMes(new Date()), null);
+        List<Movimiento> gastos = movimientoDao.getAll();
+                //movimientoDao.getByFiltros(tiposBuscados, gastoMapper.toAnioMes(new Date()), null);
         totalGastos.setText("$" + gastoService.calcularTotal(gastos, abs));
         initRecyclerView(gastos);
     }

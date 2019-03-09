@@ -14,10 +14,8 @@ import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
-import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
-import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
-import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
-import com.nahuelpas.cuentabilidad.model.entities.Gasto;
+import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
+import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
 import com.nahuelpas.cuentabilidad.service.CuentaService;
 import com.nahuelpas.cuentabilidad.service.GastoService;
 
@@ -32,7 +30,7 @@ public class DetalleGastoActivity extends AppCompatActivity {
     TextView monto, descripcion, cuenta, tipo, subtipo, fecha;
     Button editar, eliminar;
     Gasto gasto;
-    GastoDao gastoDao;
+    MovimientoDao movimientoDao;
     CuentaDao cuentaDao;
     CategoriaDao categoriaDao;
     CuentaService cuentaService = new CuentaService();
@@ -43,11 +41,12 @@ public class DetalleGastoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_gasto);
 
-        gastoDao = new GastoDao_Impl(Database.getAppDatabase(getApplicationContext()));
+        movimientoDao = new GastoDao_Impl(Database.getAppDatabase(getApplicationContext()));
         categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(getApplicationContext()));
         cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(getApplicationContext()));
 
-        gasto = gastoDao.getById(getIntent().getExtras().getLong(GastoService.PARAM_ID_GASTO));
+//         FIXME
+//         gasto = movimientoDao.getById(getIntent().getExtras().getLong(GastoService.PARAM_ID_GASTO));
         String movimiento = gasto.getTipo().toString().substring(0,1) + gasto.getTipo().toString().substring(1).toLowerCase();
         setTitle("Detalle " + movimiento);
 
@@ -84,11 +83,12 @@ public class DetalleGastoActivity extends AppCompatActivity {
                         builderSingle.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                try{
-                                    gastoService.eliminarGasto(gasto);
-                                } catch (ValidationException e) {
-                                    Toast.makeText(DetalleGastoActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
+//                                try{
+//                                    FIXME
+//                                    gastoService.eliminarGasto(gasto);
+//                                } catch (ValidationException e) {
+//                                    Toast.makeText(DetalleGastoActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                                }
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             }
                         });

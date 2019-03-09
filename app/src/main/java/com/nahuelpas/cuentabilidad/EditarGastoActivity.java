@@ -11,30 +11,24 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.nahuelpas.cuentabilidad.Database.Database;
-import com.nahuelpas.cuentabilidad.exception.BusinessException;
 import com.nahuelpas.cuentabilidad.exception.ValidationException;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
-import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
-import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
-import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
-import com.nahuelpas.cuentabilidad.model.entities.Gasto;
+import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
+import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
 import com.nahuelpas.cuentabilidad.service.CuentaService;
 import com.nahuelpas.cuentabilidad.service.GastoService;
 
-import java.util.Date;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.util.StringUtil;
 
 public class EditarGastoActivity extends AppCompatActivity {
 
     private Gasto gastoAnterior;
     private Gasto gasto;
-    private GastoDao gastoDao;
+    private MovimientoDao movimientoDao;
     private GastoService gastoService = new GastoService();
     private CategoriaDao categoriaDao;
     private CuentaDao cuentaDao;
@@ -49,7 +43,7 @@ public class EditarGastoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nuevo_gasto);
 
         /* inicializacion de DAOs */
-        gastoDao = new GastoDao_Impl(Database.getAppDatabase(this));
+        movimientoDao = new GastoDao_Impl(Database.getAppDatabase(this));
         cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(this));
         categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(this));
         gasto = new Gasto();
@@ -69,7 +63,8 @@ public class EditarGastoActivity extends AppCompatActivity {
         addItemsOnSpinner();
 
         try {
-            gastoAnterior = gastoDao.getById(getIntent().getExtras().getLong(GastoService.PARAM_ID_GASTO));
+//            FIXME
+//            gastoAnterior = movimientoDao.getById(getIntent().getExtras().getLong(GastoService.PARAM_ID_GASTO));
             spinnerCategoria.setSelection(gastoService.getPosicionItemSpinner(spinnerCategoria, categoriaDao.getById(gastoAnterior.getIdCategoria()).getDescripcion()));
             spinnerCuenta.setSelection(gastoService.getPosicionItemSpinner(spinnerCuenta, cuentaDao.getById(gastoAnterior.getIdCuenta()).getDescripcion()));
             descGasto.setText(gastoAnterior.getDescripcion());
@@ -88,7 +83,6 @@ public class EditarGastoActivity extends AppCompatActivity {
         } else {
             gasto.setFecha(gastoAnterior.getFecha());
             gasto.setCodigo(gastoAnterior.getCodigo());
-            gasto.setTipo(gastoAnterior.getTipo());
 
             /* actualizo información del gasto */
             gasto.setDescripcion(descGasto.getText().toString());
@@ -104,7 +98,8 @@ public class EditarGastoActivity extends AppCompatActivity {
                     cuentaService.actualizarSaldo(gasto.getMonto(), cuentaDao.getById(gasto.getIdCuenta()));
                 }
                 cuentaService.actualizarSaldoIngreso(gastoAnterior.getMonto(), cuentaDao.getById(gastoAnterior.getIdCuenta()));
-                gastoDao.update(gasto);
+//                FIXME
+//                movimientoDao.update(gasto);
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             } catch (ValidationException e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();

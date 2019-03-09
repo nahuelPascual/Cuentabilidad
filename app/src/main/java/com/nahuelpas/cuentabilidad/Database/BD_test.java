@@ -11,8 +11,8 @@ import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
-import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
-import com.nahuelpas.cuentabilidad.model.dao.GastoDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
+import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Categoria;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
@@ -29,7 +29,7 @@ public class BD_test extends AppCompatActivity {
 
     TextView tv_cantGastos, tv_cantCuentas, tv_cantCateg, tv_query;
     Button btn_cuentas, btn_categorias, btn_gastos, btn_pruebas;
-    GastoDao gastoDao;
+    MovimientoDao movimientoDao;
     CategoriaDao categoriaDao;
     CuentaDao cuentaDao;
 
@@ -46,7 +46,7 @@ public class BD_test extends AppCompatActivity {
     private void initDAOs(){
         categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(this));
         cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(this));
-        gastoDao = new GastoDao_Impl(Database.getAppDatabase(this));
+        movimientoDao = new MovimientoDao_Impl(Database.getAppDatabase(this));
     }
     private void initElementos(){
         tv_cantCateg = findViewById(R.id.tv_cantCategorias);
@@ -63,20 +63,21 @@ public class BD_test extends AppCompatActivity {
                 Gasto gasto = new Gasto();
                 gasto.setCodigo(70L);
                 gasto.setDescripcion("prueba");
-                gastoDao.add(gasto);
+                movimientoDao.add(gasto);
             }
         });
 
         tv_query.setMovementMethod(new ScrollingMovementMethod());
 
-        int cant = gastoDao.getCantidadRegistros();
-        tv_cantGastos.setText(String.valueOf(cant)
-                + " (G" + contar(gastoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.GASTO.getValue()), null, null))
-                + " I" + contar(gastoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.INGRESO.getValue()), null, null))
-                + " P" + contar(gastoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.PRESTAMO.getValue()), null, null))
-                + " P" + contar(gastoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.COBRANZA.getValue()), null, null))
-                + " T" + contar(gastoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.TRANSFERENCIA.getValue()), null, null))
-                + ")");
+        int cant = movimientoDao.getCantidadRegistros();
+//        FIXME
+//        tv_cantGastos.setText(String.valueOf(cant)
+//                + " (G" + contar(movimientoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.GASTO.getValue()), null, null))
+//                + " I" + contar(movimientoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.INGRESO.getValue()), null, null))
+//                + " P" + contar(movimientoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.PRESTAMO.getValue()), null, null))
+//                + " P" + contar(movimientoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.COBRANZA.getValue()), null, null))
+//                + " T" + contar(movimientoDao.getByFiltros(new ArrayList<Integer> (Movimiento.Tipo.TRANSFERENCIA.getValue()), null, null))
+//                + ")");
         cant = categoriaDao.getCantidadRegistros();
         tv_cantCateg.setText(String.valueOf(cant));
         cant = cuentaDao.getCantidadRegistros();
@@ -113,7 +114,7 @@ public class BD_test extends AppCompatActivity {
 
     private void imprimirGastos() {
         StringBuilder text = new StringBuilder();
-        List<Gasto> gastos = gastoDao.getAll();
+        List<Gasto> gastos = movimientoDao.getAll();
         if (gastos!=null) {
             for (Gasto gasto : gastos) {
                 if(gasto.getTipo().getValue()== Gasto.Tipo.GASTO.getValue()){

@@ -11,7 +11,6 @@ import com.nahuelpas.cuentabilidad.DetalleCuentaActivity;
 import com.nahuelpas.cuentabilidad.DetalleGastoActivity;
 import com.nahuelpas.cuentabilidad.R;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
-import com.nahuelpas.cuentabilidad.model.entities.Gasto;
 import com.nahuelpas.cuentabilidad.service.CuentaService;
 import com.nahuelpas.cuentabilidad.service.GastoService;
 

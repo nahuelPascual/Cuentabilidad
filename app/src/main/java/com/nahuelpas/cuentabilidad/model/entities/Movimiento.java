@@ -14,7 +14,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
@@ -24,6 +23,10 @@ import androidx.room.TypeConverters;
 @TypeConverters(Converters.class)
 public class Movimiento {
 
+    /* Constructores */
+    public Movimiento (){
+        super();
+    }
     public Movimiento (@NonNull Gasto mov) {
         codigo = mov.getCodigo();
         fecha = mov.getFecha();

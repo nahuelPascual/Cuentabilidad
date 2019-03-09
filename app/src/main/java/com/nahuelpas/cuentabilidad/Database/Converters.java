@@ -1,6 +1,7 @@
 package com.nahuelpas.cuentabilidad.Database;
 
 import com.nahuelpas.cuentabilidad.mapper.MovimientoMapper;
+import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Cobranza;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.CompraDivisa;
@@ -27,7 +28,7 @@ public class Converters {
     }
 
     @TypeConverter
-    public Movimiento.Tipo fromInt(int n) {
+    public Movimiento.Tipo fromIntToTipo(int n) {
         if(n == Movimiento.Tipo.GASTO.getValue()) return Movimiento.Tipo.GASTO;
         if(n == Movimiento.Tipo.INGRESO.getValue()) return Movimiento.Tipo.INGRESO;
         if(n == Movimiento.Tipo.PRESTAMO.getValue()) return Movimiento.Tipo.PRESTAMO;
@@ -37,8 +38,19 @@ public class Converters {
         return null;
     }
     @TypeConverter
-    public int fromTipo(Movimiento.Tipo tipo){
+    public int fromTipoToInt(Movimiento.Tipo tipo){
         return tipo.getValue();
+    }
+
+    @TypeConverter
+    public Cuenta.Moneda fromIntToMoneda(int n) {
+        if(n == Cuenta.Moneda.PESOS.getValue()) return Cuenta.Moneda.PESOS;
+        if(n == Cuenta.Moneda.DOLARES.getValue()) return Cuenta.Moneda.DOLARES;
+        return null;
+    }
+    @TypeConverter
+    public int fromMonedaoToInt(Cuenta.Moneda moneda){
+        return moneda.getValue();
     }
 
     @TypeConverter
