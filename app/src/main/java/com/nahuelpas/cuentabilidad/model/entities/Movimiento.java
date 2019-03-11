@@ -70,6 +70,7 @@ public class Movimiento {
         monto = mov.getMonto();
         tipo = mov.getTipo();
         idCuentaAlt = mov.getIdCuentaDivisa();
+        montoAlt = mov.getMontoDivisa();
     }
     public Movimiento (@NonNull Transferencia mov) {
         codigo = mov.getCodigo();
@@ -94,6 +95,7 @@ public class Movimiento {
     private String anio_mes;
     @ForeignKey(entity = Cuenta.class, parentColumns = {"codigo"}, childColumns = {"idCuentaAlt"})
     @Nullable private Long idCuentaAlt;
+    @Nullable private double montoAlt;
 
     public enum Tipo {
         GASTO(0),
@@ -151,7 +153,7 @@ public class Movimiento {
     public Long getIdCategoria() {
         return idCategoria;
     }
-    public void setIdCategoria(Long tipoGasto) {
+    public void setIdCategoria(@Nullable Long tipoGasto) {
         this.idCategoria = tipoGasto;
     }
 
@@ -182,5 +184,13 @@ public class Movimiento {
     }
     public void setIdCuentaAlt(@Nullable Long idCuentaAlt) {
         this.idCuentaAlt = idCuentaAlt;
+    }
+
+    @Nullable
+    public double getMontoAlt() {
+        return montoAlt;
+    }
+    public void setMontoAlt(@Nullable double montoAlt) {
+        this.montoAlt = montoAlt;
     }
 }

@@ -94,6 +94,7 @@ public class MovimientoMapper {
         compraDivisa.setIdCuenta(mov.getIdCuenta());
         compraDivisa.setMonto(mov.getMonto());
         compraDivisa.setIdCuentaDivisa(mov.getIdCuentaAlt());
+        compraDivisa.setMontoDivisa(mov.getMontoAlt());
         return compraDivisa;
     }
     public List<CompraDivisa> mappearCompraDivisa(List<Movimiento> movs){

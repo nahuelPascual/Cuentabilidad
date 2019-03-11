@@ -33,4 +33,8 @@ public class GastoDao {
     public void eliminar(Gasto gasto) {
         movimientoDao.delete(new Movimiento(gasto));
     }
+
+    public void guardar(Gasto gasto) {
+        movimientoDao.add(new Movimiento(gasto));
+    }
 }

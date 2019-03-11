@@ -1,7 +1,10 @@
 package com.nahuelpas.cuentabilidad.service;
 
 import android.widget.Spinner;
+import android.widget.Toast;
 
+import com.nahuelpas.cuentabilidad.MainActivity;
+import com.nahuelpas.cuentabilidad.exception.ValidationException;
 import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
@@ -10,9 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class GastoService extends MovimientoService {
+public class GastoService extends MovimientoService<Gasto> {
 
-    private CuentaService cuentaService = new CuentaService();
     private GastoDao gastoDao = new GastoDao();
 
     public final static String PARAM_ID_GASTO = "idGasto";
@@ -43,14 +45,16 @@ public class GastoService extends MovimientoService {
     }
 
     @Override
-    public void guardarMovimiento(Movimiento movimiento) {
-
+    public void guardarMovimiento(Gasto gasto) throws ValidationException {
+        cuentaService.egresarDinero(gasto.getMonto(), cuentaDao.getById(gasto.getIdCuenta()));
+        gastoDao.guardar(gasto);
     }
 
     private boolean tieneDecimales (double montoGasto) {
         return montoGasto != (int) montoGasto;
     }
 
+    @Override
     public void eliminarMovimiento(Gasto gasto) {
         cuentaService.ingresarDinero(gasto.getMonto(), cuentaDao.getById(gasto.getIdCuenta()));
         gastoDao.eliminar(gasto);

@@ -5,6 +5,8 @@ import android.widget.Spinner;
 
 import com.nahuelpas.cuentabilidad.Database.Database;
 import com.nahuelpas.cuentabilidad.MainActivity;
+import com.nahuelpas.cuentabilidad.exception.ValidationException;
+import com.nahuelpas.cuentabilidad.mapper.MovimientoMapper;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
@@ -16,7 +18,7 @@ import com.nahuelpas.cuentabilidad.model.entities.transacciones.MovimientoBase;
 
 import java.util.Map;
 
-public abstract class MovimientoService {
+public abstract class MovimientoService<T> {
 
     public static final String  SPINNER_CATEG = "spinnerCategoria" ;
     public static final String  SPINNER_CUENTA = "spinnerCuenta" ;
@@ -28,6 +30,8 @@ public abstract class MovimientoService {
     protected CuentaDao cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
     protected MovimientoDao movimientoDao = new MovimientoDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
     protected CategoriaDao categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
+    protected MovimientoMapper movimientoMapper = new MovimientoMapper();
+    protected CuentaService cuentaService = new CuentaService();
 
    /* public static MovimientoService getInstance(Movimiento.Tipo tipo) {
         switch (tipo) {
@@ -59,6 +63,6 @@ public abstract class MovimientoService {
         movimientoBase.setIdCuenta(cuentaDao.getCuentaByDesc(spinnerCuenta.getSelectedItem().toString()).getCodigo());
     }
 
-    /* Persiste el nuevo movimiento */
-    public abstract void guardarMovimiento(Movimiento movimiento);
+    public abstract void guardarMovimiento(T movimiento) throws ValidationException;
+    public abstract void eliminarMovimiento(T movimiento) throws ValidationException;
 }

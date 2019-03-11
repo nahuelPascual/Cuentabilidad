@@ -11,6 +11,7 @@ public class CompraDivisa extends MovimientoBase {
     }
 
     Long idCuentaDivisa;
+    double montoDivisa;
 
     public Long getIdCuentaDivisa() {
         return idCuentaDivisa;
@@ -18,5 +19,13 @@ public class CompraDivisa extends MovimientoBase {
 
     public void setIdCuentaDivisa(Long idCuentaDivisa) {
         this.idCuentaDivisa = idCuentaDivisa;
+    }
+
+    public double getMontoDivisa() {
+        return montoDivisa;
+    }
+
+    public void setMontoDivisa(double montoDivisa) {
+        this.montoDivisa = montoDivisa;
     }
 }
