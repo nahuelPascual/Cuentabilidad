@@ -17,4 +17,9 @@ public class TransferenciaService extends MovimientoService {
         transferencia.setCuentaTransferencia(cuentaDao.getCuentaByDesc(spinnerTransferencia.getSelectedItem().toString()).getCodigo());
         return new Movimiento(transferencia);
     }
+
+    @Override
+    public void guardarMovimiento(Movimiento movimiento) {
+
+    }
 }

@@ -17,4 +17,9 @@ public class IngresoService extends MovimientoService {
         return new Movimiento(ingreso);
     }
 
+    @Override
+    public void guardarMovimiento(Movimiento movimiento) {
+
+    }
+
 }

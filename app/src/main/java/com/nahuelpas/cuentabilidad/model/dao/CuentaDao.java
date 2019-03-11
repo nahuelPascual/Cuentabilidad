@@ -24,7 +24,6 @@ public abstract class CuentaDao extends GenericDao<Cuenta> {
     @Query("SELECT Count(codigo) FROM " + TABLE_NAME)
     public abstract int getCantidadRegistros();
 
-    @Override
     @Query("SELECT * FROM " + TABLE_NAME)
     public abstract List<Cuenta> getAll();
 

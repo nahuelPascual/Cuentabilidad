@@ -10,44 +10,36 @@ import com.nahuelpas.cuentabilidad.validator.Validator;
 
 public class CuentaService {
 
-    CuentaDao dao = new CuentaDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
+    CuentaDao cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
 
     public static final String PARAM_ID_CUENTA = "idCuenta";
 
     Validator validator = new Validator();
 
-    public void actualizarSaldo(double monto, Cuenta cuenta) throws ValidationException {
+    public void egresarDinero(double monto, Cuenta cuenta) throws ValidationException {
         double nuevoSaldo = cuenta.getSaldo() - monto;
         validator.validarSaldoCuenta(nuevoSaldo);
         cuenta.setSaldo(nuevoSaldo);
-        dao.update(cuenta);
+        cuentaDao.update(cuenta);
     }
-    public void actualizarSaldo(double monto, Cuenta cuenta, Cuenta prestamo) throws ValidationException {
-        double nuevoSaldo = cuenta.getSaldo() - monto;
-        double saldoPrestamo = prestamo.getSaldo() + monto;
-        validator.validarSaldoCuenta(nuevoSaldo);
-        cuenta.setSaldo(nuevoSaldo);
-        prestamo.setSaldo(saldoPrestamo);
-        dao.update(cuenta);
-        dao.update(prestamo);
+    public void egresarDineroPrestamo(double monto, Cuenta cuenta, Cuenta prestamo) throws ValidationException {
+        egresarDinero(monto, cuenta);
+        ingresarDinero(monto, prestamo);
     }
 
-    public void actualizarSaldoIngreso(double monto, Cuenta cuenta) {
+    public void ingresarDinero(double monto, Cuenta cuenta) {
         double nuevoSaldo = cuenta.getSaldo() + monto;
         cuenta.setSaldo(nuevoSaldo);
-        dao.update(cuenta);
+        cuentaDao.update(cuenta);
     }
-    public void actualizarSaldoIngreso(double monto, Cuenta cuenta, Cuenta prestamo){
-        double nuevoSaldo = cuenta.getSaldo() + monto;
-        double saldoPrestamo = prestamo.getSaldo() - monto;
-        cuenta.setSaldo(nuevoSaldo);
-        prestamo.setSaldo(saldoPrestamo);
-        dao.update(cuenta);
-        dao.update(prestamo);
+    public void ingresarDineroCobranza(double monto, Cuenta cuenta, Cuenta prestamo){
+        ingresarDinero(monto, cuenta);
+        ingresarDinero(monto*(-1), prestamo); // no se valida porque puede quedar en negativo,
+                                                    // lo que significaría prestamo otorgado al usuario.
     }
 
-    public void actualizarSaldoTransferencia(double montoOrigen, double montoDestino, Cuenta origen, Cuenta destino) throws ValidationException {
-        actualizarSaldo(montoOrigen, origen);
-        actualizarSaldoIngreso(montoDestino, destino);
+    public void transferirDinero(double montoOrigen, double montoDestino/*TODO*/, Cuenta origen, Cuenta destino) throws ValidationException {
+        egresarDinero(montoOrigen, origen);
+        ingresarDinero(montoDestino, destino);
     }
 }

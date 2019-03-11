@@ -16,6 +16,7 @@ import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
 import com.nahuelpas.cuentabilidad.service.CuentaService;
@@ -28,7 +29,7 @@ public class EditarGastoActivity extends AppCompatActivity {
 
     private Gasto gastoAnterior;
     private Gasto gasto;
-    private MovimientoDao movimientoDao;
+    private GastoDao gastoDao;
     private GastoService gastoService = new GastoService();
     private CategoriaDao categoriaDao;
     private CuentaDao cuentaDao;
@@ -43,7 +44,7 @@ public class EditarGastoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_nuevo_gasto);
 
         /* inicializacion de DAOs */
-        movimientoDao = new GastoDao_Impl(Database.getAppDatabase(this));
+        gastoDao = new GastoDao();
         cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(this));
         categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(this));
         gasto = new Gasto();
@@ -63,8 +64,7 @@ public class EditarGastoActivity extends AppCompatActivity {
         addItemsOnSpinner();
 
         try {
-//            FIXME
-//            gastoAnterior = movimientoDao.getById(getIntent().getExtras().getLong(GastoService.PARAM_ID_GASTO));
+            gastoAnterior = gastoDao.getById(getIntent().getExtras().getLong(GastoService.PARAM_ID_GASTO));
             spinnerCategoria.setSelection(gastoService.getPosicionItemSpinner(spinnerCategoria, categoriaDao.getById(gastoAnterior.getIdCategoria()).getDescripcion()));
             spinnerCuenta.setSelection(gastoService.getPosicionItemSpinner(spinnerCuenta, cuentaDao.getById(gastoAnterior.getIdCuenta()).getDescripcion()));
             descGasto.setText(gastoAnterior.getDescripcion());
@@ -92,14 +92,13 @@ public class EditarGastoActivity extends AppCompatActivity {
 
             try {
                 if(gasto.getIdCuenta() == gastoAnterior.getIdCuenta()){
-                    cuentaService.actualizarSaldo(gasto.getMonto()-gastoAnterior.getMonto(),
+                    cuentaService.egresarDinero(gasto.getMonto()-gastoAnterior.getMonto(),
                             cuentaDao.getById(gasto.getIdCuenta()));
                 } else {
-                    cuentaService.actualizarSaldo(gasto.getMonto(), cuentaDao.getById(gasto.getIdCuenta()));
+                    cuentaService.egresarDinero(gasto.getMonto(), cuentaDao.getById(gasto.getIdCuenta()));
+                    cuentaService.ingresarDinero(gastoAnterior.getMonto(), cuentaDao.getById(gastoAnterior.getIdCuenta())); // esto estaba afuera del else, creo que estaba mal
                 }
-                cuentaService.actualizarSaldoIngreso(gastoAnterior.getMonto(), cuentaDao.getById(gastoAnterior.getIdCuenta()));
-//                FIXME
-//                movimientoDao.update(gasto);
+                gastoDao.update(gasto);
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
             } catch (ValidationException e) {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();

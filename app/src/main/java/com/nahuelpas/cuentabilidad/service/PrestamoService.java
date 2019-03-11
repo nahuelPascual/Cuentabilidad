@@ -19,4 +19,9 @@ public class PrestamoService extends MovimientoService {
         return new Movimiento(prestamo);
     }
 
+    @Override
+    public void guardarMovimiento(Movimiento movimiento) {
+
+    }
+
 }

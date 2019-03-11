@@ -10,6 +10,7 @@ import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.MovimientoBase;
 
@@ -25,7 +26,7 @@ public abstract class MovimientoService {
     public static final String  MONTO2 = "monto2" ;
 
     protected CuentaDao cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
-    protected MovimientoDao movimientoDao = new GastoDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
+    protected MovimientoDao movimientoDao = new MovimientoDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
     protected CategoriaDao categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
 
    /* public static MovimientoService getInstance(Movimiento.Tipo tipo) {

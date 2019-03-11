@@ -1,7 +1,6 @@
 package com.nahuelpas.cuentabilidad.model.dao;
 
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
-import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
 
 import java.util.List;
 
@@ -20,6 +19,7 @@ public abstract class MovimientoDao extends GenericDao<Movimiento> {
     private final int TIPO_PAGO = 3;
     private final int TIPO_TRANSFERENCIA = 4;
     private final int TIPO_COMPRA_DIVISA = 5;
+    public static final int CONST_TODOS_LOS_TIPOS = -1;
 
     @Override
     @Query ("SELECT * FROM " + TABLE_NAME + " WHERE codigo = :id")
@@ -33,24 +33,36 @@ public abstract class MovimientoDao extends GenericDao<Movimiento> {
     @Query ("SELECT Count(codigo) FROM " + TABLE_NAME)
     public abstract int getCantidadRegistros();
 
-    @Override
-    @Query ("SELECT * FROM " + TABLE_NAME + ORDER_BY_CODIGO_DESC)
-    public abstract List<Movimiento> getAll();
-
-    @Query ("SELECT * FROM " + TABLE_NAME + " WHERE idCategoria = :categoria" + ORDER_BY_CODIGO_DESC)
-    public abstract List<Movimiento> getByCategoria(Long categoria);
-
-    @Query ("SELECT * FROM " + TABLE_NAME + " WHERE idCuenta = :cuenta" + ORDER_BY_CODIGO_DESC)
-    public abstract List<Movimiento> getByCuenta(Long cuenta);
-
-    @Query ("SELECT * FROM " + TABLE_NAME + " WHERE anio_mes = :anioMes")
-    public abstract List<Movimiento> getByMes(String anioMes);
-
-    @Query ("SELECT DISTINCT anio_mes FROM " + TABLE_NAME + ORDER_BY_ANIO_MES_DESC)
-    public abstract List<String> getMesesExistentes();
+    @Query ("SELECT * FROM " + TABLE_NAME +
+            " WHERE :tipo IS NULL " +
+            " OR tipo = :tipo" + ORDER_BY_CODIGO_DESC)
+    public abstract List<Movimiento> getAll(int tipo);
 
     @Query ("SELECT * FROM " + TABLE_NAME +
-            " WHERE ( tipo IN (:tiposBuscados))" +
+            " WHERE idCategoria = :categoria" +
+            " AND :tipo = " + CONST_TODOS_LOS_TIPOS +
+            " OR tipo = :tipo" + ORDER_BY_CODIGO_DESC)
+    public abstract List<Movimiento> getByCategoria(Long categoria, int tipo);
+
+    @Query ("SELECT * FROM " + TABLE_NAME +
+            " WHERE idCuenta = :cuenta" +
+            " AND :tipo = " + CONST_TODOS_LOS_TIPOS +
+            " OR tipo = :tipo" + ORDER_BY_CODIGO_DESC)
+    public abstract List<Movimiento> getByCuenta(Long cuenta, int tipo);
+
+    @Query ("SELECT * FROM " + TABLE_NAME +
+            " WHERE anio_mes = :anioMes" +
+            " AND :tipo = " + CONST_TODOS_LOS_TIPOS +
+            " OR tipo = :tipo" + ORDER_BY_CODIGO_DESC)
+    public abstract List<Movimiento> getByMes(String anioMes, int tipo);
+
+    @Query ("SELECT DISTINCT anio_mes FROM " + TABLE_NAME +
+            " WHERE :tipo = " + CONST_TODOS_LOS_TIPOS +
+            " OR tipo = :tipo" + ORDER_BY_ANIO_MES_DESC)
+    public abstract List<String> getMesesExistentes(int tipo);
+
+    @Query ("SELECT * FROM " + TABLE_NAME +
+            " WHERE tipo IN (:tiposBuscados)" +
             " AND (:anio_mes IS NULL OR anio_mes = :anio_mes)" +
             " AND (:categoria IS NULL OR idCategoria = :categoria)" +
             ORDER_BY_CODIGO_DESC)

@@ -17,6 +17,7 @@ import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
+import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Cobranza;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
@@ -65,7 +66,7 @@ public class NuevoGastoActivity extends AppCompatActivity {
         tipoMovimiento = (Movimiento.Tipo) getIntent().getExtras().get(GastoService.PARAM_TIPO_GASTO);
 
         /* inicializacion de DAOs */
-        movimientoDao = new GastoDao_Impl(Database.getAppDatabase(this));
+        movimientoDao = new MovimientoDao_Impl(Database.getAppDatabase(this));
         cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(this));
         categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(this));
 

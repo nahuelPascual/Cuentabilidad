@@ -14,6 +14,7 @@ import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
+import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.service.CuentaService;
 
@@ -34,7 +35,7 @@ public class DetalleCuentaActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_cuenta);
-        movimientoDao = new GastoDao_Impl(Database.getAppDatabase(getApplicationContext()));
+        movimientoDao = new MovimientoDao_Impl(Database.getAppDatabase(getApplicationContext()));
         categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(getApplicationContext()));
         cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(getApplicationContext()));
 

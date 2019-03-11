@@ -9,6 +9,7 @@ import com.nahuelpas.cuentabilidad.Database.BD_test;
 import com.nahuelpas.cuentabilidad.Database.Database;
 import com.nahuelpas.cuentabilidad.mapper.MovimientoMapper;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
+import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 import com.nahuelpas.cuentabilidad.service.GastoService;
 import com.nahuelpas.cuentabilidad.views.GastosAdapter;
@@ -85,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        movimientoDao = new GastoDao_Impl(Database.getAppDatabase(getApplicationContext()));
+        movimientoDao = new MovimientoDao_Impl(Database.getAppDatabase(getApplicationContext()));
         gastoMapper = new MovimientoMapper();
         gastoService = new GastoService();
         calculoGastos = findViewById(R.id.spinner_total_gastos);
@@ -179,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
             case "Neto":
                 break;
         }
-        List<Movimiento> gastos = movimientoDao.getAll();
+        List<Movimiento> gastos = movimientoDao.getAll(MovimientoDao.CONST_TODOS_LOS_TIPOS);
                 //movimientoDao.getByFiltros(tiposBuscados, gastoMapper.toAnioMes(new Date()), null);
         totalGastos.setText("$" + gastoService.calcularTotal(gastos, abs));
         initRecyclerView(gastos);

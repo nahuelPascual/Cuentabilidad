@@ -17,4 +17,9 @@ public class CompraDivisaService extends MovimientoService {
         compraDivisa.setIdCuentaDivisa(cuentaDao.getCuentaByDesc(spinnerCuenta.getSelectedItem().toString()).getCodigo());
         return new Movimiento(compraDivisa);
     }
+
+    @Override
+    public void guardarMovimiento(Movimiento movimiento) {
+
+    }
 }

@@ -11,6 +11,7 @@ import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Categoria;
@@ -32,6 +33,7 @@ public class BD_test extends AppCompatActivity {
     MovimientoDao movimientoDao;
     CategoriaDao categoriaDao;
     CuentaDao cuentaDao;
+    GastoDao gastoDao;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class BD_test extends AppCompatActivity {
         categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(this));
         cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(this));
         movimientoDao = new MovimientoDao_Impl(Database.getAppDatabase(this));
+        gastoDao = new GastoDao();
     }
     private void initElementos(){
         tv_cantCateg = findViewById(R.id.tv_cantCategorias);
@@ -60,10 +63,10 @@ public class BD_test extends AppCompatActivity {
         btn_pruebas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Gasto gasto = new Gasto();
-                gasto.setCodigo(70L);
-                gasto.setDescripcion("prueba");
-                movimientoDao.add(gasto);
+//                Gasto gasto = new Gasto();
+//                gasto.setCodigo(70L);
+//                gasto.setDescripcion("prueba");
+//                movimientoDao.add(gasto);
             }
         });
 
@@ -114,10 +117,10 @@ public class BD_test extends AppCompatActivity {
 
     private void imprimirGastos() {
         StringBuilder text = new StringBuilder();
-        List<Gasto> gastos = movimientoDao.getAll();
+        List<Gasto> gastos = gastoDao.getAll();
         if (gastos!=null) {
             for (Gasto gasto : gastos) {
-                if(gasto.getTipo().getValue()== Gasto.Tipo.GASTO.getValue()){
+                if(gasto.getTipo().getValue()== Movimiento.Tipo.GASTO.getValue()){
                     text.append("[" + DateFormat.getDateInstance(DateFormat.SHORT).format(gasto.getFecha()) + "] ");
                     text.append(gasto.getCodigo() + " - ");
                     text.append(gasto.getDescripcion() + " - $");
@@ -142,7 +145,6 @@ public class BD_test extends AppCompatActivity {
             for (Cuenta cuenta : cuentas) {
                 text.append(cuenta.getCodigo() + " - ");
                 text.append(cuenta.getDescripcion() + " - ");
-                text.append(cuenta.isDescubierto() + " - ");
                 text.append(cuenta.isPrestamo() + " - ");
                 text.append(cuenta.getSaldo() + " \n");
             }

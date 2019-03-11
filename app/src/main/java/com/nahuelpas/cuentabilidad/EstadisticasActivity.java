@@ -9,11 +9,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.nahuelpas.cuentabilidad.Database.Database;
+import com.nahuelpas.cuentabilidad.mapper.MovimientoMapper;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
+import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
 
@@ -33,15 +35,17 @@ public class EstadisticasActivity extends AppCompatActivity {
     MovimientoDao movimientoDao;
     CuentaDao cuentaDao;
     CategoriaDao categoriaDao;
+    MovimientoMapper movimientoMapper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_estadisticas);
 
-        movimientoDao = new GastoDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
+        movimientoDao = new MovimientoDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
         categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
         cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
+        movimientoMapper = new MovimientoMapper();
 
         pruebaTransferencias();
       //  pruebaAddView();
@@ -70,9 +74,8 @@ public class EstadisticasActivity extends AppCompatActivity {
         List<String> meses = new ArrayList<>();
         List<Gasto> nulos = new ArrayList<>();
         meses.add(COMBO_MESES);
-//        FIXME
-//        nulos = movimientoDao.getMesesNulos();
-        meses.addAll(movimientoDao.getMesesExistentes());
+        nulos = movimientoMapper.mappearGasto(movimientoDao.getMesesNulos());
+        meses.addAll(movimientoDao.getMesesExistentes(MovimientoDao.CONST_TODOS_LOS_TIPOS));
         spinnerMes = findViewById(R.id.spinnerFecha);
         ArrayAdapter<String> mesesAdapter = new ArrayAdapter<String>(MainActivity.APP_CONTEXT,
                 android.R.layout.simple_spinner_item, meses);
@@ -87,8 +90,7 @@ public class EstadisticasActivity extends AppCompatActivity {
         List<Integer> tipos = new ArrayList<>();
         tipos.add(Movimiento.Tipo.valueOf((String)spinnerTipo.getSelectedItem()).getValue());
 
-//        FIXME
-//        List<Gasto> gastos = movimientoDao.getByFiltros(tipos, mes, null);
+        List<Gasto> gastos = movimientoMapper.mappearGasto(movimientoDao.getByFiltros(tipos, mes, null));
         StringBuilder sb = new StringBuilder();
 
 //        for(Gasto g : gastos) {
@@ -118,35 +120,32 @@ public class EstadisticasActivity extends AppCompatActivity {
 
         tipos.add(Movimiento.Tipo.TRANSFERENCIA.getValue());
         StringBuilder sb = new StringBuilder("TRANSFERENCIAS\n");
-//        FIXME
-//        for (Gasto g : movimientoDao.getByFiltros(tipos, null, null)){
-//            sb.append(g.getCodigo() + " - ");
-//            sb.append(g.getFecha() + " - ");
-//            sb.append(cuentaDao.getById(g.getIdCuenta()).getDescripcion() + " - ");
-//            sb.append(g.getMonto() + "\n");
-//        }
+        for (Gasto g : movimientoMapper.mappearGasto(movimientoDao.getByFiltros(tipos, null, null))){
+            sb.append(g.getCodigo() + " - ");
+            sb.append(g.getFecha() + " - ");
+            sb.append(cuentaDao.getById(g.getIdCuenta()).getDescripcion() + " - ");
+            sb.append(g.getMonto() + "\n");
+        }
         tipos.clear();
 
         tipos.add(Movimiento.Tipo.PRESTAMO.getValue());
         sb.append("\nPRESTAMOS\n");
-//        FIXME
-//        for (Gasto g : movimientoDao.getByFiltros(tipos, null, null)){
-//            sb.append(g.getCodigo() + " - ");
-//            sb.append(g.getDescripcion() + " - ");
-//            sb.append(cuentaDao.getById(g.getIdCuenta()).getDescripcion() + " - ");
-//            sb.append(g.getMonto() + "\n");
-//        }
+        for (Gasto g : movimientoMapper.mappearGasto(movimientoDao.getByFiltros(tipos, null, null))){
+            sb.append(g.getCodigo() + " - ");
+            sb.append(g.getDescripcion() + " - ");
+            sb.append(cuentaDao.getById(g.getIdCuenta()).getDescripcion() + " - ");
+            sb.append(g.getMonto() + "\n");
+        }
         tipos.clear();
 
         tipos.add(Movimiento.Tipo.COBRANZA.getValue());
         sb.append("\nPAGOS\n");
-//        FIXME
-//        for (Gasto g : movimientoDao.getByFiltros(tipos, null, null)){
-//            sb.append(g.getCodigo() + " - ");
-//            sb.append(g.getDescripcion() + " - ");
-//            sb.append(cuentaDao.getById(g.getIdCuenta()).getDescripcion() + " - ");
-//            sb.append(g.getMonto() + "\n");
-//        }
+        for (Gasto g : movimientoMapper.mappearGasto(movimientoDao.getByFiltros(tipos, null, null))){
+            sb.append(g.getCodigo() + " - ");
+            sb.append(g.getDescripcion() + " - ");
+            sb.append(cuentaDao.getById(g.getIdCuenta()).getDescripcion() + " - ");
+            sb.append(g.getMonto() + "\n");
+        }
 
         tv.setText(sb.toString());
     }

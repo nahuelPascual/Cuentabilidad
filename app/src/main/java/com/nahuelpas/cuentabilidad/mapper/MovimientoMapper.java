@@ -9,7 +9,9 @@ import com.nahuelpas.cuentabilidad.model.entities.transacciones.Prestamo;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Transferencia;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class MovimientoMapper {
 
@@ -23,6 +25,13 @@ public class MovimientoMapper {
         gasto.setIdCategoria(mov.getIdCategoria());
         return gasto;
     }
+    public List<Gasto> mappearGasto(List<Movimiento> movs){
+        List<Gasto> gastos = new ArrayList<>();
+        for (Movimiento mov : movs){
+            gastos.add(mappearGasto(mov));
+        }
+        return gastos;
+    }
 
     public Ingreso mappearIngreso(Movimiento mov){
         Ingreso ingreso = new Ingreso();
@@ -32,6 +41,13 @@ public class MovimientoMapper {
         ingreso.setIdCuenta(mov.getIdCuenta());
         ingreso.setMonto(mov.getMonto());
         return ingreso;
+    }
+    public List<Ingreso> mappearIngreso(List<Movimiento> movs){
+        List<Ingreso> ingresos = new ArrayList<>();
+        for (Movimiento mov : movs){
+            ingresos.add(mappearIngreso(mov));
+        }
+        return ingresos;
     }
 
     public Prestamo mappearPrestamo(Movimiento mov) {
@@ -44,6 +60,13 @@ public class MovimientoMapper {
         prestamo.setIdCuentaPrestamo(mov.getIdCuentaAlt());
         return prestamo;
     }
+    public List<Prestamo> mappearPrestamo(List<Movimiento> movs){
+        List<Prestamo> prestamos = new ArrayList<>();
+        for (Movimiento mov : movs){
+            prestamos.add(mappearPrestamo(mov));
+        }
+        return prestamos;
+    }
 
     public Cobranza mappearCobranza(Movimiento mov) {
         Cobranza cobranza = new Cobranza();
@@ -54,6 +77,13 @@ public class MovimientoMapper {
         cobranza.setMonto(mov.getMonto());
         cobranza.setIdCuentaPrestamo(mov.getIdCuentaAlt());
         return cobranza;
+    }
+    public List<Cobranza> mappearCobranza(List<Movimiento> movs){
+        List<Cobranza> cobranzas = new ArrayList<>();
+        for (Movimiento mov : movs){
+            cobranzas.add(mappearCobranza(mov));
+        }
+        return cobranzas;
     }
 
     public CompraDivisa mappearCompraDivisa (Movimiento mov) {
@@ -66,6 +96,13 @@ public class MovimientoMapper {
         compraDivisa.setIdCuentaDivisa(mov.getIdCuentaAlt());
         return compraDivisa;
     }
+    public List<CompraDivisa> mappearCompraDivisa(List<Movimiento> movs){
+        List<CompraDivisa> comprasDivisas = new ArrayList<>();
+        for (Movimiento mov : movs){
+            comprasDivisas.add(mappearCompraDivisa(mov));
+        }
+        return comprasDivisas;
+    }
 
     public Transferencia mappearTransferencia (Movimiento mov) {
         Transferencia transferencia = new Transferencia();
@@ -76,6 +113,13 @@ public class MovimientoMapper {
         transferencia.setMonto(mov.getMonto());
         transferencia.setCuentaTransferencia(mov.getIdCuentaAlt());
         return transferencia;
+    }
+    public List<Transferencia> mappearTransferencia(List<Movimiento> movs){
+        List<Transferencia> transferencias = new ArrayList<>();
+        for (Movimiento mov : movs){
+            transferencias.add(mappearTransferencia(mov));
+        }
+        return transferencias;
     }
 
     public String toAnioMes (Date fecha) {

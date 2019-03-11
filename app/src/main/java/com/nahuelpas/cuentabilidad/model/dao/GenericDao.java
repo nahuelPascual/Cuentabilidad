@@ -2,6 +2,8 @@ package com.nahuelpas.cuentabilidad.model.dao;
 
 import android.database.Cursor;
 
+import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
+
 import java.util.List;
 
 import androidx.room.Dao;
@@ -42,6 +44,4 @@ public abstract class GenericDao<T> {
     protected abstract int getUltimoId();
 
     public abstract int getCantidadRegistros();
-
-    public abstract List<T> getAll();
 }

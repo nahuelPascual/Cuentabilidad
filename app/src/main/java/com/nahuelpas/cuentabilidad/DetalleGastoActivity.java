@@ -14,6 +14,7 @@ import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
 import com.nahuelpas.cuentabilidad.service.CuentaService;
@@ -30,7 +31,7 @@ public class DetalleGastoActivity extends AppCompatActivity {
     TextView monto, descripcion, cuenta, tipo, subtipo, fecha;
     Button editar, eliminar;
     Gasto gasto;
-    MovimientoDao movimientoDao;
+    GastoDao gastoDao;
     CuentaDao cuentaDao;
     CategoriaDao categoriaDao;
     CuentaService cuentaService = new CuentaService();
@@ -41,12 +42,11 @@ public class DetalleGastoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_gasto);
 
-        movimientoDao = new GastoDao_Impl(Database.getAppDatabase(getApplicationContext()));
+        gastoDao = new GastoDao();
         categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(getApplicationContext()));
         cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(getApplicationContext()));
 
-//         FIXME
-//         gasto = movimientoDao.getById(getIntent().getExtras().getLong(GastoService.PARAM_ID_GASTO));
+        gasto = gastoDao.getById(getIntent().getExtras().getLong(GastoService.PARAM_ID_GASTO));
         String movimiento = gasto.getTipo().toString().substring(0,1) + gasto.getTipo().toString().substring(1).toLowerCase();
         setTitle("Detalle " + movimiento);
 
@@ -83,12 +83,7 @@ public class DetalleGastoActivity extends AppCompatActivity {
                         builderSingle.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-//                                try{
-//                                    FIXME
-//                                    gastoService.eliminarGasto(gasto);
-//                                } catch (ValidationException e) {
-//                                    Toast.makeText(DetalleGastoActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-//                                }
+                                gastoService.eliminarMovimiento(gasto);
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             }
                         });

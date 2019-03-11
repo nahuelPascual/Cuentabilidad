@@ -4,10 +4,16 @@ import android.widget.Spinner;
 
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Cobranza;
+import com.nahuelpas.cuentabilidad.model.entities.transacciones.MovimientoBase;
 
 import java.util.Map;
 
 public class CobranzaService extends MovimientoService {
+
+    @Override
+    public void guardarMovimiento(Movimiento movimiento) {
+
+    }
 
     @Override
     public Movimiento cargarMovimiento(Map<String, Object> elementos) {
