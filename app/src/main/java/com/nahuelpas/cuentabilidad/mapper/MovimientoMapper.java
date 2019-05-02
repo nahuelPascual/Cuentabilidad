@@ -5,6 +5,7 @@ import com.nahuelpas.cuentabilidad.model.entities.transacciones.Cobranza;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.CompraDivisa;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Ingreso;
+import com.nahuelpas.cuentabilidad.model.entities.transacciones.MovimientoBase;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Prestamo;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Transferencia;
 
@@ -127,4 +128,46 @@ public class MovimientoMapper {
         String a = new SimpleDateFormat("yyyy-MM").format(fecha);
         return a;
     }
+
+    public MovimientoBase mappearMovimientoBase (Movimiento movimiento) {
+        MovimientoBase movimientoBase;
+        switch (movimiento.getTipo()) {
+            case GASTO:
+                movimientoBase = mappearGasto(movimiento);
+                break;
+            case INGRESO:
+                movimientoBase = mappearIngreso(movimiento);
+                break;
+            case PRESTAMO:
+                movimientoBase = mappearPrestamo(movimiento);
+                break;
+            case COBRANZA:
+                movimientoBase = mappearCobranza(movimiento);
+                break;
+            case TRANSFERENCIA:
+                movimientoBase = mappearCobranza(movimiento);
+                break;
+            case COMPRA_DIVISA:
+                movimientoBase = mappearCompraDivisa(movimiento);
+                break;
+            default:
+                movimientoBase = null;
+                break;
+        }
+        return movimientoBase;
+    }
+    public List<MovimientoBase> mappearMovimientos (List<Movimiento> movimientos) {
+        List<MovimientoBase> movimientosBase = new ArrayList<>();
+        for (Movimiento mov : movimientos) {
+            movimientosBase.add(mappearMovimientoBase(mov));
+        }
+        return movimientosBase;
+    }
+
+//    public List<Movimiento> mappearMovimientos (List<MovimientoBase> movimientosBase) {
+//        List<Movimiento> movimientoList = new ArrayList<>();
+//        for (MovimientoBase movim : movimientosBase) {
+//            movimientoList.add(new Movimiento(movim));
+//        }
+//    }
 }

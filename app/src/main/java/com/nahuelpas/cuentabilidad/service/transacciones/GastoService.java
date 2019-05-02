@@ -1,13 +1,12 @@
-package com.nahuelpas.cuentabilidad.service;
+package com.nahuelpas.cuentabilidad.service.transacciones;
 
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.nahuelpas.cuentabilidad.MainActivity;
 import com.nahuelpas.cuentabilidad.exception.ValidationException;
-import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
+import com.nahuelpas.cuentabilidad.model.dao.transacciones.GastoDao;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
+import com.nahuelpas.cuentabilidad.service.MovimientoService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,6 @@ public class GastoService extends MovimientoService<Gasto> {
     private GastoDao gastoDao = new GastoDao();
 
     public final static String PARAM_ID_GASTO = "idGasto";
-    public final static String PARAM_TIPO_GASTO = "tipoGasto";
 
     public int getPosicionItemSpinner(Spinner spinner, String descripcion) {
         for (int i=0; i<spinner.getCount(); i++){
@@ -55,9 +53,10 @@ public class GastoService extends MovimientoService<Gasto> {
     }
 
     @Override
-    public void eliminarMovimiento(Gasto gasto) {
+    public void eliminarMovimiento(Movimiento gasto) {
         cuentaService.ingresarDinero(gasto.getMonto(), cuentaDao.getById(gasto.getIdCuenta()));
-        gastoDao.eliminar(gasto);
+//        gastoDao.eliminar(gasto);
+        movimientoDao.delete(gasto);
     }
 //    public void eliminarGasto(Movimiento gasto) throws ValidationException{
 //        int modificador = getMultiplicadorGasto(gasto); //TODO sacar a clase particular overrideando metodos guardar, eliminar, etc

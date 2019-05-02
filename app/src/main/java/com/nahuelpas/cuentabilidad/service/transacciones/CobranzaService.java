@@ -1,12 +1,12 @@
-package com.nahuelpas.cuentabilidad.service;
+package com.nahuelpas.cuentabilidad.service.transacciones;
 
 import android.widget.Spinner;
 
 import com.nahuelpas.cuentabilidad.exception.ValidationException;
-import com.nahuelpas.cuentabilidad.model.dao.CobranzaDao;
+import com.nahuelpas.cuentabilidad.model.dao.transacciones.CobranzaDao;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Cobranza;
-import com.nahuelpas.cuentabilidad.model.entities.transacciones.MovimientoBase;
+import com.nahuelpas.cuentabilidad.service.MovimientoService;
 
 import java.util.Map;
 
@@ -22,10 +22,11 @@ public class CobranzaService extends MovimientoService<Cobranza> {
     }
 
     @Override
-    public void eliminarMovimiento(Cobranza cobranza) throws ValidationException {
+    public void eliminarMovimiento(Movimiento cobranza) throws ValidationException {
         cuentaService.egresarDinero(cobranza.getMonto(), cuentaDao.getById(cobranza.getIdCuenta()));
-        cuentaService.ingresarDinero(cobranza.getMonto(), cuentaDao.getById(cobranza.getIdCuentaPrestamo()));
-        cobranzaDao.eliminar(cobranza);
+        cuentaService.ingresarDinero(cobranza.getMonto(), cuentaDao.getById(cobranza.getIdCuentaAlt()));
+//        cobranzaDao.eliminar(cobranza);
+        movimientoDao.delete(cobranza);
     }
 
     @Override

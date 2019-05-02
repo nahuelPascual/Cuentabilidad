@@ -8,7 +8,7 @@ import java.util.Date;
 
 public abstract class MovimientoBase {
 
-    MovimientoMapper movimientoMapper;
+    MovimientoMapper movimientoMapper = new MovimientoMapper();
 
     public MovimientoBase () {
         fecha = new Date();

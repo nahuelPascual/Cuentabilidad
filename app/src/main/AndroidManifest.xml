@@ -18,24 +18,30 @@
             </intent-filter>
         </activity>
         <activity android:name=".NuevoGastoActivity"
-            android:label="@string/label_nuevo_gasto">
+            android:label="@string/label_nuevo_gasto"
+            android:noHistory="true">
         </activity>
         <activity android:name=".Database.BD_test"/>
         <activity android:name=".SettingsActivity"
             android:label="Settings"/>
         <activity android:name=".NuevaCategoriaActivity"
-            android:label="Agregar Categoria"/>
-        <activity android:name=".EditarGastoActivity"/>
-        <activity android:name=".DetalleCuentaActivity"/>
+            android:label="Agregar Categoria"
+            android:noHistory="true"/>
+        <activity android:name=".EditarGastoActivity"
+            android:noHistory="true"/>
+        <activity android:name=".DetalleCuentaActivity"
+            android:noHistory="true"/>
             <!--intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter-->
         <activity android:name=".NuevaCuentaActivity"
-            android:label="Agregar Cuenta"/>
+            android:label="Agregar Cuenta"
+            android:noHistory="true"/>
         <activity android:name=".CuentasActivity"
             android:label="Cuentas"/>
-        <activity android:name=".DetalleGastoActivity"/>
+        <activity android:name=".DetalleGastoActivity"
+            android:noHistory="true"/>
         <activity android:name=".EstadisticasActivity"
             android:label="Estadísticas"/>
 

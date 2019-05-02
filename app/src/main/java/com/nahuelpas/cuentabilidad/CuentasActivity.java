@@ -1,8 +1,11 @@
 package com.nahuelpas.cuentabilidad;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.view.View;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nahuelpas.cuentabilidad.Database.Database;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
@@ -24,6 +27,15 @@ public class CuentasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cuentas);
 
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), NuevaCuentaActivity.class);
+                i.putExtra("class", CuentasActivity.class);
+                startActivity(i);
+            }
+        });
         cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(getApplicationContext()));
         initRecyclerView();
     }

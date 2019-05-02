@@ -8,10 +8,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nahuelpas.cuentabilidad.Database.BD_test;
 import com.nahuelpas.cuentabilidad.Database.Database;
 import com.nahuelpas.cuentabilidad.mapper.MovimientoMapper;
+import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
+import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
+import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.transacciones.GastoDao;
+import com.nahuelpas.cuentabilidad.model.entities.Categoria;
+import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
-import com.nahuelpas.cuentabilidad.service.GastoService;
+import com.nahuelpas.cuentabilidad.model.entities.transacciones.MovimientoBase;
+import com.nahuelpas.cuentabilidad.service.MovimientoService;
+import com.nahuelpas.cuentabilidad.service.transacciones.GastoService;
 import com.nahuelpas.cuentabilidad.views.GastosAdapter;
 
 import androidx.appcompat.app.AlertDialog;
@@ -38,12 +47,38 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public static Context APP_CONTEXT;
+    public static String FILTRO_MAIN_ACTIVITY = "filtro_main_activity";
+//    Object a = getIntent();
+//    Object b = getIntent().getExtras();
+//    Object c = getIntent().getExtras().get(FILTRO_MAIN_ACTIVITY);
+    private Filtro selectedFiltro = getIntent()!=null ? (Filtro) getIntent().getExtras().get(FILTRO_MAIN_ACTIVITY) : Filtro.NETO ;
 
     private MovimientoDao movimientoDao;
+    private GastoDao gastoDao;
     private GastoService gastoService;
     private TextView totalGastos;
     private Spinner calculoGastos;
-    private MovimientoMapper gastoMapper;
+    private MovimientoMapper movimientoMapper;
+
+    enum Filtro {
+        NETO("Neto"),
+        PRESTAMOS("Prestamos"),
+        GASTOS("Gastos");
+        String value;
+        Filtro(String n){
+            value=n;
+        }
+        public String getValue(){
+            return value;
+        }
+        public static List<String> getMappedValues(){
+            List<String> lista = new ArrayList<>();
+            for(Filtro f : values()){
+                lista.add(f.getValue());
+            }
+            return lista;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 arrayAdapter.add(Movimiento.Tipo.PRESTAMO);
                 arrayAdapter.add(Movimiento.Tipo.COBRANZA);
                 arrayAdapter.add(Movimiento.Tipo.TRANSFERENCIA);
+                arrayAdapter.add(Movimiento.Tipo.COMPRA_DIVISA);
 
                 builderSingle.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                     @Override
@@ -78,7 +114,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent i = new Intent(MainActivity.this, NuevoGastoActivity.class);
-                        i.putExtra(GastoService.PARAM_TIPO_GASTO, arrayAdapter.getItem(which));
+                        i.putExtra(MovimientoService.PARAM_TIPO_MOVIMIENTO, arrayAdapter.getItem(which));
+                        i.putExtra(FILTRO_MAIN_ACTIVITY, selectedFiltro);
                         startActivity(i);
                     }
                 });
@@ -87,12 +124,15 @@ public class MainActivity extends AppCompatActivity {
         });
 
         movimientoDao = new MovimientoDao_Impl(Database.getAppDatabase(getApplicationContext()));
-        gastoMapper = new MovimientoMapper();
+        gastoDao = new GastoDao();
+        movimientoMapper = new MovimientoMapper();
         gastoService = new GastoService();
         calculoGastos = findViewById(R.id.spinner_total_gastos);
+        initSpinnerFiltros();
         calculoGastos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                selectedFiltro = (Filtro) calculoGastos.getSelectedItem();
                 initDatos();
             }
 
@@ -102,9 +142,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //mapearAnioMes();
         totalGastos = findViewById(R.id.tv_totalGastos);
         initDatos();
+        getSharedPreferences("MainActivity", MODE_PRIVATE).edit().putString(FILTRO_MAIN_ACTIVITY, selectedFiltro.getValue());
+//        populateBD();
+    }
+
+    private void initSpinnerFiltros(){
+        calculoGastos = findViewById(R.id.spinner_total_gastos);
+        ArrayAdapter<Filtro> adapter = new ArrayAdapter<Filtro>(this,
+                android.R.layout.simple_spinner_item, Filtro.values());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        calculoGastos.setAdapter(adapter);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Do nothing
     }
 
     @Override
@@ -153,13 +207,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initRecyclerView(List<Movimiento> gastos){
+    private void initRecyclerView(List<Movimiento> movimientos){
         final RecyclerView recyclerView;
         RecyclerView.Adapter mAdapter;
 
         recyclerView = findViewById(R.id.recyclerGastos);
 
-        mAdapter = new GastosAdapter(gastos);
+        mAdapter = new GastosAdapter(movimientos);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -170,19 +224,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initDatos(){
-        List<Integer> tiposBuscados = new ArrayList<>();
-        boolean abs = false;
-        switch (calculoGastos.getSelectedItem().toString()) {
-            case "Gastos":
-                tiposBuscados.add(Movimiento.Tipo.GASTO.getValue());
-                abs = true;
+        List movimientos = new ArrayList();
+        double total = 0;
+        switch ((Filtro) calculoGastos.getSelectedItem()) {
+            case GASTOS:
+//                movimientos = gastoDao.getAll();
+                movimientos = movimientoDao.getAll(MovimientoDao.TIPO_GASTO);
+                total = gastoDao.getTotal();
                 break;
-            case "Neto":
+            case NETO:
+                movimientos = movimientoDao.getAll(MovimientoDao.TODOS_LOS_TIPOS);
+                total = gastoService.calcularTotal(movimientos);
+                break;
+            case PRESTAMOS:
+                movimientos = movimientoDao.getAll(MovimientoDao.TIPO_PRESTAMO);
+                total = gastoService.calcularTotal(movimientos);
                 break;
         }
-        List<Movimiento> gastos = movimientoDao.getAll(MovimientoDao.CONST_TODOS_LOS_TIPOS);
-                //movimientoDao.getByFiltros(tiposBuscados, gastoMapper.toAnioMes(new Date()), null);
-        totalGastos.setText("$" + gastoService.calcularTotal(gastos, abs));
-        initRecyclerView(gastos);
+        totalGastos.setText("$" + total);
+        initRecyclerView(movimientos);
+    }
+
+    private void populateBD() {
+        CuentaDao cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(getApplicationContext()));
+        CategoriaDao categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(getApplicationContext()));
+
+        cuentaDao.add(new Cuenta(cuentaDao.getNextId(), "Billetera", 2585, false, Cuenta.Moneda.PESOS));
+        cuentaDao.add(new Cuenta(cuentaDao.getNextId(), "Santander Rio", 19319.92, false, Cuenta.Moneda.PESOS));
+        cuentaDao.add(new Cuenta(cuentaDao.getNextId(), "Mercado Pago", 0, false, Cuenta.Moneda.PESOS));
+
+        Categoria nafta = new Categoria(categoriaDao.getNextId(), "Nafta"/*, null*/);
+        categoriaDao.add(nafta);
+        Categoria gnc = new Categoria(categoriaDao.getNextId(), "GNC"/*, null*/);
+        categoriaDao.add(gnc);
+//        List<Categoria> subs = new ArrayList<>();
+//        subs.add(nafta);
+//        subs.add(gnc);
+//        categoriaDao.add(new Categoria(categoriaDao.getNextId(), "Combustible", subs));
+        categoriaDao.add(new Categoria(categoriaDao.getNextId(), "Comida"/*, null*/));
     }
 }

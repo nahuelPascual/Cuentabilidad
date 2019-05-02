@@ -1,12 +1,10 @@
-package com.nahuelpas.cuentabilidad.service;
-
-import android.widget.EditText;
-import android.widget.Spinner;
+package com.nahuelpas.cuentabilidad.service.transacciones;
 
 import com.nahuelpas.cuentabilidad.exception.ValidationException;
-import com.nahuelpas.cuentabilidad.model.dao.IngresoDao;
+import com.nahuelpas.cuentabilidad.model.dao.transacciones.IngresoDao;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Ingreso;
+import com.nahuelpas.cuentabilidad.service.MovimientoService;
 
 import java.util.Map;
 
@@ -22,9 +20,10 @@ public class IngresoService extends MovimientoService<Ingreso> {
     }
 
     @Override
-    public void eliminarMovimiento(Ingreso ingreso) throws ValidationException {
+    public void eliminarMovimiento(Movimiento ingreso) throws ValidationException {
         cuentaService.egresarDinero(ingreso.getMonto(), cuentaDao.getById(ingreso.getIdCuenta()));
-        ingresoDao.eliminar(ingreso);
+//        ingresoDao.eliminar(ingreso);
+        movimientoDao.delete(ingreso);
     }
 
     @Override

@@ -16,11 +16,11 @@ import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
-import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
-import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
+import com.nahuelpas.cuentabilidad.model.dao.transacciones.GastoDao;
+import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
 import com.nahuelpas.cuentabilidad.service.CuentaService;
-import com.nahuelpas.cuentabilidad.service.GastoService;
+import com.nahuelpas.cuentabilidad.service.transacciones.GastoService;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -113,7 +113,7 @@ public class EditarGastoActivity extends AppCompatActivity {
         spinnerCategoria.setAdapter(catAdapter);
 
         ArrayAdapter<String> cuentaAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, cuentaDao.getDescripciones());
+                android.R.layout.simple_spinner_item, cuentaDao.getDescripciones(Cuenta.Moneda.PESOS.getValue()));
         cuentaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCuenta.setAdapter(cuentaAdapter);
     }

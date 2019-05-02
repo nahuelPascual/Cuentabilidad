@@ -65,10 +65,10 @@ public class Converters {
     public Prestamo movToPrestamo (Movimiento movimiento) {
         return movimientoMapper.mappearPrestamo(movimiento);
     }
-    @TypeConverter
-    public Cobranza movToCobranza (Movimiento movimiento) {
-        return movimientoMapper.mappearCobranza(movimiento);
-    }
+//    @TypeConverter
+//    public Cobranza movToCobranza (Movimiento movimiento) {
+//        return movimientoMapper.mappearCobranza(movimiento);
+//    }
     @TypeConverter
     public CompraDivisa movToCompraDivisa (Movimiento movimiento) {
         return movimientoMapper.mappearCompraDivisa(movimiento);

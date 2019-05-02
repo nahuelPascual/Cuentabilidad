@@ -9,19 +9,21 @@ import androidx.room.Relation;
 @Entity
 public class Categoria {
 
-    public Categoria(Long codigo, String descripcion) {
+    public Categoria(Long codigo, String descripcion/*, List<Categoria> subCategorias*/) {
         this.codigo = codigo;
         this.descripcion = descripcion;
+//        this.subCategorias = subCategorias;
     }
 
-    @PrimaryKey
-    private Long codigo;
+    @PrimaryKey private Long codigo;
     private String descripcion;
+//    @Relation(parentColumn = "codigo", entityColumn = "codigo")
+//    private List<Categoria> subCategorias;
+
 
     public Long getCodigo() {
         return codigo;
     }
-
     public void setCodigo(Long codigo) {
         this.codigo = codigo;
     }
@@ -29,10 +31,14 @@ public class Categoria {
     public String getDescripcion() {
         return descripcion;
     }
-
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
 
-
+//    public List<Categoria> getSubCategorias() {
+//        return subCategorias;
+//    }
+//    public void setSubCategorias(List<Categoria> subCategorias) {
+//        this.subCategorias = subCategorias;
+//    }
 }

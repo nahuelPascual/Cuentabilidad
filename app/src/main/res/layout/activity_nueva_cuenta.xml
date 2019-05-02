@@ -37,10 +37,32 @@
         android:hint="$"
         android:inputType="numberDecimal" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/chkBox_CtaPrestamo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:text="Cuenta Prestamo" />
+
+        <CheckBox
+            android:id="@+id/chkBox_CtaDolares"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:layout_marginRight="@dimen/text_margin"
+            android:text="Cuenta Dolares" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/btn_guardarCuenta"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="@dimen/text_margin"
+        android:layout_marginTop="@dimen/btn_margin"
         android:text="Guardar" />
 </LinearLayout>

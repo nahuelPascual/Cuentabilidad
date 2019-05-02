@@ -20,7 +20,7 @@ public class Validator {
 
     }
 
-    public void validarOrigenDestino(Cuenta origen, Cuenta destino) throws ValidationException {
-        if(origen.getCodigo() == destino.getCodigo()) throw new ValidationException("La cuenta de destino es la misma cuenta de origen");
+    public void validarOrigenDestino(long origen, long destino) throws ValidationException {
+        if(origen == destino) throw new ValidationException("La cuenta de destino es la misma cuenta de origen");
     }
 }

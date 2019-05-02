@@ -8,16 +8,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.nahuelpas.cuentabilidad.DetalleCuentaActivity;
-import com.nahuelpas.cuentabilidad.DetalleGastoActivity;
 import com.nahuelpas.cuentabilidad.R;
 import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
 import com.nahuelpas.cuentabilidad.service.CuentaService;
-import com.nahuelpas.cuentabilidad.service.GastoService;
+import com.nahuelpas.cuentabilidad.service.transacciones.GastoService;
 
-import java.text.DateFormat;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CuentasAdapter extends RecyclerView.Adapter<CuentasAdapter.MyViewHolder> {

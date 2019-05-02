@@ -47,12 +47,12 @@ public class EstadisticasActivity extends AppCompatActivity {
         cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
         movimientoMapper = new MovimientoMapper();
 
-        pruebaTransferencias();
+//        pruebaTransferencias();
       //  pruebaAddView();
 
         initSpinnerCategorias();
         initSpinnerMeses();
-        mostrarFiltrado();
+//        mostrarFiltrado();
     }
 
     private void initSpinnerCategorias(){
@@ -74,8 +74,8 @@ public class EstadisticasActivity extends AppCompatActivity {
         List<String> meses = new ArrayList<>();
         List<Gasto> nulos = new ArrayList<>();
         meses.add(COMBO_MESES);
-        nulos = movimientoMapper.mappearGasto(movimientoDao.getMesesNulos());
-        meses.addAll(movimientoDao.getMesesExistentes(MovimientoDao.CONST_TODOS_LOS_TIPOS));
+        nulos = movimientoMapper.mappearGasto(movimientoDao.getMesesNulos()); //TODO ver por qué se instancia el Gasto sin mesAnio
+        meses.addAll(movimientoDao.getMesesExistentes(MovimientoDao.TODOS_LOS_TIPOS));
         spinnerMes = findViewById(R.id.spinnerFecha);
         ArrayAdapter<String> mesesAdapter = new ArrayAdapter<String>(MainActivity.APP_CONTEXT,
                 android.R.layout.simple_spinner_item, meses);
@@ -87,8 +87,11 @@ public class EstadisticasActivity extends AppCompatActivity {
         String mes = !COMBO_MESES.equals((String)spinnerMes.getSelectedItem())
                 ? (String) spinnerMes.getSelectedItem()
                 : null;
+        String tipo = !COMBO_TIPO.equals((String)spinnerTipo.getSelectedItem())
+                ? (String) spinnerTipo.getSelectedItem()
+                : null;
         List<Integer> tipos = new ArrayList<>();
-        tipos.add(Movimiento.Tipo.valueOf((String)spinnerTipo.getSelectedItem()).getValue());
+//        tipos.add(Movimiento.Tipo.valueOf((String)spinnerTipo.getSelectedItem()).getValue());
 
         List<Gasto> gastos = movimientoMapper.mappearGasto(movimientoDao.getByFiltros(tipos, mes, null));
         StringBuilder sb = new StringBuilder();

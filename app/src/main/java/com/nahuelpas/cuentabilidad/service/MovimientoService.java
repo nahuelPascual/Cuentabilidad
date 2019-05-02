@@ -15,7 +15,15 @@ import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.MovimientoBase;
+import com.nahuelpas.cuentabilidad.service.transacciones.CobranzaService;
+import com.nahuelpas.cuentabilidad.service.transacciones.CompraDivisaService;
+import com.nahuelpas.cuentabilidad.service.transacciones.GastoService;
+import com.nahuelpas.cuentabilidad.service.transacciones.IngresoService;
+import com.nahuelpas.cuentabilidad.service.transacciones.PrestamoService;
+import com.nahuelpas.cuentabilidad.service.transacciones.TransferenciaService;
+import com.nahuelpas.cuentabilidad.validator.Validator;
 
+import java.util.List;
 import java.util.Map;
 
 public abstract class MovimientoService<T> {
@@ -26,14 +34,16 @@ public abstract class MovimientoService<T> {
     public static final String  DESCRIPCION = "descripcion" ;
     public static final String  MONTO = "monto" ;
     public static final String  MONTO2 = "monto2" ;
+    public final static String PARAM_TIPO_MOVIMIENTO = "tipoGasto";
 
     protected CuentaDao cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
     protected MovimientoDao movimientoDao = new MovimientoDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
     protected CategoriaDao categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(MainActivity.APP_CONTEXT));
     protected MovimientoMapper movimientoMapper = new MovimientoMapper();
     protected CuentaService cuentaService = new CuentaService();
+    protected Validator validator = new Validator();
 
-   /* public static MovimientoService getInstance(Movimiento.Tipo tipo) {
+    public static MovimientoService getInstancia (Movimiento.Tipo tipo) {
         switch (tipo) {
             case GASTO:
                 return new GastoService();
@@ -43,13 +53,36 @@ public abstract class MovimientoService<T> {
                 return new PrestamoService();
             case COBRANZA:
                 return new CobranzaService();
+            case TRANSFERENCIA:
+                return new TransferenciaService();
+            case COMPRA_DIVISA:
+                return new CompraDivisaService();
             default:
                 return null;
         }
-    } */
+    }
+
+    public MovimientoBase mapearMovimiento(Movimiento mov) {
+        switch (mov.getTipo()) {
+            case GASTO:
+                return movimientoMapper.mappearGasto(mov);
+            case INGRESO:
+                return movimientoMapper.mappearIngreso(mov);
+            case PRESTAMO:
+                return movimientoMapper.mappearPrestamo(mov);
+            case COBRANZA:
+                return movimientoMapper.mappearCobranza(mov);
+            case TRANSFERENCIA:
+                return movimientoMapper.mappearTransferencia(mov);
+            case COMPRA_DIVISA:
+                return movimientoMapper.mappearCompraDivisa(mov);
+            default:
+                return null;
+        }
+    }
 
     /* Cada movimiento implementa su carga */
-    public abstract Movimiento cargarMovimiento(Map<String, Object> elementos);
+    public abstract Movimiento cargarMovimiento(Map<String, Object> elementos) throws ValidationException;
 
     /* Carga los atributos comunes a todos los movimientos */
     protected void cargarMovimiento(Map<String, Object> elementos, MovimientoBase movimientoBase){
@@ -64,5 +97,19 @@ public abstract class MovimientoService<T> {
     }
 
     public abstract void guardarMovimiento(T movimiento) throws ValidationException;
-    public abstract void eliminarMovimiento(T movimiento) throws ValidationException;
+    public abstract void eliminarMovimiento(Movimiento movimiento) throws ValidationException; //TODO revisar mejor
+
+    public double calcularTotal (List<Movimiento> movimientos) {
+        double total = 0;
+        int multiplicador;
+//        List<MovimientoBase> movimientosBase = movimientoMapper.mappearMovimientos(movimientos);
+        for (Movimiento mov : movimientos) {
+            multiplicador = -1;
+            if(Movimiento.Tipo.getPositivos().contains(mov.getTipo())){
+                multiplicador = 1;
+            }
+            total += multiplicador*mov.getMonto();
+        }
+        return total;
+    }
 }

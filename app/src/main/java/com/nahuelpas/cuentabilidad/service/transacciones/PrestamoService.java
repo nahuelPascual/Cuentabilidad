@@ -1,11 +1,12 @@
-package com.nahuelpas.cuentabilidad.service;
+package com.nahuelpas.cuentabilidad.service.transacciones;
 
 import android.widget.Spinner;
 
 import com.nahuelpas.cuentabilidad.exception.ValidationException;
-import com.nahuelpas.cuentabilidad.model.dao.PrestamoDao;
+import com.nahuelpas.cuentabilidad.model.dao.transacciones.PrestamoDao;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Prestamo;
+import com.nahuelpas.cuentabilidad.service.MovimientoService;
 
 import java.util.Map;
 
@@ -24,10 +25,11 @@ public class PrestamoService extends MovimientoService<Prestamo> {
     }
 
     @Override
-    public void eliminarMovimiento(Prestamo prestamo) {
+    public void eliminarMovimiento(Movimiento prestamo) {
         cuentaService.ingresarDinero(prestamo.getMonto(), cuentaDao.getById(prestamo.getIdCuenta()));
-        cuentaService.ingresarDinero(prestamo.getMonto()*(-1), cuentaDao.getById(prestamo.getIdCuentaPrestamo()));
-        prestamoDao.eliminar(prestamo);
+        cuentaService.ingresarDinero(prestamo.getMonto()*(-1), cuentaDao.getById(prestamo.getIdCuentaAlt()));
+//        prestamoDao.eliminar(prestamo);
+        movimientoDao.delete(prestamo);
     }
 
     @Override

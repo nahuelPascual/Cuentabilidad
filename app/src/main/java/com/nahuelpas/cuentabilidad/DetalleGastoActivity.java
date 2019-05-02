@@ -14,11 +14,14 @@ import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
-import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
+import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao_Impl;
+import com.nahuelpas.cuentabilidad.model.dao.transacciones.GastoDao;
+import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
 import com.nahuelpas.cuentabilidad.service.CuentaService;
-import com.nahuelpas.cuentabilidad.service.GastoService;
+import com.nahuelpas.cuentabilidad.service.MovimientoService;
+import com.nahuelpas.cuentabilidad.service.transacciones.GastoService;
 
 import java.text.DateFormat;
 
@@ -30,23 +33,24 @@ public class DetalleGastoActivity extends AppCompatActivity {
 
     TextView monto, descripcion, cuenta, tipo, subtipo, fecha;
     Button editar, eliminar;
-    Gasto gasto;
-    GastoDao gastoDao;
+    Movimiento gasto;
+    MovimientoDao movimientoDao;
     CuentaDao cuentaDao;
     CategoriaDao categoriaDao;
     CuentaService cuentaService = new CuentaService();
-    GastoService gastoService = new GastoService();
+    MovimientoService movimientoService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_gasto);
 
-        gastoDao = new GastoDao();
+        movimientoDao = new MovimientoDao_Impl(Database.getAppDatabase(getApplicationContext()));
         categoriaDao = new CategoriaDao_Impl(Database.getAppDatabase(getApplicationContext()));
         cuentaDao = new CuentaDao_Impl(Database.getAppDatabase(getApplicationContext()));
 
-        gasto = gastoDao.getById(getIntent().getExtras().getLong(GastoService.PARAM_ID_GASTO));
+        gasto = movimientoDao.getById(getIntent().getExtras().getLong(GastoService.PARAM_ID_GASTO));
+        movimientoService = MovimientoService.getInstancia(gasto.getTipo());
         String movimiento = gasto.getTipo().toString().substring(0,1) + gasto.getTipo().toString().substring(1).toLowerCase();
         setTitle("Detalle " + movimiento);
 
@@ -54,7 +58,7 @@ public class DetalleGastoActivity extends AppCompatActivity {
             fecha = findViewById(R.id.detGasto_fecha);
             descripcion = findViewById(R.id.detGasto_descr);
             cuenta = findViewById(R.id.detGasto_cuenta);
-            tipo = findViewById(R.id.detGasto_subtipo);
+            tipo = findViewById(R.id.detGasto_tipo);
             subtipo = findViewById(R.id.detGasto_subtipo);
 
             editar = findViewById(R.id.btn_detGasto_editar);
@@ -83,7 +87,11 @@ public class DetalleGastoActivity extends AppCompatActivity {
                         builderSingle.setPositiveButton("ACEPTAR", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                gastoService.eliminarMovimiento(gasto);
+                                try{
+                                    movimientoService.eliminarMovimiento(gasto);
+                                } catch (ValidationException e) {
+                                    Toast.makeText(DetalleGastoActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             }
                         });
@@ -101,7 +109,7 @@ public class DetalleGastoActivity extends AppCompatActivity {
             fecha.setText(DateFormat.getDateInstance(DateFormat.ERA_FIELD).format(gasto.getFecha()));
             descripcion.setText(gasto.getDescripcion());
             cuenta.setText(gasto.getIdCuenta()!=null? cuentaDao.getById(gasto.getIdCuenta()).getDescripcion() : null);
-            tipo.setText("Tipo");
+            tipo.setText(gasto.getTipo().toString());
             subtipo.setText(gasto.getIdCategoria()!=null? categoriaDao.getById(gasto.getIdCategoria()).getDescripcion() : null);
     }
 }

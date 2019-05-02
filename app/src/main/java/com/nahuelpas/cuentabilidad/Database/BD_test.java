@@ -11,7 +11,7 @@ import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
 import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
-import com.nahuelpas.cuentabilidad.model.dao.GastoDao;
+import com.nahuelpas.cuentabilidad.model.dao.transacciones.GastoDao;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
 import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao_Impl;
 import com.nahuelpas.cuentabilidad.model.entities.Categoria;
@@ -20,7 +20,6 @@ import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.Nullable;
@@ -59,16 +58,16 @@ public class BD_test extends AppCompatActivity {
         btn_categorias = findViewById(R.id.btn_categorias);
         btn_cuentas = findViewById(R.id.btn_cuentas);
         btn_gastos = findViewById(R.id.btn_gastos);
-        btn_pruebas = findViewById(R.id.btn_ejecutarQuery);
-        btn_pruebas.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+//        btn_pruebas = findViewById(R.id.btn_ejecutarQuery);
+//        btn_pruebas.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
 //                Gasto gasto = new Gasto();
 //                gasto.setCodigo(70L);
 //                gasto.setDescripcion("prueba");
 //                movimientoDao.add(gasto);
-            }
-        });
+//            }
+//        });
 
         tv_query.setMovementMethod(new ScrollingMovementMethod());
 
@@ -85,6 +84,8 @@ public class BD_test extends AppCompatActivity {
         tv_cantCateg.setText(String.valueOf(cant));
         cant = cuentaDao.getCantidadRegistros();
         tv_cantCuentas.setText(String.valueOf(cant));
+        cant = movimientoDao.getAll(MovimientoDao.TODOS_LOS_TIPOS).size();
+        tv_cantGastos.setText(String.valueOf(cant));
     }
     private void initListeners(){
         btn_categorias.setOnClickListener(new View.OnClickListener() {
@@ -117,22 +118,24 @@ public class BD_test extends AppCompatActivity {
 
     private void imprimirGastos() {
         StringBuilder text = new StringBuilder();
-        List<Gasto> gastos = gastoDao.getAll();
+        List<Movimiento> gastos = movimientoDao.getAll(MovimientoDao.TODOS_LOS_TIPOS);
         if (gastos!=null) {
-            for (Gasto gasto : gastos) {
+            for (Movimiento gasto : gastos) {
                 if(gasto.getTipo().getValue()== Movimiento.Tipo.GASTO.getValue()){
                     text.append("[" + DateFormat.getDateInstance(DateFormat.SHORT).format(gasto.getFecha()) + "] ");
                     text.append(gasto.getCodigo() + " - ");
-                    text.append(gasto.getDescripcion() + " - $");
-                    text.append(String.format("%.2f",gasto.getMonto()) + " - ");
+                    text.append(gasto.getDescripcion() + " - ");
+                    text.append(String.format("$%.2f",gasto.getMonto()) + " - ");
                     text.append(new CategoriaDao_Impl(Database.getAppDatabase(this)).getById(gasto.getIdCategoria()).getDescripcion() + " - ");
                     text.append(gasto.getTipo() + " - ");
                     text.append(new CuentaDao_Impl(Database.getAppDatabase(this)).getById(gasto.getIdCuenta()).getDescripcion() + "\n");
                 } else {
                     text.append("[" + DateFormat.getDateInstance(DateFormat.SHORT).format(gasto.getFecha()) + "] ");
                     text.append(gasto.getCodigo() + " - ");
-                    text.append(gasto.getDescripcion() + " - $");
-                    text.append(String.format("%.2f",gasto.getMonto()) + " \n");
+                    text.append(gasto.getDescripcion() + " - ");
+                    text.append(gasto.getTipo() + " - ");
+                    text.append(new CuentaDao_Impl(Database.getAppDatabase(this)).getById(gasto.getIdCuenta()).getDescripcion() + "\n");
+                    text.append(String.format("$%.2f",gasto.getMonto()) + " \n");
                 }
             }
             tv_query.setText(text.toString());

@@ -112,13 +112,19 @@ public class Movimiento {
         public int getValue(){
             return value;
         }
-        static public List<Integer> getAllValues(){
-            List<Integer> lista = new ArrayList<>();
-            for(Tipo tipo : values()){
-                lista.add(tipo.getValue());
-            }
-            return lista;
+        static public List<Tipo> getPositivos() {
+            List<Tipo> tipos = new ArrayList<>();
+            tipos.add(Tipo.INGRESO);
+            tipos.add(COBRANZA);
+            return tipos;
         }
+//        static public List<Integer> getAllValues(){
+//            List<Integer> lista = new ArrayList<>();
+//            for(Tipo tipo : values()){
+//                lista.add(tipo.getValue());
+//            }
+//            return lista;
+//        }
     }
 
     public String getAnio_mes() {

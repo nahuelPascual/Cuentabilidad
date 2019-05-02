@@ -1,11 +1,12 @@
-package com.nahuelpas.cuentabilidad.service;
+package com.nahuelpas.cuentabilidad.service.transacciones;
 
 import android.widget.Spinner;
 
 import com.nahuelpas.cuentabilidad.exception.ValidationException;
-import com.nahuelpas.cuentabilidad.model.dao.CompraDivisaDao;
+import com.nahuelpas.cuentabilidad.model.dao.transacciones.CompraDivisaDao;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
 import com.nahuelpas.cuentabilidad.model.entities.transacciones.CompraDivisa;
+import com.nahuelpas.cuentabilidad.service.MovimientoService;
 
 import java.util.Map;
 
@@ -23,10 +24,11 @@ public class CompraDivisaService extends MovimientoService<CompraDivisa> {
     }
 
     @Override
-    public void eliminarMovimiento(CompraDivisa compraDivisa) throws ValidationException {
-        cuentaService.egresarDinero(compraDivisa.getMontoDivisa(), cuentaDao.getById(compraDivisa.getIdCuentaDivisa()));
+    public void eliminarMovimiento(Movimiento compraDivisa) throws ValidationException {
+        cuentaService.egresarDinero(compraDivisa.getMontoAlt(), cuentaDao.getById(compraDivisa.getIdCuentaAlt()));
         cuentaService.ingresarDinero(compraDivisa.getMonto(), cuentaDao.getById(compraDivisa.getIdCuenta()));
-        compraDivisaDao.eliminar(compraDivisa);
+//        compraDivisaDao.eliminar(compraDivisa);
+        movimientoDao.delete(compraDivisa);
     }
 
     @Override

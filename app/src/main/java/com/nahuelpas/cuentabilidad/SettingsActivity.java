@@ -29,7 +29,9 @@ public class SettingsActivity extends AppCompatActivity {
         nuevaCuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), NuevaCuentaActivity.class));
+                Intent i = new Intent(getApplicationContext(), NuevaCuentaActivity.class);
+                i.putExtra("class", SettingsActivity.class);
+                startActivity(i);
             }
         });
     }

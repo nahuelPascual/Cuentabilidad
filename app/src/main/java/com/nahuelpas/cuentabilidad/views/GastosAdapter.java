@@ -10,8 +10,7 @@ import android.widget.TextView;
 import com.nahuelpas.cuentabilidad.DetalleGastoActivity;
 import com.nahuelpas.cuentabilidad.R;
 import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
-import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
-import com.nahuelpas.cuentabilidad.service.GastoService;
+import com.nahuelpas.cuentabilidad.service.transacciones.GastoService;
 
 import java.text.DateFormat;
 import java.util.List;
@@ -21,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHolder> {
 
-    private List<Movimiento> gastos ;
+    private List<Movimiento> movimientos ;
     private GastoService gastoService = new GastoService();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -36,8 +35,8 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHold
          //   cuenta = (TextView) view.findViewById(R.id.cuentaRow);
         }
     }
-    public GastosAdapter(List<Movimiento> gastos) {
-        this.gastos = gastos;
+    public GastosAdapter(List<Movimiento> movimientos) {
+        this.movimientos = movimientos;
     }
 
     @Override
@@ -58,7 +57,7 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Movimiento gasto = gastos.get(position);
+        Movimiento gasto = movimientos.get(position);
         holder.fecha.setText(DateFormat.getDateInstance(DateFormat.SHORT).format(gasto.getFecha()));
         holder.descripcion.setText(gasto.getDescripcion());
         holder.valor.setText("$ " + gastoService.formatearGasto(gasto.getMonto()));
@@ -68,7 +67,7 @@ public class GastosAdapter extends RecyclerView.Adapter<GastosAdapter.MyViewHold
 
     @Override
     public int getItemCount() {
-        return gastos.size();
+        return movimientos.size();
     }
 
     private void setColores(Movimiento gasto, MyViewHolder holder) {
