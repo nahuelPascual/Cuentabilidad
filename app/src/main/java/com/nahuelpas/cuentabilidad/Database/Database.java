@@ -2,14 +2,14 @@ package com.nahuelpas.cuentabilidad.Database;
 
 import android.content.Context;
 
-import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
-import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
-import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
-import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
-import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
-import com.nahuelpas.cuentabilidad.model.entities.Categoria;
-import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
-import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
+import com.nahuelpas.cuentabilidad.Model.dao.CategoriaDao;
+import com.nahuelpas.cuentabilidad.Model.dao.CategoriaDao_Impl;
+import com.nahuelpas.cuentabilidad.Model.dao.CuentaDao;
+import com.nahuelpas.cuentabilidad.Model.dao.CuentaDao_Impl;
+import com.nahuelpas.cuentabilidad.Model.dao.MovimientoDao;
+import com.nahuelpas.cuentabilidad.Model.entities.Categoria;
+import com.nahuelpas.cuentabilidad.Model.entities.Cuenta;
+import com.nahuelpas.cuentabilidad.Model.entities.Movimiento;
 
 import androidx.annotation.NonNull;
 import androidx.room.Room;
@@ -17,7 +17,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.migration.Migration;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@androidx.room.Database(version = 1, entities = {Cuenta.class, Movimiento.class, Categoria.class}, exportSchema = false)
+@androidx.room.Database(version = 2, entities = {Cuenta.class, Movimiento.class, Categoria.class}, exportSchema = false)
 public abstract class Database extends RoomDatabase {
 
     private static volatile Database INSTANCE;
@@ -33,8 +33,7 @@ public abstract class Database extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(), Database.class, "user-database")
                                     .allowMainThreadQueries()
                                     .fallbackToDestructiveMigration()
-//                                    .addMigrations(new Migration[]{ MIGRATION_1_2,
-//                                                                    })
+                                    .addMigrations(new Migration[]{ MIGRATION_1_2 })
 /*                                    .addCallback(new Callback() {
                                         @Override
                                         public void onCreate(@NonNull SupportSQLiteDatabase db) {
@@ -72,8 +71,8 @@ public abstract class Database extends RoomDatabase {
             cuentaDao.add(new Cuenta(cuentaDao.getNextId(), "Santander Rio", new Double(1517.60), false, Cuenta.Moneda.PESOS));
             cuentaDao.add(new Cuenta(cuentaDao.getNextId(), "Guardado CPU", new Double(0), false, Cuenta.Moneda.PESOS));
 //        cuentaDao.add(new Cuenta(cuentaDao.getNextId(), "Prestamo Camila", new Double(2500), false, Cuenta.Moneda.PESOS));
-            cuentaDao.add(new Cuenta(cuentaDao.getNextId(), "Prestamo Juanca", new Double(5000), true, Cuenta.Moneda.PESOS));
-            cuentaDao.add(new Cuenta(cuentaDao.getNextId(), "USD", new Double(7141), false, Cuenta.Moneda.DOLARES));
+            cuentaDao.add(new Cuenta(cuentaDao.getNextId(), "Prestamo Juanca", new Double(8300), true, Cuenta.Moneda.PESOS));
+            cuentaDao.add(new Cuenta(cuentaDao.getNextId(), "USD", new Double(6941), false, Cuenta.Moneda.DOLARES));
 
             CategoriaDao categoriaDao = new CategoriaDao_Impl(INSTANCE);
             categoriaDao.add(new Categoria(categoriaDao.getNextId(), "Nafta"));
@@ -86,13 +85,17 @@ public abstract class Database extends RoomDatabase {
             categoriaDao.add(new Categoria(categoriaDao.getNextId(), "Comida"));
             categoriaDao.add(new Categoria(categoriaDao.getNextId(), "Regalos"));
             categoriaDao.add(new Categoria(categoriaDao.getNextId(), "Servicios"));
+
         }
     }
 
     private static final Migration MIGRATION_1_2 = new Migration(1, 2) {
         @Override
         public void migrate(@NonNull SupportSQLiteDatabase database) {
-            //database.execSQL("ALTER TABLE Cuenta ADD COLUMN descubierto INTEGER NOT NULL default 'false'");
+            database.execSQL("UPDATE Movimiento SET anio_mes = strftime('%Y-%m', fecha)");
+//            MovimientoDao movimientoDao = new MovimientoDao_Impl(INSTANCE);
+//            Cursor c = database.query("SELECT COUNT(*) FROM Movimiento WHERE anio_mes IS NULL");
+//            System.out.println("Cant. anio_mes nulos: " + c.getCount());
         }
     };
     private static final Migration MIGRATION_2_3 = new Migration(2, 3) {

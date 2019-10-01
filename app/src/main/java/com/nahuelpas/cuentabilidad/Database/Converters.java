@@ -1,14 +1,13 @@
 package com.nahuelpas.cuentabilidad.Database;
 
-import com.nahuelpas.cuentabilidad.mapper.MovimientoMapper;
-import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
-import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
-import com.nahuelpas.cuentabilidad.model.entities.transacciones.Cobranza;
-import com.nahuelpas.cuentabilidad.model.entities.transacciones.CompraDivisa;
-import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
-import com.nahuelpas.cuentabilidad.model.entities.transacciones.Ingreso;
-import com.nahuelpas.cuentabilidad.model.entities.transacciones.Prestamo;
-import com.nahuelpas.cuentabilidad.model.entities.transacciones.Transferencia;
+import com.nahuelpas.cuentabilidad.Controller.mapper.MovimientoMapper;
+import com.nahuelpas.cuentabilidad.Model.entities.Cuenta;
+import com.nahuelpas.cuentabilidad.Model.entities.Movimiento;
+import com.nahuelpas.cuentabilidad.Model.entities.transacciones.CompraDivisa;
+import com.nahuelpas.cuentabilidad.Model.entities.transacciones.Gasto;
+import com.nahuelpas.cuentabilidad.Model.entities.transacciones.Ingreso;
+import com.nahuelpas.cuentabilidad.Model.entities.transacciones.Prestamo;
+import com.nahuelpas.cuentabilidad.Model.entities.transacciones.Transferencia;
 
 import java.util.Date;
 

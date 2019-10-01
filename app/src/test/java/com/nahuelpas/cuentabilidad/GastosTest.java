@@ -1,7 +1,6 @@
 package com.nahuelpas.cuentabilidad;
 
-import com.nahuelpas.cuentabilidad.model.dao.transacciones.GastoDao;
-import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
+import com.nahuelpas.cuentabilidad.Model.entities.transacciones.Gasto;
 
 import org.junit.Assert;
 import org.junit.Test;

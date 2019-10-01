@@ -7,17 +7,17 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.nahuelpas.cuentabilidad.R;
-import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao;
-import com.nahuelpas.cuentabilidad.model.dao.CategoriaDao_Impl;
-import com.nahuelpas.cuentabilidad.model.dao.CuentaDao;
-import com.nahuelpas.cuentabilidad.model.dao.CuentaDao_Impl;
-import com.nahuelpas.cuentabilidad.model.dao.transacciones.GastoDao;
-import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao;
-import com.nahuelpas.cuentabilidad.model.dao.MovimientoDao_Impl;
-import com.nahuelpas.cuentabilidad.model.entities.Categoria;
-import com.nahuelpas.cuentabilidad.model.entities.Cuenta;
-import com.nahuelpas.cuentabilidad.model.entities.transacciones.Gasto;
-import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
+import com.nahuelpas.cuentabilidad.Model.dao.CategoriaDao;
+import com.nahuelpas.cuentabilidad.Model.dao.CategoriaDao_Impl;
+import com.nahuelpas.cuentabilidad.Model.dao.CuentaDao;
+import com.nahuelpas.cuentabilidad.Model.dao.CuentaDao_Impl;
+import com.nahuelpas.cuentabilidad.Model.dao.transacciones.GastoDao;
+import com.nahuelpas.cuentabilidad.Model.dao.MovimientoDao;
+import com.nahuelpas.cuentabilidad.Model.dao.MovimientoDao_Impl;
+import com.nahuelpas.cuentabilidad.Model.entities.Categoria;
+import com.nahuelpas.cuentabilidad.Model.entities.Cuenta;
+import com.nahuelpas.cuentabilidad.Model.entities.transacciones.Gasto;
+import com.nahuelpas.cuentabilidad.Model.entities.Movimiento;
 
 import java.text.DateFormat;
 import java.util.List;
