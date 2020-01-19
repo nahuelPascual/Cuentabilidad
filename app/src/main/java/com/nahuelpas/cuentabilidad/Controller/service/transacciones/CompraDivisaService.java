@@ -1,5 +1,6 @@
 package com.nahuelpas.cuentabilidad.Controller.service.transacciones;
 
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.nahuelpas.cuentabilidad.model.exception.ValidationException;
@@ -19,9 +20,11 @@ public class CompraDivisaService extends MovimientoService<CompraDivisa> {
     @Override
     public Movimiento cargarMovimiento(Map<String, Object> elementos) {
         Spinner spinnerCuenta = (Spinner) elementos.get(SPINNER_CUENTA2);
+        Double montoDivisa = Double.valueOf(((EditText)elementos.get(MONTO2)).getText().toString());
         CompraDivisa compraDivisa = new CompraDivisa();
         cargarMovimiento(elementos, compraDivisa, null);
         compraDivisa.setIdCuentaDivisa(cuentaDao.getCuentaByDesc(spinnerCuenta.getSelectedItem().toString()).getCodigo());
+        compraDivisa.setMontoDivisa(montoDivisa);
         return new Movimiento(compraDivisa);
     }
 
