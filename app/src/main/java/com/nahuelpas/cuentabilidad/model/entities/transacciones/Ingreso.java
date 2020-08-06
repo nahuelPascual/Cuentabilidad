@@ -1,8 +1,6 @@
-package com.nahuelpas.cuentabilidad.model.entities.transacciones;
+package com.nahuelpas.cuentabilidad.Model.entities.transacciones;
 
-import com.nahuelpas.cuentabilidad.model.entities.Movimiento;
-
-import java.util.Date;
+import com.nahuelpas.cuentabilidad.Model.entities.Movimiento;
 
 public class Ingreso extends MovimientoBase {
 
